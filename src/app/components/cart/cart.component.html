@@ -1,0 +1,62 @@
+<div class="cart-container">
+  <h2>🛒 Seu Carrinho</h2>
+
+  <div *ngIf="itens().length === 0" class="carrinho-vazio">
+    <p>Seu carrinho está vazio... Que tal adicionar alguns itens?</p>
+    <button routerLink="/" class="btn-voltar">Ver Produtos</button>
+  </div>
+
+  <div *ngIf="itens().length > 0" class="cart-content">
+
+    <div class="cart-items-list">
+      <div class="cart-item-row" *ngFor="let item of itens()">
+
+        <img [src]="item.produto.imagem" [alt]="item.produto.nome">
+
+        <div class="item-info">
+          <h4>{{ item.produto.nome }}</h4>
+          <p>Preço unitário: R$ {{ item.produto.preco.toFixed(2) }}</p>
+        </div>
+
+        <div class="item-qtd">
+          <span>Qtd: <strong>{{ item.quantidade }}</strong></span>
+        </div>
+
+        <div class="item-subtotal">
+          <p>
+            Subtotal: R$
+            {{ (item.produto.preco * item.quantidade).toFixed(2) }}
+          </p>
+        </div>
+
+        <button class="btn-remover" (click)="remover(item.produto.id)">
+          ❌
+        </button>
+
+      </div>
+    </div>
+
+    <div class="cart-summary">
+      <h3>Resumo do Pedido</h3>
+
+      <div class="summary-row">
+        <span>Total de itens:</span>
+        <span>{{ quantidadeTotal() }}</span>
+      </div>
+
+      <div class="summary-row total">
+        <span>Valor Total:</span>
+        <span>R$ {{ total().toFixed(2) }}</span>
+      </div>
+
+      <button class="btn-finalizar" (click)="finalizarCompra()">
+        Finalizar Compra
+      </button>
+
+      <button class="btn-limpar" (click)="limpar()">
+        Limpar Carrinho
+      </button>
+    </div>
+
+  </div>
+</div>

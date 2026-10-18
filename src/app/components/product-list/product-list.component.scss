@@ -1,0 +1,104 @@
+.vitrine-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.form-container {
+  width: 400px;
+  max-width: 100;
+  background: var(--bg-card);
+  padding: 25px;
+  border-radius: 16px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.form-container h3 {
+  color: var(--neon-cyan);
+  margin: 0;
+}
+
+.form-container input,
+.form-container select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(102, 252, 241, 0.2);
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.form-container input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.form-container select option {
+  background: #0f1923;
+}
+
+.form-container button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: var(--neon-cyan);
+  color: var(--bg-principal);
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 14px rgba(102, 252, 241, 0.3);
+}
+
+.form-container button:hover {
+  opacity: 0.85;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+
+  button {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    transition: opacity 0.2s;
+  }
+
+  button:first-child {
+    background: transparent;
+    border: 1px solid rgba(102, 252, 241, 0.4);
+    color: var(--neon-cyan);
+
+    &:hover {
+      background: rgba(102, 252, 241, 0.1);
+    }
+  }
+
+  button:last-child {
+    background: transparent;
+    border: 1px solid rgba(255, 80, 80, 0.4);
+    color: #ff5050;
+
+    &:hover {
+      background: rgba(255, 80, 80, 0.1);
+    }
+  }
+}

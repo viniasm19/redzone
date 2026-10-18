@@ -1,0 +1,37 @@
+<section class="hero">
+
+  <div class="hero-content">
+    <h1><span>DARK</span>TECH</h1>
+
+    <p>Domine o jogo com equipamentos que combinam performance e estilo.</p>
+    <div class="hero-actions">
+
+      <a routerLink="/products" class="btn-primary">
+        Ver Produtos
+      </a>
+      <a routerLink="/cart" class="btn-primary">
+        Ir para Carrinho
+      </a>
+
+    </div>
+  </div>
+  <div class="hero-glow" aria-hidden="true"></div>
+</section>
+
+<section class="layout">
+  <aside class="sidebar">
+    <h3>Sidebar (Categorias)</h3>
+    <ul class="cat-list">
+      <li *ngFor="let c of categorias">
+        <button type="button" class="cat-btn" [class.active]="c === categoriaSelecionada"
+          (click)="selecionarCategoria(c)">
+          {{ c }}
+        </button>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <app-product-list [categoriaSelecionada]="categoriaSelecionada"></app-product-list>
+  </main>
+</section>

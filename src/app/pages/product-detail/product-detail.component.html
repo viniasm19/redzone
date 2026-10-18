@@ -1,0 +1,16 @@
+<div class="detail-container" *ngIf="produto">
+  <button class="btn-voltar" (click)="voltar()">← Voltar</button>
+
+  <div class="detail-card">
+    <img [src]="produto.imagem" [alt]="produto.nome" />
+    <div class="detail-info">
+      <span class="categoria">{{ produto.categoria }}</span>
+      <h1>{{ produto.nome }}</h1>
+      <p class="descricao">{{ produto.descricao }}</p>
+      <p class="preco">R$ {{ produto.preco }}</p>
+      <button class="btn-primary" (click)="adicionarAoCarrinho()">
+        🛒 Adicionar ao Carrinho
+      </button>
+    </div>
+  </div>
+</div>

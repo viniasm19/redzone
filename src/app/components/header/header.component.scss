@@ -1,0 +1,20 @@
+.dark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+  background-color: var(--bg-card);
+  border-bottom: 2px solid var(--neon-cyan);
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--texto-destaque);
+    span { color: var(--neon-cyan); }
+  }
+
+  nav a {
+    margin-left: 20px;
+    font-weight: 500;
+  }
+}

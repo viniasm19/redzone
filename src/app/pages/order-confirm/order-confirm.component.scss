@@ -1,0 +1,83 @@
+.confirm-container {
+  display: flex;
+  justify-content: center;
+  padding: 60px 5%;
+  position: relative;
+  z-index: 1;
+}
+
+.confirm-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(102, 252, 241, 0.15);
+  border-radius: 16px;
+  padding: 35px;
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  h2 {
+    color: var(--neon-cyan);
+    margin: 0;
+  }
+}
+
+.confirm-items {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.confirm-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+
+  img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .item-nome { flex: 1; font-weight: bold; }
+  .item-qtd  { color: rgba(255,255,255,0.5); }
+  .item-preco { color: var(--neon-cyan); font-weight: bold; }
+}
+
+.confirm-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 16px;
+
+  .total-valor {
+    color: var(--neon-cyan);
+    font-weight: bold;
+    font-size: 22px;
+  }
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+
+  button { flex: 1; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+
+  .btn-voltar {
+    background: transparent;
+    border: 2px solid rgba(102, 252, 241, 0.3);
+    color: var(--neon-cyan);
+  }
+
+  .btn-confirmar {
+    background: var(--neon-cyan);
+    color: var(--bg-principal);
+    box-shadow: 0 0 16px rgba(102, 252, 241, 0.3);
+  }
+}

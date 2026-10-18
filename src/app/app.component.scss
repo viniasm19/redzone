@@ -1,0 +1,43 @@
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--neon-cyan);
+    color: #0a0f1a;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(102, 252, 241, 0.4);
+    animation: fadeIn 0.3s ease;
+    z-index: 9999;
+}
+
+main {
+    min-height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 15, 26, 0.75);
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
