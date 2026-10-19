@@ -1,4 +1,4 @@
-# 🛍️ DarkShop
+# 🛍️ RedZone
 
 ## 📌 Contexto
 
@@ -6,7 +6,7 @@ Projeto acadêmico desenvolvido no curso de Análise e Desenvolvimento de Sistem
 
 ## 🎯 Objetivo
 
-O DarkShop é uma aplicação web de e-commerce desenvolvida com Angular, com foco em praticar conceitos de desenvolvimento front-end, componentização, consumo de dados e organização de interface.
+O RedZone é uma aplicação web de e-commerce desenvolvida com Angular, com foco em praticar conceitos de desenvolvimento front-end, componentização, consumo de dados e organização de interface.
 
 O projeto simula uma loja virtual com catálogo de produtos, navegação entre páginas e gerenciamento visual dos itens exibidos.
 
@@ -39,7 +39,7 @@ O projeto simula uma loja virtual com catálogo de produtos, navegação entre p
 ## 📁 Estrutura do projeto
 
 ```
-darkshop/
+redzone/
 ├── src/
 ├── public/
 ├── backend/
@@ -66,13 +66,13 @@ npm install -g @angular/cli
 Clone o repositório:
 
 ```bash
-git clone https://github.com/viniasm19/darkshop.git
+git clone https://github.com/viniasm19/redzone.git
 ```
 
 Acesse a pasta:
 
 ```bash
-cd darkshop
+cd redzone
 ```
 
 Instale as dependências:
@@ -114,8 +114,7 @@ Durante o desenvolvimento do projeto foram praticados conceitos como:
 
 ## 👤 Autores
 
-- Beatriz de Alcantara Nascimento
-- Giovanna Batista de Jesus
+- Maria Rita de Cassia Sousa Santos
 - Vinicius Alves Soares de Melo
 
 ## 📄 Licença

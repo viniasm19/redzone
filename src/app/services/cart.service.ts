@@ -58,6 +58,41 @@ export class CartService {
 
   }
 
+  // botão "+" do carrinho: soma 1 na quantidade (sem mostrar o aviso de "adicionado")
+  aumentarQuantidade(produtoId: number) {
+    this.itensCarrinho.set(
+      this.itensCarrinho().map(item =>
+        item.produto.id === produtoId
+          ? { ...item, quantidade: item.quantidade + 1 }
+          : item
+      )
+    );
+  }
+
+  // botão "−" do carrinho: tira 1; se só tinha 1, o item sai do carrinho
+  diminuirQuantidade(produtoId: number) {
+    const item = this.itensCarrinho().find(
+      i => i.produto.id === produtoId
+    );
+
+    if (!item) {
+      return;
+    }
+
+    if (item.quantidade <= 1) {
+      this.removerDoCarrinho(produtoId);
+      return;
+    }
+
+    this.itensCarrinho.set(
+      this.itensCarrinho().map(i =>
+        i.produto.id === produtoId
+          ? { ...i, quantidade: i.quantidade - 1 }
+          : i
+      )
+    );
+  }
+
   removerDoCarrinho(produtoId: number) {
     this.itensCarrinho.set(
       this.itensCarrinho().filter(

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "darkshop": {
+    "redzone": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/darkshop",
+            "outputPath": "dist/redzone",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "darkshop:build:production"
+              "buildTarget": "redzone:build:production"
             },
             "development": {
-              "buildTarget": "darkshop:build:development"
+              "buildTarget": "redzone:build:development"
             }
           },
           "defaultConfiguration": "development"

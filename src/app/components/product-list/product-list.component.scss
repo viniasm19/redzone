@@ -29,7 +29,7 @@
 }
 
 .form-container h3 {
-  color: var(--neon-cyan);
+  color: var(--neon-red);
   margin: 0;
 }
 
@@ -37,7 +37,7 @@
 .form-container select {
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid rgba(102, 252, 241, 0.2);
+  border: 1px solid rgba(255, 59, 59, 0.2);
   outline: none;
   background: rgba(255, 255, 255, 0.05);
   color: white;
@@ -55,11 +55,11 @@
   padding: 12px;
   border-radius: 10px;
   border: none;
-  background: var(--neon-cyan);
+  background: var(--neon-red);
   color: var(--bg-principal);
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 0 14px rgba(102, 252, 241, 0.3);
+  box-shadow: 0 0 14px rgba(255, 59, 59, 0.3);
 }
 
 .form-container button:hover {
@@ -84,11 +84,11 @@
 
   button:first-child {
     background: transparent;
-    border: 1px solid rgba(102, 252, 241, 0.4);
-    color: var(--neon-cyan);
+    border: 1px solid rgba(255, 59, 59, 0.4);
+    color: var(--neon-red);
 
     &:hover {
-      background: rgba(102, 252, 241, 0.1);
+      background: rgba(255, 59, 59, 0.1);
     }
   }
 

@@ -2,12 +2,12 @@
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background: var(--neon-cyan);
+    background: var(--neon-red);
     color: #0a0f1a;
     padding: 14px 22px;
     border-radius: 10px;
     font-weight: bold;
-    box-shadow: 0 0 20px rgba(102, 252, 241, 0.4);
+    box-shadow: 0 0 20px rgba(255, 59, 59, 0.4);
     animation: fadeIn 0.3s ease;
     z-index: 9999;
 }

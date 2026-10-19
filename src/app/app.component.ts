@@ -16,7 +16,7 @@ import { API_URL } from './config/api';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'darkshop';
+  title = 'redzone';
   cartService = inject(CartService);
 
   private http = inject(HttpClient);

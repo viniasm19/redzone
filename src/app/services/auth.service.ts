@@ -223,7 +223,7 @@ export class AuthService {
 
   isAdmin(): boolean {
     const user = this._usuarioLogado();
-    return user?.email === 'admin@darktech.com';
+    return user?.email === 'admin@redzone.com';
   }
 
 }

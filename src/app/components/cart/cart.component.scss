@@ -19,7 +19,7 @@
     margin-top: 16px;
     padding: 12px 24px;
     border-radius: 10px;
-    background: var(--neon-cyan);
+    background: var(--neon-red);
     color: var(--bg-principal);
     border: none;
     font-weight: bold;
@@ -72,11 +72,34 @@
   }
 
   .item-qtd {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     color: rgba(197, 198, 199, 0.9);
+
+    strong {
+      min-width: 24px;
+      text-align: center;
+    }
+  }
+
+  .btn-qtd {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--neon-red);
+    color: var(--neon-red);
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover { background: rgba(255, 59, 59, 0.15); }
   }
 
   .item-subtotal {
-    color: var(--neon-cyan);
+    color: var(--neon-red);
     font-weight: bold;
 
     p { margin: 0; }
@@ -118,7 +141,7 @@
     font-weight: bold;
 
     span:last-child {
-      color: var(--neon-cyan);
+      color: var(--neon-red);
     }
   }
 }
@@ -127,7 +150,7 @@
   width: 100%;
   padding: 14px;
   border-radius: 10px;
-  background: var(--neon-cyan);
+  background: var(--neon-red);
   color: var(--bg-principal);
   border: none;
   font-weight: bold;

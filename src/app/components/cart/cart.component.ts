@@ -40,6 +40,14 @@ export class CartComponent {
     this.cartService.removerDoCarrinho(id);
   }
 
+  aumentar(id: number) {
+    this.cartService.aumentarQuantidade(id);
+  }
+
+  diminuir(id: number) {
+    this.cartService.diminuirQuantidade(id);
+  }
+
   limpar() {
     this.cartService.limparCarrinho();
   }

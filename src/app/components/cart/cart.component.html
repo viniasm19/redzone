@@ -19,7 +19,13 @@
         </div>
 
         <div class="item-qtd">
-          <span>Qtd: <strong>{{ item.quantidade }}</strong></span>
+          <button class="btn-qtd" (click)="diminuir(item.produto.id)"
+                  title="Tirar um" [attr.aria-label]="'Tirar um ' + item.produto.nome">−</button>
+
+          <strong>{{ item.quantidade }}</strong>
+
+          <button class="btn-qtd" (click)="aumentar(item.produto.id)"
+                  title="Adicionar mais um" [attr.aria-label]="'Adicionar mais um ' + item.produto.nome">+</button>
         </div>
 
         <div class="item-subtotal">

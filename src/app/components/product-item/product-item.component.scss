@@ -9,7 +9,7 @@
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0 15px var(--neon-cyan);
+    box-shadow: 0 0 15px var(--neon-red);
   }
 
   img {
@@ -26,15 +26,15 @@
   }
 
   .preco {
-    color: var(--neon-cyan);
+    color: var(--neon-red);
     font-size: 18px;
     font-weight: bold;
   }
 
   .btn-comprar {
     background-color: transparent;
-    border: 2px solid var(--neon-cyan);
-    color: var(--neon-cyan);
+    border: 2px solid var(--neon-red);
+    color: var(--neon-red);
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -42,7 +42,7 @@
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: var(--neon-cyan);
+      background-color: var(--neon-red);
       color: var(--bg-principal);
     }
   }

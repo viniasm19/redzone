@@ -8,7 +8,7 @@
 
 .confirm-card {
   background: var(--bg-card);
-  border: 1px solid rgba(102, 252, 241, 0.15);
+  border: 1px solid rgba(255, 59, 59, 0.15);
   border-radius: 16px;
   padding: 35px;
   width: 100%;
@@ -18,7 +18,7 @@
   gap: 24px;
 
   h2 {
-    color: var(--neon-cyan);
+    color: var(--neon-red);
     margin: 0;
   }
 }
@@ -46,7 +46,7 @@
 
   .item-nome { flex: 1; font-weight: bold; }
   .item-qtd  { color: rgba(255,255,255,0.5); }
-  .item-preco { color: var(--neon-cyan); font-weight: bold; }
+  .item-preco { color: var(--neon-red); font-weight: bold; }
 }
 
 .confirm-total {
@@ -57,7 +57,7 @@
   padding-top: 16px;
 
   .total-valor {
-    color: var(--neon-cyan);
+    color: var(--neon-red);
     font-weight: bold;
     font-size: 22px;
   }
@@ -71,13 +71,13 @@
 
   .btn-voltar {
     background: transparent;
-    border: 2px solid rgba(102, 252, 241, 0.3);
-    color: var(--neon-cyan);
+    border: 2px solid rgba(255, 59, 59, 0.3);
+    color: var(--neon-red);
   }
 
   .btn-confirmar {
-    background: var(--neon-cyan);
+    background: var(--neon-red);
     color: var(--bg-principal);
-    box-shadow: 0 0 16px rgba(102, 252, 241, 0.3);
+    box-shadow: 0 0 16px rgba(255, 59, 59, 0.3);
   }
 }

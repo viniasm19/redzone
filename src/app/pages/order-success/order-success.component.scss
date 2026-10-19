@@ -9,7 +9,7 @@
 
 .success-card {
   background: var(--bg-card);
-  border: 1px solid rgba(102, 252, 241, 0.2);
+  border: 1px solid rgba(255, 59, 59, 0.2);
   border-radius: 16px;
   padding: 50px 40px;
   width: 100%;
@@ -19,7 +19,7 @@
   align-items: center;
   gap: 16px;
   text-align: center;
-  box-shadow: 0 0 30px rgba(102, 252, 241, 0.1);
+  box-shadow: 0 0 30px rgba(255, 59, 59, 0.1);
 }
 
 .success-icon {
@@ -27,7 +27,7 @@
 }
 
 h1 {
-  color: var(--neon-cyan);
+  color: var(--neon-red);
   margin: 0;
   font-size: 28px;
 }
@@ -58,27 +58,27 @@ p {
   padding: 14px 28px;
   border-radius: 10px;
   background: transparent;
-  color: var(--neon-cyan);
-  border: 1px solid var(--neon-cyan);
+  color: var(--neon-red);
+  border: 1px solid var(--neon-red);
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
 
   &:hover {
-    background: rgba(102, 252, 241, 0.1);
+    background: rgba(255, 59, 59, 0.1);
   }
 }
 
 .btn-continuar {
   padding: 14px 28px;
   border-radius: 10px;
-  background: var(--neon-cyan);
+  background: var(--neon-red);
   color: var(--bg-principal);
   border: none;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 0 16px rgba(102, 252, 241, 0.3);
+  box-shadow: 0 0 16px rgba(255, 59, 59, 0.3);
 
   &:hover {
     opacity: 0.85;

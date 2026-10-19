@@ -6,8 +6,8 @@
 
 .btn-voltar {
   background: transparent;
-  border: 1px solid rgba(102, 252, 241, 0.3);
-  color: var(--neon-cyan);
+  border: 1px solid rgba(255, 59, 59, 0.3);
+  color: var(--neon-red);
   padding: 10px 18px;
   border-radius: 8px;
   cursor: pointer;
@@ -15,7 +15,7 @@
   margin-bottom: 30px;
 
   &:hover {
-    background: rgba(102, 252, 241, 0.1);
+    background: rgba(255, 59, 59, 0.1);
   }
 }
 
@@ -26,7 +26,7 @@
   background: var(--bg-card);
   border-radius: 16px;
   padding: 30px;
-  border: 1px solid rgba(102, 252, 241, 0.15);
+  border: 1px solid rgba(255, 59, 59, 0.15);
 
   img {
     width: 100%;
@@ -56,7 +56,7 @@
   }
 
   .preco {
-    color: var(--neon-cyan);
+    color: var(--neon-red);
     font-size: 28px;
     font-weight: bold;
   }
@@ -64,7 +64,7 @@
   .btn-primary {
     padding: 14px 24px;
     border-radius: 10px;
-    background: var(--neon-cyan);
+    background: var(--neon-red);
     color: var(--bg-principal);
     border: none;
     font-weight: bold;
