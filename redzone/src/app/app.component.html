@@ -1,0 +1,9 @@
+<app-header></app-header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<div class="toast" *ngIf="cartService.toast()">
+  {{ cartService.toast() }}
+</div>

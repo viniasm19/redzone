@@ -1,0 +1,11 @@
+<div class="product-card" [routerLink]="['/product', produto.id]" style="cursor: pointer;">
+  
+  <img [src]="produto.imagem || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070'"/>
+  <h3>{{ produto.nome }}</h3>
+  <p>{{ produto.categoria }}</p>
+  <p>R$ {{ produto.preco }}</p>
+
+  <button class="btn-comprar" (click)="adicionar(); $event.stopPropagation()">
+    🛒 Adicionar ao Carrinho
+  </button>
+</div>

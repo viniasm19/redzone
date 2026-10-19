@@ -1,0 +1,79 @@
+.area-container {
+  display: flex;
+  justify-content: center;
+  padding: 60px 5%;
+  position: relative;
+  z-index: 1;
+}
+
+.area-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 59, 59, 0.2);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 0 30px rgba(255, 59, 59, 0.1);
+}
+
+h2 {
+  color: var(--neon-red);
+  margin: 0;
+}
+
+.dado {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  span {
+    font-size: 13px;
+    color: rgba(197, 198, 199, 0.6);
+  }
+
+  strong {
+    font-size: 18px;
+    color: var(--texto-destaque);
+  }
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.btn-primario,
+.btn-secundario {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn-primario {
+  background: var(--neon-red);
+  color: var(--bg-principal);
+  border: none;
+  box-shadow: 0 0 16px rgba(255, 59, 59, 0.3);
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.btn-secundario {
+  background: transparent;
+  color: var(--neon-red);
+  border: 1px solid var(--neon-red);
+
+  &:hover {
+    background: rgba(255, 59, 59, 0.1);
+  }
+}

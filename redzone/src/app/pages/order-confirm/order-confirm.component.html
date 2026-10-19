@@ -1,0 +1,24 @@
+<div class="confirm-container">
+  <div class="confirm-card">
+    <h2>📋 Resumo do Pedido</h2>
+
+    <div class="confirm-items">
+      <div class="confirm-row" *ngFor="let item of itens">
+        <img [src]="item.produto.imagem" [alt]="item.produto.nome">
+        <span class="item-nome">{{ item.produto.nome }}</span>
+        <span class="item-qtd">x{{ item.quantidade }}</span>
+        <span class="item-preco">R$ {{ (item.produto.preco * item.quantidade).toFixed(2) }}</span>
+      </div>
+    </div>
+
+    <div class="confirm-total">
+      <span>Total:</span>
+      <span class="total-valor">R$ {{ total.toFixed(2) }}</span>
+    </div>
+
+    <div class="confirm-actions">
+      <button class="btn-voltar" (click)="voltar()">← Voltar</button>
+      <button class="btn-confirmar" (click)="confirmar()">✅ Confirmar Pedido</button>
+    </div>
+  </div>
+</div>

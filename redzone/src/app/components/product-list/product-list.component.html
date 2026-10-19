@@ -1,0 +1,58 @@
+<div class="vitrine-container">
+
+  <h2>🔥 Equipamentos Disponíveis</h2>
+
+  <!-- 🔝 LISTA DE PRODUTOS -->
+  <div class="products-grid">
+
+    <div *ngFor="let prod of produtos; trackBy: trackById">
+
+      <!-- CARD -->
+      <app-product-item [produto]="prod" (addToCart)="adicionarAoCarrinho($event)">
+      </app-product-item>
+
+      <!-- AÇÕES -->
+      <div class="actions" *ngIf="isAdmin()">
+        <button (click)="editarProduto(prod)">
+          ✏️ Editar
+        </button>
+
+        <button (click)="deleteProduto(prod.id)">
+          🗑️ Excluir
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 🔻 FORMULÁRIO -->
+  <div class="form-container" *ngIf="isAdmin()">
+
+    <h3>➕ Cadastrar Produto</h3>
+
+    <input type="text" placeholder="Nome do produto" [(ngModel)]="novoProduto.nome">
+
+    <input type="number" placeholder="Preço" [(ngModel)]="novoProduto.preco">
+
+    <select [(ngModel)]="novoProduto.categoria">
+
+      <option value="" disabled selected>
+        Selecione a categoria
+      </option>
+
+      <option *ngFor="let cat of categorias" [value]="cat">
+        {{ cat }}
+      </option>
+
+    </select>
+
+
+    <button (click)="addProduto()">
+      💾 Adicionar Produto
+    </button>
+
+  </div>
+
+</div>

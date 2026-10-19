@@ -1,0 +1,67 @@
+<div class="usuarios-container">
+
+  <h1>Usuários</h1>
+
+  <div
+    class="usuario-card"
+    *ngFor="let usuario of usuarios"
+  >
+
+    <h3>{{ usuario.nome }}</h3>
+
+    <p>{{ usuario.email }}</p>
+
+    <div class="acoes">
+
+      <button
+        class="btn-editar"
+        (click)="editar(usuario)"
+      >
+        Editar
+      </button>
+
+      <button
+        class="btn-excluir"
+        (click)="excluir(usuario.id!)"
+      >
+        Excluir
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FORM EDITAR -->
+
+<div
+  class="editar-box"
+  *ngIf="usuarioEditando"
+>
+
+  <h2>Editar Usuário</h2>
+
+  <input
+    type="text"
+    [(ngModel)]="usuarioEditando.nome"
+    placeholder="Nome"
+  />
+
+  <input
+    type="email"
+    [(ngModel)]="usuarioEditando.email"
+    placeholder="Email"
+  />
+
+  <input
+    type="password"
+    [(ngModel)]="usuarioEditando.senha"
+    placeholder="Senha"
+  />
+
+  <button (click)="salvarEdicao()">
+    Salvar Alterações
+  </button>
+
+</div>
