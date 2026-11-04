@@ -30,11 +30,13 @@
   <!-- 🔻 FORMULÁRIO -->
   <div class="form-container" *ngIf="isAdmin()">
 
-    <h3>➕ Cadastrar Produto</h3>
+    <h3>{{ editandoId ? '✏️ Editar Produto' : '➕ Cadastrar Produto' }}</h3>
 
     <input type="text" placeholder="Nome do produto" [(ngModel)]="novoProduto.nome">
 
     <input type="number" placeholder="Preço" [(ngModel)]="novoProduto.preco">
+
+    <input type="text" placeholder="Imagem (ex.: /img/produtos/headset.jpg)" [(ngModel)]="novoProduto.imagem">
 
     <select [(ngModel)]="novoProduto.categoria">
 
@@ -49,8 +51,14 @@
     </select>
 
 
+    <p class="erro" *ngIf="erro">{{ erro }}</p>
+
     <button (click)="addProduto()">
-      💾 Adicionar Produto
+      {{ editandoId ? '💾 Salvar alterações' : '💾 Adicionar Produto' }}
+    </button>
+
+    <button *ngIf="editandoId" (click)="resetForm()">
+      ✖ Cancelar edição
     </button>
 
   </div>

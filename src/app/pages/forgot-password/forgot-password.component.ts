@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { normalizarEmail } from '../../utils/email';
 
 @Component({
   selector: 'app-forgot-password',
@@ -20,10 +21,6 @@ export class ForgotPasswordComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  private normalizarEmail(email: string) {
-    return email.trim().toLowerCase();
-  }
-
   async resetar(form: NgForm) {
     this.erro = '';
     this.sucesso = '';
@@ -34,7 +31,7 @@ export class ForgotPasswordComponent {
 
     try {
       await this.auth.redefinirSenha(
-        this.normalizarEmail(this.email),
+        normalizarEmail(this.email),
         this.novaSenha
       );
       this.sucesso = 'Senha atualizada com sucesso!';
