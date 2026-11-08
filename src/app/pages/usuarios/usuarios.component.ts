@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Usuario } from '../../models/usuario.model';
 
-import {
-  AuthService,
-  Usuario
-} from '../../services/auth.service';
-
+// Tela de administração de usuários (rota protegida pelo adminGuard).
 @Component({
   selector: 'app-usuarios',
   standalone: true,
@@ -14,60 +12,35 @@ import {
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss'
 })
-export class UsuariosComponent {
+export class UsuariosComponent implements OnInit {
+  private auth = inject(AuthService);
 
   usuarios: Usuario[] = [];
-
   usuarioEditando: Usuario | null = null;
 
-  constructor(
-    private auth: AuthService
-  ) {}
-
-  async ngOnInit() {
-
-    await this.carregarUsuarios();
-
+  ngOnInit() {
+    this.carregar();
   }
 
-  async carregarUsuarios() {
-
-    this.usuarios =
-      await this.auth.listarUsuarios();
-
+  async carregar() {
+    this.usuarios = await this.auth.listarUsuarios();
   }
 
+  // Edita uma CÓPIA: assim, se o admin desistir, a lista não fica alterada.
   editar(usuario: Usuario) {
-
-    this.usuarioEditando = {
-      ...usuario
-    };
-
+    this.usuarioEditando = { ...usuario };
   }
 
   async salvarEdicao() {
-
     if (!this.usuarioEditando) return;
 
-    // senha em branco = manter a senha atual
-    const { senha, ...dados } = this.usuarioEditando;
-
-    await this.auth.atualizarUsuario(
-      senha ? { ...dados, senha } : dados
-    );
-
-    await this.carregarUsuarios();
-
+    await this.auth.atualizarUsuario(this.usuarioEditando);
+    await this.carregar();
     this.usuarioEditando = null;
-
   }
 
   async excluir(id: number) {
-
     await this.auth.excluirUsuario(id);
-
-    await this.carregarUsuarios();
-
+    await this.carregar();
   }
-
 }

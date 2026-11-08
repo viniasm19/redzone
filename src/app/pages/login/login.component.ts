@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { normalizarEmail } from '../../utils/email';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +22,8 @@ export class LoginComponent {
     private route: ActivatedRoute
   ) {}
 
+  // Para onde voltar depois do login (ex.: o checkout). Só aceita caminhos do próprio site:
+  // bloqueia links externos como "//site-falso.com" (redirecionamento malicioso).
   get returnUrl(): string | null {
     const url = this.route.snapshot.queryParamMap.get('returnUrl');
     return url && url.startsWith('/') && !url.startsWith('//') ? url : null;
@@ -37,7 +38,7 @@ export class LoginComponent {
 
     try {
       await this.auth.login({
-        email: normalizarEmail(this.email),
+        email: this.email,
         senha: this.senha
       });
       this.router.navigateByUrl(this.returnUrl ?? '/');

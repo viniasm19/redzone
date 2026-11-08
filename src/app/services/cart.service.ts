@@ -1,123 +1,61 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { Produto } from '../models/produto.model';
-
-export type { Produto };
-
-
 
 export interface CartItem {
   produto: Produto;
   quantidade: number;
 }
 
-
-@Injectable({
-  providedIn: 'root'
-})
+// O carrinho vive só no front (memória). Não passa pela API.
+@Injectable({ providedIn: 'root' })
 export class CartService {
+  private lista = signal<CartItem[]>([]);
+  itens = this.lista.asReadonly();
 
-  private itensCarrinho = signal<CartItem[]>([]);
+  // computed = valor calculado a partir de um signal; recalcula sozinho quando o carrinho muda.
+  quantidadeTotal = computed(() => this.lista().reduce((soma, i) => soma + i.quantidade, 0));
+  total = computed(() => this.lista().reduce((soma, i) => soma + i.produto.preco * i.quantidade, 0));
+
+  // Aviso "adicionado ao carrinho" que aparece por 2,5 segundos
   private _toast = signal<string | null>(null);
-
-
   toast = this._toast.asReadonly();
 
-  getCartItems() {
-    return this.itensCarrinho;
-  }
-
   adicionarAoCarrinho(produto: Produto) {
-    const itensAtuais = this.itensCarrinho();
+    const jaEstaNoCarrinho = this.lista().some(i => i.produto.id === produto.id);
 
-    const itemExistente = itensAtuais.find(
-      item => item.produto.id === produto.id
-    );
-
-    if (itemExistente) {
-
-      const atualizado = itensAtuais.map(item =>
-        item.produto.id === produto.id
-          ? {
-            ...item,
-            quantidade: item.quantidade + 1
-          }
-          : item
-      );
-
-      this.itensCarrinho.set(atualizado);
-
+    if (jaEstaNoCarrinho) {
+      this.alterarQuantidade(produto.id, +1);
     } else {
-      this.itensCarrinho.set([
-        ...itensAtuais,
-        { produto, quantidade: 1 }
-      ]);
+      this.lista.update(l => [...l, { produto, quantidade: 1 }]);
     }
 
     this._toast.set(`✅ ${produto.nome} adicionado ao carrinho!`);
     setTimeout(() => this._toast.set(null), 2500);
-
   }
 
-  // botão "+" do carrinho: soma 1 na quantidade (sem mostrar o aviso de "adicionado")
-  aumentarQuantidade(produtoId: number) {
-    this.itensCarrinho.set(
-      this.itensCarrinho().map(item =>
-        item.produto.id === produtoId
-          ? { ...item, quantidade: item.quantidade + 1 }
-          : item
-      )
-    );
+  aumentarQuantidade(id: number) {
+    this.alterarQuantidade(id, +1);
   }
 
-  // botão "−" do carrinho: tira 1; se só tinha 1, o item sai do carrinho
-  diminuirQuantidade(produtoId: number) {
-    const item = this.itensCarrinho().find(
-      i => i.produto.id === produtoId
-    );
-
-    if (!item) {
-      return;
-    }
-
-    if (item.quantidade <= 1) {
-      this.removerDoCarrinho(produtoId);
-      return;
-    }
-
-    this.itensCarrinho.set(
-      this.itensCarrinho().map(i =>
-        i.produto.id === produtoId
-          ? { ...i, quantidade: i.quantidade - 1 }
-          : i
-      )
-    );
+  diminuirQuantidade(id: number) {
+    this.alterarQuantidade(id, -1);
   }
 
-  removerDoCarrinho(produtoId: number) {
-    this.itensCarrinho.set(
-      this.itensCarrinho().filter(
-        item => item.produto.id !== produtoId
-      )
-    );
+  removerDoCarrinho(id: number) {
+    this.lista.update(l => l.filter(i => i.produto.id !== id));
   }
-
 
   limparCarrinho() {
-    this.itensCarrinho.set([]);
+    this.lista.set([]);
   }
 
-  obterTotal() {
-    return this.itensCarrinho().reduce(
-      (total, item) =>
-        total + item.produto.preco * item.quantidade,
-      0
+  // Soma (ou subtrai) a quantidade de um item. Se chegar a 0, o item sai do carrinho.
+  // Cria um array novo em vez de alterar o antigo: é isso que faz o signal avisar as telas.
+  private alterarQuantidade(id: number, diferenca: number) {
+    this.lista.update(l =>
+      l
+        .map(i => (i.produto.id === id ? { ...i, quantidade: i.quantidade + diferenca } : i))
+        .filter(i => i.quantidade > 0)
     );
   }
-
- obterQuantidadeTotal = computed(() =>
-  this.itensCarrinho().reduce(
-    (total, item) => total + item.quantidade,
-    0
-  )
-);
 }

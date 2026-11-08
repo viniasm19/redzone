@@ -4,7 +4,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-// Libera o front-end Angular (porta 4200) para chamar a API
+// CORS: por segurança, o navegador bloqueia um site (porta 4200) de chamar outra porta (8080)
+// se o servidor não permitir. Aqui o Spring libera o Angular.
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 

@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+// Além dos métodos prontos do JpaRepository, o Spring cria a consulta pelo NOME do método:
+// findByEmail -> SELECT ... WHERE email = ?
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     // findByEmail: usado no reset de senha

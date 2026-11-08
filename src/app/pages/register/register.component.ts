@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { normalizarEmail } from '../../utils/email';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +23,7 @@ export class RegisterComponent {
     private route: ActivatedRoute
   ) {}
 
+  // Mesma regra do login: só aceita caminhos do próprio site.
   get returnUrl(): string | null {
     const url = this.route.snapshot.queryParamMap.get('returnUrl');
     return url && url.startsWith('/') && !url.startsWith('//') ? url : null;
@@ -39,7 +39,7 @@ export class RegisterComponent {
     try {
       await this.auth.register({
         nome: this.nome,
-        email: normalizarEmail(this.email),
+        email: this.email,
         senha: this.senha
       });
       this.router.navigateByUrl(this.returnUrl ?? '/');

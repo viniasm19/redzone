@@ -1,176 +1,96 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { API_URL } from '../config/api';
-
 import { Usuario } from '../models/usuario.model';
 
-// mantém funcionando os imports antigos: import { Usuario } from '.../auth.service'
-export type { Usuario };
+// "Lucas@Email.com " e "lucas@email.com" têm que ser o mesmo usuário.
+const normalizar = (email: string) => email.trim().toLowerCase();
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-
-  private readonly URL = `${API_URL}/usuarios`;
-
   private http = inject(HttpClient);
+  private url = `${API_URL}/usuarios`;
 
+  // Quem está logado. Fica só na memória: recarregar a página desloga.
+  // signal = valor que o Angular observa; quando muda, as telas que o usam atualizam sozinhas.
   private _usuarioLogado = signal<Usuario | null>(null);
-
   usuarioLogado = this._usuarioLogado.asReadonly();
 
   isAuthenticated() {
-    return !!this._usuarioLogado();
+    return this._usuarioLogado() !== null;
   }
 
-  currentUser(): Usuario | null {
-    return this._usuarioLogado();
+  // O administrador é quem tem este e-mail (regra simples, só para o trabalho acadêmico).
+  isAdmin() {
+    return this._usuarioLogado()?.email === 'admin@redzone.com';
   }
 
+  logout() {
+    this._usuarioLogado.set(null);
+  }
 
-  register(input: { nome: string; email: string; senha: string }) {
-  return (async () => {
-    const nome = input.nome.trim();
-    const email = input.email;
-    const senha = input.senha;
+  // ---------- Login e cadastro ----------
 
-    if (!nome) {
+  // Busca os usuários na API e procura um com esse e-mail e senha.
+  async login(dados: { email: string; senha: string }) {
+    const email = normalizar(dados.email);
+    const usuarios = await this.listarUsuarios();
+
+    const usuario = usuarios.find(u => u.email === email && u.senha === dados.senha);
+    if (!usuario) {
+      throw new Error('Email ou senha inválidos.');
+    }
+
+    this._usuarioLogado.set(usuario);
+  }
+
+  async register(dados: { nome: string; email: string; senha: string }) {
+    const novo = { nome: dados.nome.trim(), email: normalizar(dados.email), senha: dados.senha };
+
+    if (!novo.nome) {
       throw new Error('Informe seu nome.');
     }
-    if (!email) {
-      throw new Error('Informe seu email.');
-    }
-    if (!senha || senha.length < 4) {
-      throw new Error('A senha deve ter pelo menos 4 caracteres.');
-    }
-
-    let criado: Usuario;
 
     try {
-      criado = await firstValueFrom(
-        this.http.post<Usuario>(this.URL, { nome, email, senha })
-      );
+      await firstValueFrom(this.http.post<Usuario>(this.url, novo));
     } catch (e) {
+      // 409 = e-mail já cadastrado (no banco o e-mail é único)
       if (e instanceof HttpErrorResponse && e.status === 409) {
         throw new Error('Já existe um usuário com este email.');
       }
       throw e;
     }
 
-    await this.login({ email, senha });
-
-    return criado;
-  })();
-}
-
-
-  login(input: {
-    email: string;
-    senha: string;
-  }) {
-
-    return (async () => {
-
-      try {
-        const user = await firstValueFrom(
-          this.http.post<Usuario>(`${this.URL}/login`, {
-            email: input.email,
-            senha: input.senha
-          })
-        );
-
-        this._usuarioLogado.set(user);
-
-        return user;
-
-      } catch (e) {
-        if (e instanceof HttpErrorResponse && e.status === 401) {
-          throw new Error('Email ou senha inválidos.');
-        }
-        throw e;
-      }
-
-    })();
+    await this.login(novo); // depois de cadastrar, já entra logado
   }
 
-  async buscarPorEmail(email: string): Promise<Usuario | null> {
-
+  // Busca o usuário pelo e-mail (rota /usuarios/email/{email}) e troca a senha com PUT.
+  async redefinirSenha(email: string, novaSenha: string) {
     try {
-
-      return await firstValueFrom(
-        this.http.get<Usuario>(
-          `${this.URL}/email/${encodeURIComponent(email)}`
-        )
+      const usuario = await firstValueFrom(
+        this.http.get<Usuario>(`${this.url}/email/${encodeURIComponent(normalizar(email))}`)
       );
-
+      await this.atualizarUsuario({ ...usuario, senha: novaSenha });
     } catch (e) {
-
       if (e instanceof HttpErrorResponse && e.status === 404) {
-        return null;
+        throw new Error('Email não encontrado.');
       }
-
       throw e;
     }
   }
 
+  // ---------- CRUD de usuários (tela de administração) ----------
 
-  async redefinirSenha(email: string, novaSenha: string): Promise<void> {
-
-    const usuario = await this.buscarPorEmail(email);
-
-    if (!usuario) {
-      throw new Error('Email não encontrado.');
-    }
-
-    await this.atualizarUsuario({ ...usuario, senha: novaSenha });
+  listarUsuarios() {
+    return firstValueFrom(this.http.get<Usuario[]>(this.url));
   }
 
-
-  async listarUsuarios(): Promise<Usuario[]> {
-
-    return await firstValueFrom(
-      this.http.get<Usuario[]>(this.URL)
-    );
+  atualizarUsuario(usuario: Usuario) {
+    return firstValueFrom(this.http.put<Usuario>(`${this.url}/${usuario.id}`, usuario));
   }
 
-
-  async excluirUsuario(id: number) {
-
-    return await firstValueFrom(
-      this.http.delete(
-        `${this.URL}/${id}`
-      )
-    );
+  excluirUsuario(id: number) {
+    return firstValueFrom(this.http.delete(`${this.url}/${id}`));
   }
-
-
-
-  async atualizarUsuario(usuario: Usuario) {
-
-    if (!usuario.id) {
-      throw new Error('Usuário sem ID.');
-    }
-
-    return await firstValueFrom(
-
-      this.http.put<Usuario>(
-        `${this.URL}/${usuario.id}`,
-        usuario
-      )
-
-    );
-  }
-
-
-  logout() {
-    this._usuarioLogado.set(null);
-  }
-
-  isAdmin(): boolean {
-    const user = this._usuarioLogado();
-    return user?.email === 'admin@redzone.com';
-  }
-
 }

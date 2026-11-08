@@ -26,6 +26,7 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    // pega a lista da API e separa o produto da rota /product/:id
     this.productService.getProdutos().subscribe(produtos => {
       this.produto = produtos.find(p => p.id === id) ?? null;
     });

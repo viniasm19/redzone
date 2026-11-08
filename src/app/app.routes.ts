@@ -13,6 +13,10 @@ import { AreaUsuarioComponent } from './pages/area-usuario/area-usuario.componen
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 
+// Mapa de rotas: endereço da barra do navegador -> tela.
+// canActivate = "porteiro" da rota:
+//   authGuard  -> só quem está logado (checkout, pedido, área do usuário)
+//   adminGuard -> só o administrador (lista de usuários)
 export const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'login', component: LoginComponent },

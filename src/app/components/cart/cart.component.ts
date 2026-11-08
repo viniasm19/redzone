@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
@@ -11,30 +11,13 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './cart.component.scss',
 })
 export class CartComponent {
+  private cartService = inject(CartService);
+  private router = inject(Router);
 
-  constructor(
-    public cartService: CartService,
-    private router: Router
-  ) {}
-
-  get itens() {
-    return this.cartService.getCartItems();
-  }
-
-  quantidadeTotal = computed(() =>
-    this.cartService.getCartItems()().reduce(
-      (total, item) => total + item.quantidade,
-      0
-    )
-  );
-
-  total = computed(() =>
-    this.cartService.getCartItems()().reduce(
-      (total, item) =>
-        total + item.produto.preco * item.quantidade,
-      0
-    )
-  );
+  // Valores que a tela mostra (o cálculo de total e quantidade fica no CartService)
+  itens = this.cartService.itens;
+  total = this.cartService.total;
+  quantidadeTotal = this.cartService.quantidadeTotal;
 
   remover(id: number) {
     this.cartService.removerDoCarrinho(id);
@@ -53,6 +36,6 @@ export class CartComponent {
   }
 
   finalizarCompra() {
-    this.router.navigate(['/order-confirm']);
+    this.router.navigate(['/order-confirm']); // rota protegida: exige login (authGuard)
   }
 }

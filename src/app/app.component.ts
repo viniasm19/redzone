@@ -10,6 +10,7 @@ import { CartService } from './services/cart.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
+// Componente raiz: cabeçalho fixo + a tela da rota atual + aviso (toast) do carrinho.
 export class AppComponent {
   title = 'redzone';
   cartService = inject(CartService);

@@ -1,18 +1,17 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Produto } from '../../services/cart.service';
+import { Produto } from '../../models/produto.model';
 
+// Card de um produto. Não sabe nada do carrinho: só avisa quem o usa ("addToCart").
 @Component({
   selector: 'app-product-item',
-  standalone: true, 
+  standalone: true,
   imports: [RouterModule],
   templateUrl: './product-item.component.html',
   styleUrls: ['./product-item.component.scss']
 })
 export class ProductItemComponent {
-
   @Input() produto!: Produto;
-
   @Output() addToCart = new EventEmitter<Produto>();
 
   adicionar() {

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { normalizarEmail } from '../../utils/email';
 
 @Component({
   selector: 'app-forgot-password',
@@ -30,10 +29,7 @@ export class ForgotPasswordComponent {
     }
 
     try {
-      await this.auth.redefinirSenha(
-        normalizarEmail(this.email),
-        this.novaSenha
-      );
+      await this.auth.redefinirSenha(this.email, this.novaSenha);
       this.sucesso = 'Senha atualizada com sucesso!';
 
       setTimeout(() => this.router.navigate(['/login']), 2000);

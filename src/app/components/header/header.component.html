@@ -10,8 +10,8 @@
 
     <a routerLink="/cart" routerLinkActive="active" class="cart-btn">
       🛒 Carrinho
-      <span class="badge" *ngIf="cartService.obterQuantidadeTotal() > 0">
-        {{ cartService.obterQuantidadeTotal() }}
+      <span class="badge" *ngIf="cartService.quantidadeTotal() > 0">
+        {{ cartService.quantidadeTotal() }}
       </span>
     </a>
 

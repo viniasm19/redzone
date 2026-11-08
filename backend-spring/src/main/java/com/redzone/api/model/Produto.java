@@ -10,14 +10,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+// @Entity: esta classe vira a tabela "produtos" no banco; cada objeto é uma linha.
 @Entity
 @Table(name = "produtos")
 public class Produto {
 
+    // Chave primária, gerada pelo banco (auto-incremento)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Regras de validação: o @Valid do controller as confere e, se falharem, a API responde 400
     @NotBlank(message = "Informe o nome do produto.")
     @Column(nullable = false)
     private String nome;

@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
+// Cabeçalho: mostra Login/Cadastro ou "Olá, nome" conforme quem está logado.
 export class HeaderComponent {
   private auth = inject(AuthService);
   private router = inject(Router);

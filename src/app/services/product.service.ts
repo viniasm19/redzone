@@ -1,35 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { Produto } from '../models/produto.model';
 import { API_URL } from '../config/api';
 
-
-@Injectable({
-  providedIn: 'root'
-})
+// Conversa com a rota /produtos da API (CRUD completo).
+@Injectable({ providedIn: 'root' })
 export class ProductService {
+  private http = inject(HttpClient);
+  private url = `${API_URL}/produtos`;
 
-  private readonly apiUrl = `${API_URL}/produtos`;
-
-  constructor(private http: HttpClient) {}
-
-  getProdutos(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.apiUrl);
+  getProdutos() {
+    return this.http.get<Produto[]>(this.url);
   }
 
-  addProduto(produto: Produto): Observable<Produto> {
-    return this.http.post<Produto>(this.apiUrl, produto);
+  // POST: sem id, porque quem gera o id é o banco de dados.
+  addProduto(produto: Omit<Produto, 'id'>) {
+    return this.http.post<Produto>(this.url, produto);
   }
 
-  deleteProduto(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  updateProduto(produto: Produto) {
+    return this.http.put<Produto>(`${this.url}/${produto.id}`, produto);
   }
 
-  updateProduto(produto: Produto): Observable<Produto> {
-    return this.http.put<Produto>(
-      `${this.apiUrl}/${produto.id}`,
-      produto
-    );
+  deleteProduto(id: number) {
+    return this.http.delete(`${this.url}/${id}`);
   }
 }

@@ -38,8 +38,9 @@ O projeto foi pensado a partir de cinco personas:
 - HTML5
 - SCSS
 - Node.js
-- Spring Boot (back-end, projeto separado, porta 8080)
-- JSON Server (simulação da API para testes)
+- Java 17 + Spring Boot 3 (Web, Data JPA, Validation): back-end na pasta `backend-spring`, porta 8080
+- H2 (banco de dados em memória)
+- Maven
 
 ## ✨ Funcionalidades
 
@@ -76,7 +77,7 @@ redzone/
 │       ├── models/
 │       └── config/       (api.ts — URL base da API)
 ├── public/
-├── backend/              (db.json para testes com o JSON Server)
+├── backend-spring/       (API REST em Spring Boot + banco H2)
 ├── angular.json
 ├── package.json
 └── README.md
@@ -88,6 +89,7 @@ redzone/
 
 - Node.js instalado
 - Angular CLI instalada globalmente
+- Java 17 ou superior (e Maven, ou uma IDE como IntelliJ/VS Code)
 
 Instalar Angular CLI:
 
@@ -131,17 +133,16 @@ A aplicação ficará disponível em:
 http://localhost:4200
 ```
 
-**Terminal 2 — API na porta 8080**, de uma destas duas formas:
-
-**Opção A — Back-end Spring Boot:** suba o projeto Spring Boot, que roda na porta `8080`.
-
-**Opção B — JSON Server (apenas para testes):**
+**Terminal 2 — API Spring Boot (porta 8080):**
 
 ```bash
-npx json-server --watch --port 8080 backend/db.json
+cd backend-spring
+mvn spring-boot:run
 ```
 
-> Sem `--watch`, o JSON Server não relê o `db.json` quando o arquivo é editado: é preciso reiniciá-lo. Evite editar o arquivo com o servidor ligado.
+Ou, pela IDE, abra a pasta `backend-spring` e execute a classe `RedzoneApplication`.
+
+> O banco H2 é em memória: os dados são recriados a cada reinício a partir do `data.sql`, então cadastros feitos pelo site somem quando a API é reiniciada. Mais detalhes em `backend-spring/README.md`.
 
 A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:8080`).
 
@@ -162,16 +163,14 @@ Requisitos no back-end Spring Boot:
 - O e-mail deve ser **único** no banco de dados (`@Column(unique = true)`), respondendo `409` em caso de duplicidade
 - CORS liberado para `http://localhost:4200`
 
-> A rota `/usuarios/email/{email}` existe apenas no Spring Boot. Com o JSON Server, a tela de redefinição de senha não encontra o e-mail.
-
-### 🔑 Usuários de teste (`backend/db.json`)
+### 🔑 Usuários de teste (`backend-spring/src/main/resources/data.sql`)
 
 | Perfil | E-mail | Senha |
 |---|---|---|
 | Administrador | admin@redzone.com | admin123 |
 | Usuário | lucas@email.com | lucas123 |
 
-O `db.json` tem ainda os usuários mariana, rafael, sofia e tiago (`@email.com`), todos com a senha `nome123`.
+O `data.sql` carrega ainda os usuários mariana, rafael, sofia e tiago (`@email.com`), todos com a senha `nome123`.
 
 Apenas o administrador vê os botões de **Editar**, **Excluir** e o formulário de **Cadastrar Produto**.
 

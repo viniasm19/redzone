@@ -10,10 +10,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+// @Entity: esta classe vira a tabela "usuarios" no banco; cada objeto é uma linha.
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
+    // Chave primária, gerada pelo banco (auto-incremento)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +30,7 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
+    // Senha em texto puro: aceitável só neste trabalho acadêmico (num sistema real, usar hash)
     @NotBlank(message = "Informe a senha.")
     @Size(min = 4, message = "A senha deve ter pelo menos 4 caracteres.")
     @Column(nullable = false)
