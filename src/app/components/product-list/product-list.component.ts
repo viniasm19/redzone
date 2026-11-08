@@ -46,6 +46,8 @@ export class ProductListComponent implements OnInit {
 
   editandoId: number | null = null;
 
+  erro = '';
+
   constructor(
     private productService: ProductService,
     private cartService: CartService,
@@ -76,6 +78,28 @@ export class ProductListComponent implements OnInit {
 
   addProduto() {
 
+    this.erro = '';
+
+    if (
+      !this.novoProduto.nome.trim() ||
+      !this.novoProduto.preco ||
+      this.novoProduto.preco <= 0 ||
+      !this.novoProduto.categoria
+    ) {
+      this.erro = 'Preencha nome, preço (maior que zero) e categoria.';
+      return;
+    }
+
+    const resposta = {
+      next: () => {
+        this.loadProdutos();
+        this.resetForm();
+      },
+      error: () => {
+        this.erro = 'Não foi possível salvar o produto. Confira os dados e tente de novo.';
+      }
+    };
+
     if (this.editandoId) {
 
       const produtoAtualizado: Produto = {
@@ -84,20 +108,15 @@ export class ProductListComponent implements OnInit {
       };
 
       this.productService.updateProduto(produtoAtualizado)
-        .subscribe(() => {
-          this.loadProdutos();
-          this.resetForm();
-        });
+        .subscribe(resposta);
 
     } else {
 
       const { id, ...produtoSemId } = this.novoProduto;
-  this.productService.addProduto(produtoSemId as Produto)
-    .subscribe(() => {
-      this.loadProdutos();
-      this.resetForm();
-    });
-  }
+
+      this.productService.addProduto(produtoSemId as Produto)
+        .subscribe(resposta);
+    }
   }
 
   deleteProduto(id: number) {
@@ -120,6 +139,7 @@ export class ProductListComponent implements OnInit {
     };
 
     this.editandoId = null;
+    this.erro = '';
   }
 
   adicionarAoCarrinho(produto: Produto) {

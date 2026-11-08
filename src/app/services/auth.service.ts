@@ -3,12 +3,10 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { API_URL } from '../config/api';
 
-export interface Usuario {
-  id?: number;
-  nome: string;
-  email: string;
-  senha: string;
-}
+import { Usuario } from '../models/usuario.model';
+
+// mantém funcionando os imports antigos: import { Usuario } from '.../auth.service'
+export type { Usuario };
 
 @Injectable({
   providedIn: 'root'
@@ -22,13 +20,6 @@ export class AuthService {
   private _usuarioLogado = signal<Usuario | null>(null);
 
   usuarioLogado = this._usuarioLogado.asReadonly();
-
-  private async obterUsuarios(): Promise<Usuario[]> {
-
-    return await firstValueFrom(
-      this.http.get<Usuario[]>(this.URL)
-    );
-  }
 
   isAuthenticated() {
     return !!this._usuarioLogado();
@@ -82,26 +73,24 @@ export class AuthService {
 
     return (async () => {
 
-      const email = input.email;
-      const senha = input.senha;
-
-      const usuarios = await this.obterUsuarios();
-
-      const user = usuarios.find(
-        u =>
-          u.email === email &&
-          u.senha === senha
-      );
-
-      if (!user) {
-        throw new Error(
-          'Email ou senha inválidos.'
+      try {
+        const user = await firstValueFrom(
+          this.http.post<Usuario>(`${this.URL}/login`, {
+            email: input.email,
+            senha: input.senha
+          })
         );
+
+        this._usuarioLogado.set(user);
+
+        return user;
+
+      } catch (e) {
+        if (e instanceof HttpErrorResponse && e.status === 401) {
+          throw new Error('Email ou senha inválidos.');
+        }
+        throw e;
       }
-
-      this._usuarioLogado.set(user);
-
-      return user;
 
     })();
   }

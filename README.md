@@ -190,9 +190,10 @@ Durante o desenvolvimento do projeto foram praticados conceitos como:
 
 ## 👤 Autores
 
-- Beatriz de Alcantara Nascimento
-- Giovanna Batista de Jesus
 - Vinicius Alves Soares de Melo
+- Giovanna Batista de Jesus
+- Beatriz de Alcantara Nascimento
+
 
 ## 📄 Licença
 

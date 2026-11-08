@@ -11,12 +11,13 @@ import { OrderSuccessComponent } from './pages/order-success/order-success.compo
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { AreaUsuarioComponent } from './pages/area-usuario/area-usuario.component';
 import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: RegisterComponent },
-  { path: 'usuarios', component: UsuariosComponent },
+  { path: 'usuarios', component: UsuariosComponent, canActivate: [adminGuard] },
   { path: 'products', component: ProductListComponent },
   { path: 'cart', component: CartComponent },
   { path: 'product/:id', component: ProductDetailComponent },

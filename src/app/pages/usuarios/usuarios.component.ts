@@ -49,8 +49,11 @@ export class UsuariosComponent {
 
     if (!this.usuarioEditando) return;
 
+    // senha em branco = manter a senha atual
+    const { senha, ...dados } = this.usuarioEditando;
+
     await this.auth.atualizarUsuario(
-      this.usuarioEditando
+      senha ? { ...dados, senha } : dados
     );
 
     await this.carregarUsuarios();

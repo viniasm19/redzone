@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { normalizarEmail } from '../../utils/email';
 
 @Component({
   selector: 'app-register',
@@ -28,10 +29,6 @@ export class RegisterComponent {
     return url && url.startsWith('/') && !url.startsWith('//') ? url : null;
   }
 
-  private normalizarEmail(email: string) {
-    return email.trim().toLowerCase();
-  }
-
   async cadastrar(form: NgForm) {
     this.erro = '';
 
@@ -42,7 +39,7 @@ export class RegisterComponent {
     try {
       await this.auth.register({
         nome: this.nome,
-        email: this.normalizarEmail(this.email),
+        email: normalizarEmail(this.email),
         senha: this.senha
       });
       this.router.navigateByUrl(this.returnUrl ?? '/');
