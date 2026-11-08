@@ -39,82 +39,40 @@ export class AuthService {
   }
 
 
-  register(input: {
-    nome: string;
-    email: string;
-    senha: string;
-  }) {
+  register(input: { nome: string; email: string; senha: string }) {
+  return (async () => {
+    const nome = input.nome.trim();
+    const email = input.email;
+    const senha = input.senha;
 
-    return (async () => {
+    if (!nome) {
+      throw new Error('Informe seu nome.');
+    }
+    if (!email) {
+      throw new Error('Informe seu email.');
+    }
+    if (!senha || senha.length < 4) {
+      throw new Error('A senha deve ter pelo menos 4 caracteres.');
+    }
 
-      const nome = input.nome.trim();
-      const email = input.email;
-      const senha = input.senha;
+    let criado: Usuario;
 
-      if (!nome) {
-        throw new Error('Informe seu nome.');
-      }
-
-      if (!email) {
-        throw new Error('Informe seu email.');
-      }
-
-      if (!senha || senha.length < 4) {
-        throw new Error(
-          'A senha deve ter pelo menos 4 caracteres.'
-        );
-      }
-
-      const usuarios = await this.obterUsuarios();
-
-      const exists = usuarios.some(
-        u => u.email === email
+    try {
+      criado = await firstValueFrom(
+        this.http.post<Usuario>(this.URL, { nome, email, senha })
       );
-
-      if (exists) {
-        throw new Error(
-          'Já existe um usuário com este email.'
-        );
+    } catch (e) {
+      if (e instanceof HttpErrorResponse && e.status === 409) {
+        throw new Error('Já existe um usuário com este email.');
       }
+      throw e;
+    }
 
-      const novoId =
-        (usuarios.reduce((max, u) => (u.id && u.id > max ? u.id : max), 0) || 0) + 1;
+    await this.login({ email, senha });
 
-      const payload: Usuario = {
-        id: novoId,
-        nome,
-        email,
-        senha
-      };
-
-      let criado: Usuario;
-
-      try {
-        criado = await firstValueFrom(
-          this.http.post<Usuario>(
-            this.URL,
-            payload
-          )
-        );
-      } catch (e) {
-        if (e instanceof HttpErrorResponse && e.status === 409) {
-          throw new Error(
-            'Já existe um usuário com este email.'
-          );
-        }
-        throw e;
-      }
-
-
-      await this.login({
-        email,
-        senha
-      });
-
-      return criado;
-
-    })();
-  }
+    return criado;
+  })();
+}
 
 
   login(input: {
