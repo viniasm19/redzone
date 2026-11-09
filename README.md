@@ -39,7 +39,7 @@ O projeto foi pensado a partir de cinco personas:
 - SCSS
 - Node.js
 - Java 17 + Spring Boot 3 (Web, Data JPA, Validation): back-end na pasta `backend-spring`, porta 8080
-- H2 (banco de dados em memória)
+- H2 (banco de dados em arquivo, persistente)
 - Maven
 
 ## ✨ Funcionalidades
@@ -142,7 +142,7 @@ mvn spring-boot:run
 
 Ou, pela IDE, abra a pasta `backend-spring` e execute a classe `RedzoneApplication`.
 
-> O banco H2 é em memória: os dados são recriados a cada reinício a partir do `data.sql`, então cadastros feitos pelo site somem quando a API é reiniciada. Mais detalhes em `backend-spring/README.md`.
+> O banco H2 é gravado em arquivo (`backend-spring/data/`): usuários e pedidos continuam existindo depois de reiniciar a API. Os dados de exemplo (`data.sql`) são carregados só na primeira execução. Para voltar ao estado inicial, pare a API e apague a pasta `data`. Mais detalhes em `backend-spring/README.md`.
 
 A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:8080`).
 
@@ -152,11 +152,14 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 |---|---|---|
 | GET | `/produtos` | Listar produtos |
 | POST / PUT / DELETE | `/produtos` e `/produtos/{id}` | Cadastrar, editar e excluir (administrador) |
-| GET | `/usuarios` | Listar usuários (login e cadastro) |
+| POST | `/login` | Login: o back-end confere e-mail e senha (200 com id, nome e e-mail; 401 se inválidos) |
+| GET | `/usuarios` | Listar usuários (tela de administração) |
 | POST | `/usuarios` | Cadastrar usuário |
 | GET | `/usuarios/email/{email}` | Buscar usuário por e-mail (`findByEmail`) — redefinir senha |
 | PUT | `/usuarios/{id}` | Atualizar usuário, incluindo a nova senha |
 | DELETE | `/usuarios/{id}` | Excluir usuário |
+| POST | `/pedidos` | Salvar o pedido (envia `usuarioId` e itens com `produtoId` e `quantidade`) |
+| GET | `/pedidos/usuario/{usuarioId}` | Listar os pedidos de um usuário |
 
 Requisitos no back-end Spring Boot:
 

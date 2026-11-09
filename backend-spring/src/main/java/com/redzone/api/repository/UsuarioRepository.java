@@ -12,5 +12,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     // findByEmail: usado no reset de senha
     Optional<Usuario> findByEmail(String email);
 
+    // IgnoreCase: "Lucas@Email.com" e "lucas@email.com" são o mesmo usuário (usado no login)
+    Optional<Usuario> findByEmailIgnoreCase(String email);
+
     boolean existsByEmail(String email);
 }

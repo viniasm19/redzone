@@ -5,3 +5,10 @@ export interface Usuario {
   email: string;
   senha: string;
 }
+
+// O que a API devolve no login (POST /login): sem a senha, que nunca volta para o navegador.
+export interface UsuarioLogado {
+  id: number;
+  nome: string;
+  email: string;
+}

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-// CRUD de usuários em /usuarios. O front faz o login buscando a lista e comparando e-mail e senha.
+// CRUD de usuários em /usuarios. O login fica em /login (AuthController).
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {

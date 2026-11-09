@@ -38,3 +38,6 @@ testem.log
 .DS_Store
 Thumbs.db
 .vscode
+
+# Banco H2 em arquivo (se a API for iniciada pela raiz)
+/data/

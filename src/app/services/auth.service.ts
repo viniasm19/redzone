@@ -2,7 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { API_URL } from '../config/api';
-import { Usuario } from '../models/usuario.model';
+import { Usuario, UsuarioLogado } from '../models/usuario.model';
 
 // "Lucas@Email.com " e "lucas@email.com" têm que ser o mesmo usuário.
 const normalizar = (email: string) => email.trim().toLowerCase();
@@ -14,7 +14,7 @@ export class AuthService {
 
   // Quem está logado. Fica só na memória: recarregar a página desloga.
   // signal = valor que o Angular observa; quando muda, as telas que o usam atualizam sozinhas.
-  private _usuarioLogado = signal<Usuario | null>(null);
+  private _usuarioLogado = signal<UsuarioLogado | null>(null);
   usuarioLogado = this._usuarioLogado.asReadonly();
 
   isAuthenticated() {
@@ -32,17 +32,30 @@ export class AuthService {
 
   // ---------- Login e cadastro ----------
 
-  // Busca os usuários na API e procura um com esse e-mail e senha.
+  // POST /login: quem confere e-mail e senha é o back-end. A API devolve só id, nome e e-mail
+  // (a senha nunca volta para o navegador).
   async login(dados: { email: string; senha: string }) {
-    const email = normalizar(dados.email);
-    const usuarios = await this.listarUsuarios();
-
-    const usuario = usuarios.find(u => u.email === email && u.senha === dados.senha);
-    if (!usuario) {
-      throw new Error('Email ou senha inválidos.');
+    try {
+      const usuario = await firstValueFrom(
+        this.http.post<UsuarioLogado>(`${API_URL}/login`, {
+          email: normalizar(dados.email),
+          senha: dados.senha
+        })
+      );
+      this._usuarioLogado.set(usuario);
+    } catch (e) {
+      if (e instanceof HttpErrorResponse) {
+        // 401 = e-mail ou senha errados
+        if (e.status === 401) {
+          throw new Error('Email ou senha inválidos.');
+        }
+        // status 0 = o navegador nem chegou na API (desligada ou porta errada)
+        if (e.status === 0) {
+          throw new Error('Não foi possível conectar à API. Confira se o Spring Boot está rodando na porta 8080.');
+        }
+      }
+      throw e;
     }
-
-    this._usuarioLogado.set(usuario);
   }
 
   async register(dados: { nome: string; email: string; senha: string }) {

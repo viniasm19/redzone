@@ -17,7 +17,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, String>> conflito(DataIntegrityViolationException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(Map.of("mensagem", "Já existe um registro com estes dados."));
+                .body(Map.of("mensagem", "Operação não permitida: registro duplicado ou em uso (ex.: produto ou usuário que já tem pedidos)."));
     }
 
     // Erros do @Valid: 400 com a lista de campos inválidos

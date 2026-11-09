@@ -16,9 +16,11 @@
       <span class="total-valor">R$ {{ total.toFixed(2) }}</span>
     </div>
 
+    <p class="erro-pedido" *ngIf="erro">{{ erro }}</p>
+
     <div class="confirm-actions">
       <button class="btn-voltar" (click)="voltar()">← Voltar</button>
-      <button class="btn-confirmar" (click)="confirmar()">✅ Confirmar Pedido</button>
+      <button class="btn-confirmar" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : '✅ Confirmar Pedido' }}</button>
     </div>
   </div>
 </div>
