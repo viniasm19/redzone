@@ -93,7 +93,12 @@ export class ProductListComponent implements OnInit {
   }
 
   deleteProduto(id: number) {
-    this.productService.deleteProduto(id).subscribe(() => this.loadProdutos());
+    this.erro = '';
+    this.productService.deleteProduto(id).subscribe({
+      next: () => this.loadProdutos(),
+      // 409 = produto que já está em algum pedido não pode ser excluído
+      error: () => (this.erro = 'Não foi possível excluir: o produto já faz parte de algum pedido.')
+    });
   }
 
   editarProduto(produto: Produto) {

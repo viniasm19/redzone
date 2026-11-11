@@ -39,7 +39,7 @@ public class UsuarioController {
     // GET /usuarios/email/{email} -> 200 ou 404 (usado na tela "esqueci a senha")
     @GetMapping("/email/{email}")
     public ResponseEntity<Usuario> buscarPorEmail(@PathVariable String email) {
-        return repository.findByEmail(email)
+        return repository.findByEmailIgnoreCase(email.trim())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -47,7 +47,7 @@ public class UsuarioController {
     // POST /usuarios -> 201, ou 409 se o e-mail já estiver cadastrado
     @PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody Usuario usuario) {
-        if (repository.existsByEmail(usuario.getEmail())) {
+        if (repository.findByEmailIgnoreCase(usuario.getEmail().trim()).isPresent()) {
             return emailDuplicado();
         }
 
@@ -64,7 +64,7 @@ public class UsuarioController {
         }
 
         // Pode manter o próprio e-mail, mas não pode usar o e-mail de outra pessoa
-        Optional<Usuario> dono = repository.findByEmail(usuario.getEmail());
+        Optional<Usuario> dono = repository.findByEmailIgnoreCase(usuario.getEmail().trim());
         if (dono.isPresent() && !dono.get().getId().equals(id)) {
             return emailDuplicado();
         }

@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, effect, signal } from '@angular/core';
 import { Produto } from '../models/produto.model';
 
 export interface CartItem {
@@ -6,13 +6,37 @@ export interface CartItem {
   quantidade: number;
 }
 
-// O carrinho vive só no front (memória). Não passa pela API.
+// O carrinho vive só no front (não passa pela API). Fica copiado no localStorage,
+// então recarregar a página (F5) não esvazia o carrinho.
 // Ele respeita o estoque: não deixa colocar mais unidades do que existem.
 // (A palavra final é do back-end, que confere de novo o estoque ao finalizar o pedido.)
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private lista = signal<CartItem[]>([]);
+  private static readonly CHAVE = 'redzone.carrinho';
+
+  private lista = signal<CartItem[]>(CartService.lerSalvo());
   itens = this.lista.asReadonly();
+
+  private static lerSalvo(): CartItem[] {
+    try {
+      const texto = localStorage.getItem(CartService.CHAVE);
+      const dados = texto ? JSON.parse(texto) : [];
+      return Array.isArray(dados) ? dados : [];
+    } catch {
+      return [];
+    }
+  }
+
+  constructor() {
+    // effect = roda sempre que o carrinho muda: guarda a cópia no navegador
+    effect(() => {
+      try {
+        localStorage.setItem(CartService.CHAVE, JSON.stringify(this.lista()));
+      } catch {
+        // sem storage: continua só em memória
+      }
+    });
+  }
 
   // computed = valor calculado a partir de um signal; recalcula sozinho quando o carrinho muda.
   quantidadeTotal = computed(() => this.lista().reduce((soma, i) => soma + i.quantidade, 0));

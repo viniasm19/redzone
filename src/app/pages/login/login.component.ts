@@ -22,6 +22,24 @@ export class LoginComponent {
     private route: ActivatedRoute
   ) {}
 
+  // Validação do e-mail digitado: texto@dominio.ext, sem espaços.
+  private static readonly EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  // Padroniza o e-mail digitado: "  Lucas@Email.com " vira "lucas@email.com".
+  // (fica aqui, na tela onde o usuário digita; o AuthService recebe o e-mail já pronto)
+  private normalizarEmail(email: string): string {
+    return email.trim().toLowerCase();
+  }
+
+  // Mensagem de erro do campo e-mail ('' = e-mail válido). A tela usa para avisar o usuário.
+  get erroEmail(): string {
+    const email = this.normalizarEmail(this.email);
+    if (!email) {
+      return 'Informe seu email.';
+    }
+    return LoginComponent.EMAIL_VALIDO.test(email) ? '' : 'Digite um email válido.';
+  }
+
   // Para onde voltar depois do login (ex.: o checkout). Só aceita caminhos do próprio site:
   // bloqueia links externos como "//site-falso.com" (redirecionamento malicioso).
   get returnUrl(): string | null {
@@ -32,9 +50,11 @@ export class LoginComponent {
   async entrar(form: NgForm) {
     this.erro = '';
 
-    if (form.invalid) {
+    if (form.invalid || this.erroEmail) {
       return;
     }
+
+    this.email = this.normalizarEmail(this.email);
 
     try {
       await this.auth.login({

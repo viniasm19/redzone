@@ -74,9 +74,9 @@ Carrinho → Checkout (se estiver logado)  → Home | Área do Usuário
 redzone/
 ├── src/
 │   └── app/
-│       ├── components/   (cart, header, product-item, product-list)
+│       ├── components/   (header, product-item, product-list)
 │       ├── pages/        (home, login, register, forgot-password, product-detail,
-│       │                  order-confirm, order-success, area-usuario, usuarios, estoque)
+│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart)
 │       ├── services/     (auth, cart, product, order, stock)
 │       ├── guards/       (auth.guard)
 │       ├── models/
@@ -174,6 +174,7 @@ Requisitos no back-end Spring Boot:
 
 - O e-mail deve ser **único** no banco de dados (`@Column(unique = true)`), respondendo `409` em caso de duplicidade
 - CORS liberado para `http://localhost:4200`
+- A senha só **entra** nas requisições (cadastro e troca de senha): a API nunca a devolve nas respostas (`@JsonProperty(access = WRITE_ONLY)`)
 
 ### 🔑 Usuários de teste (`backend-spring/src/main/resources/data.sql`)
 
@@ -188,7 +189,21 @@ Apenas o administrador vê os botões de **Editar**, **Excluir**, o formulário 
 
 > Quem já tinha a pasta `backend-spring/data/` de antes: a coluna `estoque` é criada sozinha, mas com **0** em todos os produtos (o `data.sql` não roda de novo). Dê entrada pela tela de Estoque, ou apague a pasta `data` para recarregar os dados de exemplo.
 
-Testes automáticos do estoque no back-end: `cd backend-spring && mvn test`.
+## 🧪 Testes
+
+Back-end (testes de integração com banco em memória, não mexem em `backend-spring/data`):
+
+```bash
+cd backend-spring
+mvn test
+```
+
+## ⚠️ Limitações conhecidas e próximos passos
+
+- Senhas em texto puro no banco (acadêmico): próximo passo, hash com BCrypt
+- Perfil de administrador validado só no front-end: próximo passo, Spring Security + JWT com roles no back-end
+- Login e carrinho ficam no navegador (sessionStorage / localStorage), sem token
+- Valores em dinheiro usam `Double`: o ideal seria `BigDecimal`
 
 ## 📚 O que aprendi
 
