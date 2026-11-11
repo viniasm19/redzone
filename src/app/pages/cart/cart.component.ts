@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,6 +13,7 @@ import { CartService } from '../../services/cart.service';
 })
 export class CartComponent {
   private cartService = inject(CartService);
+  private auth = inject(AuthService);
   private router = inject(Router);
 
   // Valores que a tela mostra (o cálculo de total e quantidade fica no CartService)
@@ -35,7 +37,16 @@ export class CartComponent {
     this.cartService.limparCarrinho();
   }
 
+  // Fluxo de compra:
+  //   logado     -> Checkout (/order-confirm) -> Home | Área do Usuário
+  //   não logado -> Login -> (volta sozinho para o) Checkout -> Home | Área do Usuário
+  // O returnUrl diz ao login para onde voltar depois de entrar (ou de se cadastrar).
+  // O authGuard continua protegendo /order-confirm caso alguém digite o endereço direto.
   finalizarCompra() {
-    this.router.navigate(['/order-confirm']); // rota protegida: exige login (authGuard)
+    if (this.auth.isAuthenticated()) {
+      this.router.navigate(['/order-confirm']);
+    } else {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: '/order-confirm' } });
+    }
   }
 }

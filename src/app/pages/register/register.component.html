@@ -15,9 +15,9 @@
       <label>
         Email
         <input name="email" type="email" [(ngModel)]="email" #emailCtrl="ngModel"
-               required email pattern="[^\s@]+@[^\s@]+\.[^\s@]+" placeholder="seu@email.com" />
-        <small class="field-error" *ngIf="emailCtrl.invalid && (emailCtrl.touched || f.submitted)">
-          {{ emailCtrl.errors?.['required'] ? 'Informe seu email.' : 'Digite um email válido.' }}
+               placeholder="seu@email.com" />
+        <small class="field-error" *ngIf="erroEmail && (emailCtrl.touched || f.submitted)">
+          {{ erroEmail }}
         </small>
       </label>
 

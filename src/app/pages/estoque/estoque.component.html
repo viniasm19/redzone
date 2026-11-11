@@ -1,0 +1,108 @@
+<div class="estoque-container">
+
+  <h1>📦 Controle de Estoque</h1>
+
+  <!-- Resumo -->
+  <div class="resumo">
+    <div class="card-resumo">
+      <span class="valor">{{ produtos.length }}</span>
+      <span class="legenda">produtos</span>
+    </div>
+    <div class="card-resumo">
+      <span class="valor">{{ totalUnidades }}</span>
+      <span class="legenda">unidades no total</span>
+    </div>
+    <div class="card-resumo alerta">
+      <span class="valor">{{ qtdBaixo }}</span>
+      <span class="legenda">com estoque baixo (≤ {{ estoqueMinimo }})</span>
+    </div>
+    <div class="card-resumo perigo">
+      <span class="valor">{{ qtdEsgotados }}</span>
+      <span class="legenda">esgotados</span>
+    </div>
+    <div class="card-resumo">
+      <span class="valor">R$ {{ valorEmEstoque.toFixed(2) }}</span>
+      <span class="legenda">em mercadoria</span>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros">
+    <input type="text" placeholder="🔎 Buscar por nome ou categoria" [(ngModel)]="busca">
+    <label>
+      <input type="checkbox" [(ngModel)]="somenteBaixo">
+      Só estoque baixo / esgotado
+    </label>
+  </div>
+
+  <p class="msg-ok" *ngIf="mensagem">{{ mensagem }}</p>
+  <p class="msg-erro" *ngIf="erro">{{ erro }}</p>
+  <p *ngIf="carregando">Carregando...</p>
+
+  <!-- Tabela de produtos -->
+  <div class="tabela-wrapper" *ngIf="!carregando">
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Categoria</th>
+          <th>Estoque</th>
+          <th>Movimentar</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of produtosFiltrados; trackBy: trackById">
+          <td class="produto">
+            <img [src]="p.imagem" [alt]="p.nome">
+            <span>{{ p.nome }}</span>
+          </td>
+          <td>{{ p.categoria }}</td>
+          <td>
+            <span class="badge" [ngClass]="status(p)">
+              {{ p.estoque }}
+              <small *ngIf="status(p) === 'zero'">esgotado</small>
+              <small *ngIf="status(p) === 'baixo'">baixo</small>
+            </span>
+          </td>
+          <td class="movimentar">
+            <input type="number" min="1" step="1" placeholder="Qtd."
+                   [(ngModel)]="forms[p.id].quantidade" [attr.aria-label]="'Quantidade de ' + p.nome">
+            <input type="text" placeholder="Observação (opcional)" maxlength="255"
+                   [(ngModel)]="forms[p.id].observacao" [attr.aria-label]="'Observação para ' + p.nome">
+            <button class="btn-entrada" (click)="movimentar(p, 'ENTRADA')">➕ Entrada</button>
+            <button class="btn-saida" (click)="movimentar(p, 'SAIDA')" [disabled]="p.estoque === 0">➖ Saída</button>
+          </td>
+          <td>
+            <button class="btn-link" (click)="verHistorico(p)">Histórico</button>
+          </td>
+        </tr>
+        <tr *ngIf="produtosFiltrados.length === 0">
+          <td colspan="5" class="vazio">Nenhum produto encontrado.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Histórico de movimentações -->
+  <div class="historico">
+    <div class="historico-topo">
+      <h2>🕒 Histórico {{ historicoDe ? 'de ' + historicoDe.nome : 'geral' }}</h2>
+      <button class="btn-link" *ngIf="historicoDe" (click)="verHistorico(null)">Ver de todos</button>
+    </div>
+
+    <p class="vazio" *ngIf="movimentacoes.length === 0">Nenhuma movimentação registrada ainda.</p>
+
+    <ul *ngIf="movimentacoes.length > 0">
+      <li *ngFor="let m of movimentacoes; trackBy: trackById" [ngClass]="m.tipo.toLowerCase()">
+        <span class="tipo">{{ rotuloTipo(m.tipo) }}</span>
+        <span class="qtd">{{ m.tipo === 'ENTRADA' ? '+' : '−' }}{{ m.quantidade }}</span>
+        <span class="nome" *ngIf="!historicoDe">{{ m.produtoNome }}</span>
+        <span class="apos">ficou {{ m.estoqueApos }}</span>
+        <span class="obs">{{ m.observacao }}</span>
+        <span class="data">{{ m.data | date:'dd/MM/yyyy HH:mm' }}</span>
+      </li>
+    </ul>
+  </div>
+
+</div>

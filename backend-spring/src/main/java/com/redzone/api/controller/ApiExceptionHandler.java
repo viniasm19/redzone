@@ -1,5 +1,6 @@
 package com.redzone.api.controller;
 
+import com.redzone.api.service.EstoqueInsuficienteException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,17 @@ public class ApiExceptionHandler {
         e.getBindingResult().getFieldErrors()
                 .forEach(erro -> erros.put(erro.getField(), erro.getDefaultMessage()));
         return ResponseEntity.badRequest().body(erros);
+    }
+
+    // Tentou tirar do estoque mais do que existe: 409 com a mensagem explicando qual produto
+    @ExceptionHandler(EstoqueInsuficienteException.class)
+    public ResponseEntity<Map<String, String>> estoqueInsuficiente(EstoqueInsuficienteException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("mensagem", e.getMessage()));
+    }
+
+    // Regra de negócio violada (ex.: quantidade zero): 400
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> argumentoInvalido(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(Map.of("mensagem", e.getMessage()));
     }
 }

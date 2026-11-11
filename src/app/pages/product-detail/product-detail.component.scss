@@ -72,10 +72,24 @@
     cursor: pointer;
     width: fit-content;
 
-    &:hover {
+    &:hover:not(:disabled) {
       opacity: 0.85;
     }
+
+    &:disabled {
+      background: #555;
+      color: #999;
+      cursor: not-allowed;
+    }
   }
+
+  .estoque {
+    font-weight: bold;
+    margin: 0;
+  }
+  .estoque-ok { color: #4caf50; }
+  .estoque-baixo { color: #ffb300; }
+  .estoque-zero { color: #9e9e9e; text-transform: uppercase; letter-spacing: 1px; }
 }
 
 @media (max-width: 768px) {

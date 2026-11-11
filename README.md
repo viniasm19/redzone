@@ -53,6 +53,11 @@ O projeto foi pensado a partir de cinco personas:
 - Tela de pedido confirmado, com atalhos para a Home e para a Área do Usuário
 - Área do Usuário
 - Área administrativa: o administrador cadastra, edita e exclui produtos
+- **Sistema de estoque**: cada produto tem uma quantidade em estoque
+  - A vitrine mostra "Em estoque", "Últimas X unidades" ou "Esgotado" (e bloqueia a compra quando zera)
+  - O carrinho não deixa colocar mais unidades do que existem
+  - Ao finalizar o pedido, o back-end confere o estoque de novo e dá baixa. Se faltar algum item, nada é salvo e a API responde `409`
+  - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
 - Interface responsiva e componentes reutilizáveis
 
 ### 🔄 Fluxo de compra
@@ -69,10 +74,10 @@ Carrinho → Checkout (se estiver logado)  → Home | Área do Usuário
 redzone/
 ├── src/
 │   └── app/
-│       ├── components/   (cart, header, product-item, product-list)
+│       ├── components/   (header, product-item, product-list)
 │       ├── pages/        (home, login, register, forgot-password, product-detail,
-│       │                  order-confirm, order-success, area-usuario, usuarios)
-│       ├── services/     (auth, cart, product)
+│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart)
+│       ├── services/     (auth, cart, product, order, stock)
 │       ├── guards/       (auth.guard)
 │       ├── models/
 │       └── config/       (api.ts — URL base da API)
@@ -160,11 +165,16 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 | DELETE | `/usuarios/{id}` | Excluir usuário |
 | POST | `/pedidos` | Salvar o pedido (envia `usuarioId` e itens com `produtoId` e `quantidade`) |
 | GET | `/pedidos/usuario/{usuarioId}` | Listar os pedidos de um usuário |
+| POST | `/estoque/{produtoId}/entrada` | Somar unidades ao estoque (`quantidade`, `observacao`) |
+| POST | `/estoque/{produtoId}/saida` | Tirar unidades (perda/ajuste); `409` se não houver o suficiente |
+| GET | `/estoque/movimentacoes?produtoId=` | Histórico de movimentações (de todos ou de um produto) |
+| GET | `/estoque/baixo` | Produtos com estoque baixo ou zerado |
 
 Requisitos no back-end Spring Boot:
 
 - O e-mail deve ser **único** no banco de dados (`@Column(unique = true)`), respondendo `409` em caso de duplicidade
 - CORS liberado para `http://localhost:4200`
+- A senha só **entra** nas requisições (cadastro e troca de senha): a API nunca a devolve nas respostas (`@JsonProperty(access = WRITE_ONLY)`)
 
 ### 🔑 Usuários de teste (`backend-spring/src/main/resources/data.sql`)
 
@@ -175,7 +185,25 @@ Requisitos no back-end Spring Boot:
 
 O `data.sql` carrega ainda os usuários mariana, rafael, sofia e tiago (`@email.com`), todos com a senha `nome123`.
 
-Apenas o administrador vê os botões de **Editar**, **Excluir** e o formulário de **Cadastrar Produto**.
+Apenas o administrador vê os botões de **Editar**, **Excluir**, o formulário de **Cadastrar Produto** e a tela **📦 Estoque**.
+
+> Quem já tinha a pasta `backend-spring/data/` de antes: a coluna `estoque` é criada sozinha, mas com **0** em todos os produtos (o `data.sql` não roda de novo). Dê entrada pela tela de Estoque, ou apague a pasta `data` para recarregar os dados de exemplo.
+
+## 🧪 Testes
+
+Back-end (testes de integração com banco em memória, não mexem em `backend-spring/data`):
+
+```bash
+cd backend-spring
+mvn test
+```
+
+## ⚠️ Limitações conhecidas e próximos passos
+
+- Senhas em texto puro no banco (acadêmico): próximo passo, hash com BCrypt
+- Perfil de administrador validado só no front-end: próximo passo, Spring Security + JWT com roles no back-end
+- Login e carrinho ficam no navegador (sessionStorage / localStorage), sem token
+- Valores em dinheiro usam `Double`: o ideal seria `BigDecimal`
 
 ## 📚 O que aprendi
 

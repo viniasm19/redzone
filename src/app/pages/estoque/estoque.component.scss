@@ -1,0 +1,231 @@
+.estoque-container {
+  padding: 30px 5%;
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    color: var(--texto-destaque);
+    margin-top: 0;
+  }
+}
+
+// ---------- Resumo ----------
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.card-resumo {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 59, 59, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .valor {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--texto-destaque);
+  }
+
+  .legenda {
+    font-size: 13px;
+    color: rgba(197, 198, 199, 0.7);
+  }
+
+  &.alerta .valor { color: #ffb300; }
+  &.perigo .valor { color: var(--neon-red); }
+}
+
+// ---------- Filtros ----------
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+
+  input[type="text"] {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+}
+
+input[type="text"],
+input[type="number"] {
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 59, 59, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  outline: none;
+
+  &:focus { border-color: var(--neon-red); }
+  &::placeholder { color: rgba(255, 255, 255, 0.35); }
+}
+
+.msg-ok { color: #4caf50; font-weight: bold; }
+.msg-erro { color: var(--danger); font-weight: bold; }
+
+// ---------- Tabela ----------
+.tabela-wrapper {
+  overflow-x: auto; // em tela pequena a tabela rola para o lado, sem quebrar a página
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 59, 59, 0.15);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 820px;
+
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    vertical-align: middle;
+  }
+
+  th {
+    color: rgba(197, 198, 199, 0.7);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+.produto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--texto-destaque);
+
+  img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: bold;
+
+  small {
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  &.ok { background: rgba(76, 175, 80, 0.15); color: #4caf50; }
+  &.baixo { background: rgba(255, 179, 0, 0.15); color: #ffb300; }
+  &.zero { background: rgba(255, 59, 59, 0.15); color: var(--neon-red); }
+}
+
+.movimentar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+
+  input[type="number"] { width: 70px; }
+  input[type="text"] { width: 180px; }
+}
+
+button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.btn-entrada { background: #4caf50; color: #0b0c10; }
+.btn-saida { background: var(--neon-red); color: #0b0c10; }
+
+.btn-link {
+  background: transparent;
+  color: var(--neon-red);
+  padding: 4px 0;
+  text-decoration: underline;
+}
+
+.vazio {
+  text-align: center;
+  color: rgba(197, 198, 199, 0.6);
+}
+
+// ---------- Histórico ----------
+.historico {
+  margin-top: 32px;
+
+  .historico-topo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  h2 {
+    color: var(--texto-destaque);
+    font-size: 20px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 110px 60px minmax(120px, 1.2fr) 80px minmax(120px, 1.5fr) 130px;
+    gap: 10px;
+    align-items: center;
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 10px 14px;
+    border-left: 4px solid transparent;
+    font-size: 14px;
+
+    &.entrada { border-left-color: #4caf50; }
+    &.saida { border-left-color: #ffb300; }
+    &.venda { border-left-color: var(--neon-red); }
+  }
+
+  .qtd { font-weight: bold; color: var(--texto-destaque); }
+  .nome { color: var(--texto-destaque); }
+  .apos, .data, .obs { color: rgba(197, 198, 199, 0.7); }
+  .data { text-align: right; }
+}
+
+@media (max-width: 768px) {
+  .historico li {
+    grid-template-columns: 1fr 1fr;
+  }
+}

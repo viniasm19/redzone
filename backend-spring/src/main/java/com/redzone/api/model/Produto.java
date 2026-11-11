@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.ColumnDefault;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -40,6 +42,14 @@ public class Produto {
 
     @Column(length = 500)
     private String descricao;
+
+    // Quantas unidades existem no estoque.
+    // @ColumnDefault("0"): quem já tinha o banco criado ganha a coluna nova com 0 nos produtos antigos.
+    // Depois de cadastrado, o estoque só muda por movimentação (entrada, saída ou venda).
+    @Min(value = 0, message = "O estoque não pode ser negativo.")
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private Integer estoque = 0;
 
     public Produto() {
     }
@@ -90,5 +100,13 @@ public class Produto {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Integer getEstoque() {
+        return estoque;
+    }
+
+    public void setEstoque(Integer estoque) {
+        this.estoque = estoque;
     }
 }

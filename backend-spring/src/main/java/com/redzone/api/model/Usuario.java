@@ -1,5 +1,6 @@
 package com.redzone.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +32,9 @@ public class Usuario {
     private String email;
 
     // Senha em texto puro: aceitável só neste trabalho acadêmico (num sistema real, usar hash)
+    // WRITE_ONLY: a API ACEITA a senha ao receber o JSON (cadastro, troca de senha),
+    // mas NUNCA a devolve nas respostas (GET /usuarios, GET /usuarios/email/{email}, etc.).
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Informe a senha.")
     @Size(min = 4, message = "A senha deve ter pelo menos 4 caracteres.")
     @Column(nullable = false)

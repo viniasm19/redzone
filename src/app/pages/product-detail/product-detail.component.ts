@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { Produto } from '../../models/produto.model';
+import { ESTOQUE_MINIMO } from '../../services/stock.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { Produto } from '../../models/produto.model';
 export class ProductDetailComponent implements OnInit {
 
   produto: Produto | null = null;
+  estoqueMinimo = ESTOQUE_MINIMO;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,9 +35,12 @@ export class ProductDetailComponent implements OnInit {
   }
 
   adicionarAoCarrinho() {
-    if (this.produto) {
+    // Só vai para o carrinho se ainda havia unidade para colocar (senão o toast avisa e fica aqui)
+    if (this.produto && this.cartService.podeAdicionar(this.produto)) {
       this.cartService.adicionarAoCarrinho(this.produto);
       this.router.navigate(['/cart']);
+    } else if (this.produto) {
+      this.cartService.adicionarAoCarrinho(this.produto); // mostra o aviso de estoque
     }
   }
 

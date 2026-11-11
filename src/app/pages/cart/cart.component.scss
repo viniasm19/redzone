@@ -95,7 +95,14 @@
     line-height: 1;
     cursor: pointer;
 
-    &:hover { background: rgba(255, 59, 59, 0.15); }
+    &:hover:not(:disabled) { background: rgba(255, 59, 59, 0.15); }
+
+    // chegou no limite do estoque
+    &:disabled {
+      border-color: #555;
+      color: #555;
+      cursor: not-allowed;
+    }
   }
 
   .item-subtotal {
@@ -177,4 +184,9 @@
   .cart-content {
     grid-template-columns: 1fr;
   }
+}
+// Aviso "máximo disponível" quando o item chegou no limite do estoque
+.disponivel {
+  color: #ffb300;
+  font-size: 13px;
 }

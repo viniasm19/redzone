@@ -5,10 +5,12 @@ import com.redzone.api.dto.PedidoResponse;
 import com.redzone.api.model.ItemPedido;
 import com.redzone.api.model.Pedido;
 import com.redzone.api.model.Produto;
+import com.redzone.api.model.TipoMovimentacao;
 import com.redzone.api.model.Usuario;
 import com.redzone.api.repository.PedidoRepository;
 import com.redzone.api.repository.ProdutoRepository;
 import com.redzone.api.repository.UsuarioRepository;
+import com.redzone.api.service.EstoqueService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,17 +31,22 @@ public class PedidoController {
     private final PedidoRepository pedidoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ProdutoRepository produtoRepository;
+    private final EstoqueService estoqueService;
 
     public PedidoController(PedidoRepository pedidoRepository,
                             UsuarioRepository usuarioRepository,
-                            ProdutoRepository produtoRepository) {
+                            ProdutoRepository produtoRepository,
+                            EstoqueService estoqueService) {
         this.pedidoRepository = pedidoRepository;
         this.usuarioRepository = usuarioRepository;
         this.produtoRepository = produtoRepository;
+        this.estoqueService = estoqueService;
     }
 
-    // POST /pedidos -> 201, 400 (dados inválidos) ou 404 (usuário/produto não existe)
-    // @Transactional: ou o pedido e TODOS os itens são salvos, ou nada é salvo.
+    // POST /pedidos -> 201, 400 (dados inválidos), 404 (usuário/produto não existe)
+    //                  ou 409 (algum produto não tem estoque suficiente)
+    // @Transactional: ou o pedido, TODOS os itens e TODAS as baixas de estoque são salvos, ou nada é salvo.
+    // Ex.: se o 1º item tem estoque e o 2º não, a baixa do 1º é desfeita (rollback).
     @PostMapping
     @Transactional
     public ResponseEntity<?> criar(@Valid @RequestBody PedidoRequest request) {
@@ -63,6 +70,10 @@ public class PedidoController {
             item.setQuantidade(itemRequest.quantidade());
             item.setPrecoUnitario(produto.get().getPreco()); // preço vem do banco, não do front
             pedido.adicionarItem(item);
+
+            // Dá baixa no estoque. Se faltar unidade, lança EstoqueInsuficienteException -> 409
+            estoqueService.saida(produto.get(), itemRequest.quantidade(), TipoMovimentacao.VENDA,
+                    "Venda para " + usuario.get().getNome());
         }
 
         pedido.calcularTotal();

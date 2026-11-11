@@ -41,9 +41,31 @@
     font-weight: bold;
     transition: all 0.3s ease;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--neon-red);
       color: var(--bg-principal);
     }
+
+    &:disabled {
+      border-color: #555;
+      color: #777;
+      cursor: not-allowed;
+    }
+  }
+
+  // Produto esgotado fica "apagado"
+  &.esgotado img {
+    filter: grayscale(1);
+    opacity: 0.5;
   }
 }
+
+// Etiquetas de estoque (usadas também na página de detalhe)
+.estoque {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 6px 0 12px;
+}
+.estoque-ok { color: #4caf50; }
+.estoque-baixo { color: #ffb300; }
+.estoque-zero { color: #9e9e9e; text-transform: uppercase; letter-spacing: 1px; }

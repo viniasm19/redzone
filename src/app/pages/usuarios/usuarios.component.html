@@ -2,6 +2,8 @@
 
   <h1>Usuários</h1>
 
+  <p class="erro" *ngIf="erro && !usuarioEditando">{{ erro }}</p>
+
   <div
     class="usuario-card"
     *ngFor="let usuario of usuarios"
@@ -57,11 +59,17 @@
   <input
     type="password"
     [(ngModel)]="usuarioEditando.senha"
-    placeholder="Senha"
+    placeholder="Senha (mínimo 4 caracteres)"
   />
+
+  <p class="erro" *ngIf="erro">{{ erro }}</p>
 
   <button (click)="salvarEdicao()">
     Salvar Alterações
+  </button>
+
+  <button (click)="cancelar()">
+    Cancelar
   </button>
 
 </div>
