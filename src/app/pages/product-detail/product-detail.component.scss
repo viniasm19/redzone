@@ -1,36 +1,28 @@
-.detail-container {
-  padding: 40px 5%;
-  position: relative;
-  z-index: 1;
-}
-
 .btn-voltar {
   background: transparent;
-  border: 1px solid rgba(255, 59, 59, 0.3);
-  color: var(--neon-red);
-  padding: 10px 18px;
-  border-radius: 8px;
+  border: 1px solid var(--color-border-primary);
+  color: var(--color-primary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: var(--space-5);
 
-  &:hover {
-    background: rgba(255, 59, 59, 0.1);
-  }
+  &:hover { background: var(--color-primary-soft); }
 }
 
 .detail-card {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  background: var(--bg-card);
-  border-radius: 16px;
-  padding: 30px;
+  gap: var(--space-6);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
   border: 1px solid rgba(255, 59, 59, 0.15);
 
   img {
     width: 100%;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     object-fit: cover;
     max-height: 400px;
   }
@@ -39,42 +31,45 @@
 .detail-info {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
   justify-content: center;
 
   .categoria {
-    color: rgba(197, 198, 199, 0.6);
+    color: var(--color-text-muted);
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
-  h1 {
-    color: var(--texto-destaque);
-    font-size: 32px;
+  // O nome do produto usa o título padrão (.page-title); o espaço entre os itens vem do gap
+  .page-title { margin: 0; }
+
+  .marca,
+  .garantia,
+  .descricao { margin: 0; }
+
+  .marca strong { color: var(--color-text-strong); }
+  .garantia { color: var(--color-text); }
+
+  .preco {
+    color: var(--color-primary);
+    font-size: 28px;
+    font-weight: bold;
     margin: 0;
   }
 
-  .preco {
-    color: var(--neon-red);
-    font-size: 28px;
-    font-weight: bold;
-  }
-
   .btn-primary {
-    padding: 14px 24px;
-    border-radius: 10px;
-    background: var(--neon-red);
-    color: var(--bg-principal);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--color-primary);
+    color: var(--color-bg);
     border: none;
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
     width: fit-content;
 
-    &:hover:not(:disabled) {
-      opacity: 0.85;
-    }
+    &:hover:not(:disabled) { opacity: 0.85; }
 
     &:disabled {
       background: #555;
@@ -87,13 +82,81 @@
     font-weight: bold;
     margin: 0;
   }
-  .estoque-ok { color: #4caf50; }
-  .estoque-baixo { color: #ffb300; }
+  .estoque-ok { color: var(--color-success); }
+  .estoque-baixo { color: var(--color-warning); }
   .estoque-zero { color: #9e9e9e; text-transform: uppercase; letter-spacing: 1px; }
+
+  // ---------- Promoção ----------
+  .precos {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin: 0;
+  }
+}
+
+.preco-antigo {
+  color: rgba(197, 198, 199, 0.55);
+  font-size: 18px;
+}
+
+.selo-promocao {
+  background: var(--color-primary);
+  color: var(--color-bg);
+  font-size: 13px;
+  font-weight: bold;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 20px;
+  align-self: center;
+}
+
+// ---------- Ficha técnica ----------
+.especificacoes {
+  margin-top: var(--space-5);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  border: 1px solid rgba(255, 59, 59, 0.15);
+
+  h2 {
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-4);
+    font-size: 22px;
+  }
+
+  dl { margin: 0; }
+
+  .linha {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child { border-bottom: none; }
+  }
+
+  dt {
+    flex: 0 0 200px;
+    color: var(--color-text-muted);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-text-strong);
+  }
 }
 
 @media (max-width: 768px) {
   .detail-card {
     grid-template-columns: 1fr;
+    gap: var(--space-5);
   }
+
+  .especificacoes .linha {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .especificacoes dt { flex-basis: auto; }
 }

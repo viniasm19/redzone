@@ -1,48 +1,31 @@
-.success-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 80px 5%;
-  position: relative;
-  z-index: 1;
-}
-
+// Largura (.coluna-media), card (.card) e título (.page-title) vêm do styles.scss global
 .success-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 59, 59, 0.2);
-  border-radius: 16px;
-  padding: 50px 40px;
-  width: 100%;
-  max-width: 500px;
+  padding: var(--space-6) var(--space-5);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-4);
   text-align: center;
+  border-color: rgba(255, 59, 59, 0.2);
   box-shadow: 0 0 30px rgba(255, 59, 59, 0.1);
+
+  .page-title { margin: 0; }
 }
 
 .success-icon {
   font-size: 64px;
-}
-
-h1 {
-  color: var(--neon-red);
-  margin: 0;
-  font-size: 28px;
+  line-height: 1;
 }
 
 p {
-  color: rgba(197, 198, 199, 0.9);
+  color: var(--color-text);
   margin: 0;
 
-  strong {
-    color: var(--texto-destaque);
-  }
+  strong { color: var(--color-text-strong); }
 }
 
 .muted {
-  color: rgba(197, 198, 199, 0.6);
+  color: var(--color-text-muted);
   font-size: 14px;
 }
 
@@ -50,37 +33,32 @@ p {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px;
-  margin-top: 10px;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
 }
 
+.btn-continuar,
 .btn-secundario {
-  padding: 14px 28px;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--neon-red);
-  border: 1px solid var(--neon-red);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
-
-  &:hover {
-    background: rgba(255, 59, 59, 0.1);
-  }
 }
 
 .btn-continuar {
-  padding: 14px 28px;
-  border-radius: 10px;
-  background: var(--neon-red);
-  color: var(--bg-principal);
+  background: var(--color-primary);
+  color: var(--color-bg);
   border: none;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
   box-shadow: 0 0 16px rgba(255, 59, 59, 0.3);
 
-  &:hover {
-    opacity: 0.85;
-  }
+  &:hover { opacity: 0.85; }
+}
+
+.btn-secundario {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+
+  &:hover { background: var(--color-primary-soft); }
 }

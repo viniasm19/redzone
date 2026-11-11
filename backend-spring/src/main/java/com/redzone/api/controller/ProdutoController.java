@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 // CRUD de produtos em /produtos (o Angular chama estas rotas).
+// Os campos opcionais (marca, garantia, especificacoes, precoPromocional) não precisam de código extra:
+// o @RequestBody converte o JSON direto para a entidade Produto, campo por campo, pelo nome.
+// Se o front não mandar algum deles, ele fica nulo.
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
@@ -27,9 +30,14 @@ public class ProdutoController {
         this.movimentacaoRepository = movimentacaoRepository;
     }
 
-    // GET /produtos -> lista todos
+    // GET /produtos               -> lista todos
+    // GET /produtos?promocao=true -> só os produtos em promoção (com precoPromocional preenchido)
+    // required = false: o parâmetro é opcional; sem ele (ou com promocao=false) a lista é completa.
     @GetMapping
-    public List<Produto> listar() {
+    public List<Produto> listar(@RequestParam(required = false) Boolean promocao) {
+        if (Boolean.TRUE.equals(promocao)) {
+            return repository.findByPrecoPromocionalIsNotNull();
+        }
         return repository.findAll();
     }
 

@@ -1,0 +1,21 @@
+<div class="page">
+  <h2 class="page-title">🔥 Promoções</h2>
+  <p class="page-subtitle">Preços especiais por tempo limitado.</p>
+
+  @if (carregando) {
+    <p class="aviso">Carregando promoções...</p>
+  } @else if (erro) {
+    <p class="aviso erro">{{ erro }}</p>
+  } @else if (produtos.length === 0) {
+    <div class="aviso">
+      <p>Nenhuma promoção no momento.</p>
+      <a routerLink="/products">Ver todos os produtos</a>
+    </div>
+  } @else {
+    <div class="products-grid">
+      @for (prod of produtos; track prod.id) {
+        <app-product-item [produto]="prod" (addToCart)="adicionarAoCarrinho($event)"></app-product-item>
+      }
+    </div>
+  }
+</div>

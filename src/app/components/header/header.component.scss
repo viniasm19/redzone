@@ -1,20 +1,147 @@
-.dark-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 5%;
-  background-color: var(--bg-card);
-  border-bottom: 2px solid var(--neon-red);
+.header {
+  background-color: var(--color-surface);
+  border-bottom: 2px solid var(--color-primary);
+  box-shadow: 0 0 15px rgba(255, 59, 59, 0.2);
+  position: relative;
+  z-index: 10; // o menu aberto do celular fica por cima da página
+}
 
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--texto-destaque);
-    span { color: var(--neon-red); }
+// Mesma largura e respiro lateral das páginas (.page): logo e links alinham com o conteúdo
+.header-conteudo {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-4) var(--page-gutter);
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--color-text-strong);
+  text-decoration: none;
+  flex-shrink: 0;
+
+  span { color: var(--color-primary); }
+}
+
+.menu {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.menu-grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.menu a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+  transition: color 0.2s;
+  white-space: nowrap;
+
+  &.active,
+  &:hover { color: var(--color-primary); }
+
+  // "Cadastro" em forma de botão, para chamar atenção
+  &.destaque {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary);
+
+    &:hover,
+    &.active { background: var(--color-primary-soft); }
+  }
+}
+
+.ola {
+  color: var(--color-text-strong);
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+// Contador do carrinho
+.badge {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  font-size: 12px;
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  text-align: center;
+  position: absolute;
+  top: -10px;
+  right: -20px;
+}
+
+.btn-menu {
+  display: none;
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--color-border-primary);
+  color: var(--color-primary);
+  font-size: 20px;
+  line-height: 1;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+// ---------- Telas pequenas: menu recolhível ----------
+@media (max-width: 860px) {
+  .header-conteudo { flex-wrap: wrap; }
+
+  .btn-menu { display: block; }
+
+  // Fechado: escondido. Aberto (.aberto): ocupa a linha inteira, em coluna
+  .menu {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+
+    &.aberto { display: flex; }
   }
 
-  nav a {
-    margin-left: 20px;
-    font-weight: 500;
+  .menu-grupo {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .menu a,
+  .ola {
+    padding: var(--space-3) 0;
+  }
+
+  .menu a.destaque {
+    text-align: center;
+    padding: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .conta {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-2);
+  }
+
+  // No menu em coluna o contador fica ao lado do texto, não "flutuando"
+  .badge {
+    position: static;
+    margin-left: var(--space-2);
   }
 }

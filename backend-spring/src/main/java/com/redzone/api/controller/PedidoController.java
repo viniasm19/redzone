@@ -5,6 +5,7 @@ import com.redzone.api.dto.PedidoResponse;
 import com.redzone.api.model.ItemPedido;
 import com.redzone.api.model.Pedido;
 import com.redzone.api.model.Produto;
+import com.redzone.api.model.StatusPedido;
 import com.redzone.api.model.TipoMovimentacao;
 import com.redzone.api.model.Usuario;
 import com.redzone.api.repository.PedidoRepository;
@@ -58,6 +59,8 @@ public class PedidoController {
         Pedido pedido = new Pedido();
         pedido.setUsuario(usuario.get());
         pedido.setData(LocalDateTime.now());
+        // Todo pedido nasce esperando o pagamento. Quem muda para APROVADO é o POST /pagamentos.
+        pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
 
         for (PedidoRequest.ItemRequest itemRequest : request.itens()) {
             Optional<Produto> produto = produtoRepository.findById(itemRequest.produtoId());
@@ -68,7 +71,8 @@ public class PedidoController {
             ItemPedido item = new ItemPedido();
             item.setProduto(produto.get());
             item.setQuantidade(itemRequest.quantidade());
-            item.setPrecoUnitario(produto.get().getPreco()); // preço vem do banco, não do front
+            // Preço vem do banco, não do front. Se o produto está em promoção, cobra o preço promocional.
+            item.setPrecoUnitario(produto.get().getPrecoAtual());
             pedido.adicionarItem(item);
 
             // Dá baixa no estoque. Se faltar unidade, lança EstoqueInsuficienteException -> 409

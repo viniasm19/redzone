@@ -10,7 +10,11 @@ import { AuthService } from '../../services/auth.service';
 
 // Formulário de produto (o mesmo para cadastrar e editar). Não tem id: o id vem de editandoId.
 // O estoque só é usado no CADASTRO (estoque inicial). Na edição, quem mexe no estoque é a tela de Estoque.
-const FORM_VAZIO = { nome: '', preco: 0, imagem: '', categoria: '', estoque: 0 };
+// Os detalhes (marca, garantia, especificações, preço promocional) são opcionais e começam vazios (null).
+const FORM_VAZIO: Omit<Produto, 'id'> = {
+  nome: '', preco: 0, imagem: '', categoria: '', estoque: 0,
+  marca: null, garantia: null, especificacoes: null, precoPromocional: null
+};
 
 @Component({
   selector: 'app-product-list',
@@ -79,9 +83,28 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
+    // Campo de número vazio chega como null (ou ''), e isso significa "sem promoção"
+    const promocional = p.precoPromocional === null || p.precoPromocional === undefined || String(p.precoPromocional) === ''
+      ? null
+      : Number(p.precoPromocional);
+
+    if (promocional !== null && !(promocional > 0 && promocional < p.preco)) {
+      this.erro = 'O preço promocional deve ser maior que zero e menor que o preço normal (ou deixe vazio).';
+      return;
+    }
+
+    // Texto só com espaços vira null: assim a tela de detalhe não mostra um título vazio
+    const dados: Omit<Produto, 'id'> = {
+      ...p,
+      marca: this.textoOuNull(p.marca),
+      garantia: this.textoOuNull(p.garantia),
+      especificacoes: this.textoOuNull(p.especificacoes),
+      precoPromocional: promocional
+    };
+
     const requisicao = this.editandoId
-      ? this.productService.updateProduto({ ...p, id: this.editandoId })
-      : this.productService.addProduto(p);
+      ? this.productService.updateProduto({ ...dados, id: this.editandoId })
+      : this.productService.addProduto(dados);
 
     requisicao.subscribe({
       next: () => {
@@ -90,6 +113,11 @@ export class ProductListComponent implements OnInit {
       },
       error: () => (this.erro = 'Não foi possível salvar o produto. Confira os dados e tente de novo.')
     });
+  }
+
+  private textoOuNull(texto?: string | null): string | null {
+    const limpo = (texto ?? '').trim();
+    return limpo ? limpo : null;
   }
 
   deleteProduto(id: number) {

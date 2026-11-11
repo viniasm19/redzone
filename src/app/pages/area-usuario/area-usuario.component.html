@@ -1,6 +1,8 @@
-<div class="area-container">
-  <div class="area-card">
-    <h2>👤 Minha Área</h2>
+<div class="page">
+<div class="coluna-media area-container">
+  <h2 class="page-title">👤 Minha Área</h2>
+
+  <div class="card area-card">
 
     <p class="dado">
       <span>Nome</span>
@@ -17,4 +19,46 @@
       <button class="btn-secundario" (click)="sair()">Sair</button>
     </div>
   </div>
+
+  <section class="card area-card pedidos">
+    <h3 class="secao-titulo">📦 Meus Pedidos</h3>
+
+    @if (carregando) {
+      <p class="vazio">Carregando pedidos...</p>
+    } @else if (erro) {
+      <p class="vazio erro">{{ erro }}</p>
+    } @else if (pedidos.length === 0) {
+      <p class="vazio">Nenhum pedido ainda</p>
+    } @else {
+      @for (pedido of pedidos; track pedido.id) {
+        <article class="pedido">
+          <header class="pedido-topo">
+            <div>
+              <strong>Pedido #{{ pedido.id }}</strong>
+              <span class="data">{{ pedido.data | date: 'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <!-- A classe muda a cor do selo conforme o status (ex.: status-APROVADO) -->
+            <span class="status" [class]="'status-' + pedido.status">{{ textoStatus(pedido.status) }}</span>
+          </header>
+
+          <ul class="itens">
+            @for (item of pedido.itens; track item.produtoId) {
+              <li>
+                <span>{{ item.quantidade }}x {{ item.nome }}</span>
+                <span>R$ {{ item.subtotal.toFixed(2) }}</span>
+              </li>
+            }
+          </ul>
+
+          <p class="total">
+            @if (pedido.formaPagamento) {
+              <span class="forma">Pago com {{ textoForma[pedido.formaPagamento] }}</span>
+            }
+            <span class="valor">Total: <strong>R$ {{ pedido.total.toFixed(2) }}</strong></span>
+          </p>
+        </article>
+      }
+    }
+  </section>
+</div>
 </div>

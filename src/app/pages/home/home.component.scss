@@ -1,64 +1,56 @@
 .hero {
   position: relative;
-  padding: 60px 5%;
+  padding: var(--space-6) var(--page-gutter);
   background: radial-gradient(circle at 20% 20%, rgba(255, 59, 59, 0.15), transparent 40%),
     radial-gradient(circle at 80% 10%, rgba(198, 40, 40, 0.18), transparent 35%),
     rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--color-border);
   overflow: hidden;
   display: flex;
   justify-content: center;
+  z-index: 1;
 }
 
 .hero-content {
-  max-width: 1100px;
+  max-width: var(--content-max);
   text-align: center;
   margin: 0 auto;
 }
 
 .hero h1 {
-  color: var(--texto-destaque);
-  margin: 0 0 10px;
+  color: var(--color-text-strong);
+  margin: 0 0 var(--space-3);
   font-size: 44px;
   letter-spacing: 1px;
 }
 
 .hero h1 span {
-  color: var(--neon-red);
+  color: var(--color-primary);
 }
 
 .hero p {
-  margin: 0 0 25px;
+  margin: 0 auto var(--space-5);
   max-width: 650px;
-  color: rgba(197, 198, 199, 0.95);
+  color: var(--color-text);
 }
 
 .hero-actions {
   display: flex;
-  gap: 15px;
+  gap: var(--space-4);
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .btn-primary {
-  background: var(--neon-red);
-  color: var(--bg-principal);
+  background: var(--color-primary);
+  color: var(--color-bg);
   font-weight: bold;
-  padding: 12px 18px;
-  border-radius: 8px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
   text-decoration: none;
-  border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 18px rgba(255, 59, 59, 0.25);
-}
 
-.btn-ghost {
-  background: transparent;
-  color: var(--neon-red);
-  font-weight: bold;
-  padding: 12px 18px;
-  border-radius: 8px;
-  text-decoration: none;
-  border: 2px solid var(--neon-red);
+  &:hover { background: var(--color-primary-hover); }
 }
 
 .hero-glow {
@@ -72,46 +64,31 @@
   pointer-events: none;
 }
 
+// Barra de categorias + vitrine. A largura e o respiro vêm da classe global .page.
 .layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 30px;
-  padding: 30px 5% 50px;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  position: relative;
-}
-
-.layout::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 15, 26, 0.88);
-  pointer-events: none;
-  z-index: 0;
+  grid-template-columns: 240px 1fr;
+  gap: var(--space-5);
+  align-items: start;
 }
 
 .sidebar {
-  background: var(--bg-card);
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);
-  height: fit-content;
-  position: relative;
-  z-index: 1;
+  position: sticky;
+  top: var(--space-4);
 }
 
 .content {
-  position: relative;
-  z-index: 1;
-  z-index: 1;
+  min-width: 0; // deixa a grade de produtos encolher dentro do grid
 }
 
 .sidebar h3 {
-  margin: 0 0 15px;
-  color: var(--texto-destaque);
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-strong);
 }
 
 .cat-list {
@@ -120,39 +97,46 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
 .cat-btn {
   width: 100%;
   text-align: left;
   background: rgba(255, 59, 59, 0.06);
-  color: var(--texto-principal);
+  color: var(--color-text);
   border: 1px solid rgba(255, 59, 59, 0.18);
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
   cursor: pointer;
   font-weight: 700;
+  font-size: 14px;
+
+  &:hover { background: var(--color-primary-soft); }
 }
 
 .cat-btn.active {
   background: rgba(255, 59, 59, 0.18);
   border-color: rgba(255, 59, 59, 0.6);
-  color: var(--neon-red);
+  color: var(--color-primary);
 }
-
-.sidebar-card {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  color: rgba(197, 198, 199, 0.95);
-  font-size: 13px;
-}
-
-
 
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
   }
+
+  .sidebar { position: static; }
+
+  // No celular as categorias viram uma fileira de botões, em vez de uma coluna comprida
+  .cat-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .cat-btn { width: auto; }
+}
+
+@media (max-width: 600px) {
+  .hero h1 { font-size: 34px; }
 }

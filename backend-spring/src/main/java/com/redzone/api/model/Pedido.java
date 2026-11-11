@@ -3,6 +3,8 @@ package com.redzone.api.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,6 +36,19 @@ public class Pedido {
 
     @Column(nullable = false)
     private Double total;
+
+    // Em que etapa o pedido está. EnumType.STRING grava o nome ("APROVADO"), não a posição (0, 1, 2...).
+    // A coluna ACEITA nulo: pedidos feitos antes deste campo existir ficam com null no banco
+    // (o ddl-auto=update só cria a coluna, sem mexer nas linhas). Quem trata o null é o getStatus().
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private StatusPedido status;
+
+    // Como foi pago (CARTAO ou PIX). Nulo enquanto o pedido não foi pago, e nos pedidos antigos.
+    // Nenhum dado do cartão é guardado: só a FORMA de pagamento.
+    @Enumerated(EnumType.STRING)
+    @Column(name = "forma_pagamento", length = 20)
+    private FormaPagamento formaPagamento;
 
     // Um pedido -> vários itens. mappedBy = "pedido": quem guarda a chave estrangeira é o ItemPedido.
     // cascade ALL: ao salvar o pedido, os itens são salvos junto (e apagados junto, se o pedido for apagado).
@@ -85,6 +100,24 @@ public class Pedido {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    // Pedido antigo (sem status gravado) aparece como APROVADO: antes desta mudança,
+    // todo pedido salvo já era considerado uma compra concluída.
+    public StatusPedido getStatus() {
+        return status != null ? status : StatusPedido.APROVADO;
+    }
+
+    public void setStatus(StatusPedido status) {
+        this.status = status;
+    }
+
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public void setFormaPagamento(FormaPagamento formaPagamento) {
+        this.formaPagamento = formaPagamento;
     }
 
     public List<ItemPedido> getItens() {

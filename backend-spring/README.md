@@ -37,7 +37,7 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 
 | Método | Rota | Descrição | Respostas |
 |---|---|---|---|
-| GET | `/produtos` | Lista os produtos | 200 |
+| GET | `/produtos` | Lista os produtos (`?promocao=true`: só os que têm `precoPromocional`) | 200 |
 | GET | `/produtos/{id}` | Busca um produto | 200, 404 |
 | POST | `/produtos` | Cadastra produto | 201, 400 |
 | PUT | `/produtos/{id}` | Atualiza produto | 200, 400, 404 |
@@ -49,15 +49,18 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 | POST | `/usuarios` | Cadastra usuário | 201, 400, **409** (e-mail repetido) |
 | PUT | `/usuarios/{id}` | Atualiza usuário (inclui a nova senha) | 200, 400, 404, **409** |
 | DELETE | `/usuarios/{id}` | Exclui usuário | 204, 404 |
-| POST | `/pedidos` | Salva um pedido com seus itens (preço e total calculados no back-end) | 201, 400, 404 |
-| GET | `/pedidos/usuario/{usuarioId}` | Lista os pedidos do usuário | 200, 404 |
+| POST | `/pedidos` | Salva um pedido com seus itens (preço e total calculados no back-end; produto em promoção cobra o `precoPromocional`) | 201, 400, 404, 409 |
+| GET | `/pedidos/usuario/{usuarioId}` | Lista os pedidos do usuário (com `status`) | 200, 404 |
 | GET | `/pedidos/{id}` | Busca um pedido | 200, 404 |
+| POST | `/pagamentos` | Pagamento fictício (`pedidoId`, `formaPagamento`: `CARTAO`/`PIX`). Sempre aprova: status vira `APROVADO` | 200, 400, 404, **409** (já pago) |
 
 ## Regras
 
 - O **e-mail é único** no banco (`@Column(unique = true)`). Se já existir, a API responde `409 Conflict`.
 - Os campos são validados com Bean Validation (`@NotBlank`, `@Email`, `@Size`, `@Positive`) e erros voltam como `400` com a lista de campos.
 - O `id` é sempre gerado pelo banco: mesmo que o front envie um, ele é ignorado no cadastro.
+- Todo pedido nasce com `status = AGUARDANDO_PAGAMENTO`. Pedidos antigos (coluna `status` nula) são devolvidos como `APROVADO`.
+- O pagamento é um mock: o `PagamentoRequest` não tem campos de cartão, então número, validade e CVV nunca são recebidos nem gravados. Só a forma de pagamento fica no pedido.
 - CORS liberado para `http://localhost:4200` (`config/CorsConfig`).
 
 ## Estrutura
@@ -69,8 +72,8 @@ backend-spring/
     ├── java/com/redzone/api/
     │   ├── RedzoneApplication.java
     │   ├── config/CorsConfig.java
-    │   ├── controller/   (UsuarioController, ProdutoController, ApiExceptionHandler)
-    │   ├── model/        (Usuario, Produto)
+    │   ├── controller/   (Usuario, Produto, Pedido, Pagamento, Estoque, Auth, ApiExceptionHandler)
+    │   ├── model/        (Usuario, Produto, Pedido, ItemPedido, StatusPedido, FormaPagamento, ...)
     │   └── repository/   (UsuarioRepository, ProdutoRepository)
     └── resources/
         ├── application.properties

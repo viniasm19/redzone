@@ -1,79 +1,152 @@
+// Largura (.coluna-media), card (.card) e título (.page-title) vêm do styles.scss global
 .area-container {
   display: flex;
-  justify-content: center;
-  padding: 60px 5%;
-  position: relative;
-  z-index: 1;
+  flex-direction: column;
+  gap: var(--space-5);
+
+  .page-title { margin: 0; }
 }
 
 .area-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 59, 59, 0.2);
-  border-radius: 16px;
-  padding: 40px;
-  width: 100%;
-  max-width: 500px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
+  border-color: rgba(255, 59, 59, 0.2);
   box-shadow: 0 0 30px rgba(255, 59, 59, 0.1);
 }
 
-h2 {
-  color: var(--neon-red);
+.secao-titulo {
   margin: 0;
+  color: var(--color-text-strong);
+  font-size: 20px;
 }
 
 .dado {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 
   span {
     font-size: 13px;
-    color: rgba(197, 198, 199, 0.6);
+    color: var(--color-text-muted);
   }
 
   strong {
     font-size: 18px;
-    color: var(--texto-destaque);
+    color: var(--color-text-strong);
   }
 }
 
 .acoes {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 8px;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 .btn-primario,
 .btn-secundario {
-  padding: 12px 24px;
-  border-radius: 10px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
   font-weight: bold;
   font-size: 15px;
   cursor: pointer;
 }
 
 .btn-primario {
-  background: var(--neon-red);
-  color: var(--bg-principal);
+  background: var(--color-primary);
+  color: var(--color-bg);
   border: none;
   box-shadow: 0 0 16px rgba(255, 59, 59, 0.3);
 
-  &:hover {
-    opacity: 0.85;
-  }
+  &:hover { opacity: 0.85; }
 }
 
 .btn-secundario {
   background: transparent;
-  color: var(--neon-red);
-  border: 1px solid var(--neon-red);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
 
-  &:hover {
-    background: rgba(255, 59, 59, 0.1);
+  &:hover { background: var(--color-primary-soft); }
+}
+
+// ---------- Histórico de pedidos ----------
+.vazio {
+  margin: 0;
+  color: var(--color-text-muted);
+
+  &.erro { color: #ff6b6b; }
+}
+
+.pedido {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.pedido-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+
+  strong { color: var(--color-text-strong); }
+
+  .data {
+    margin-left: var(--space-3);
+    font-size: 13px;
+    color: var(--color-text-muted);
   }
+}
+
+.status {
+  font-size: 12px;
+  font-weight: bold;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 20px;
+  border: 1px solid currentColor;
+}
+.status-AGUARDANDO_PAGAMENTO { color: var(--color-warning); }
+.status-APROVADO { color: var(--color-success); }
+.status-EM_SEPARACAO { color: #42a5f5; }
+.status-ENVIADO { color: #ab47bc; }
+.status-ENTREGUE { color: #9e9e9e; }
+
+.itens {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: 14px;
+  }
+}
+
+.total {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+
+  .forma {
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+
+  .valor { margin-left: auto; }
+
+  strong { color: var(--color-primary); }
 }
