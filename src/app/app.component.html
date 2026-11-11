@@ -1,12 +1,15 @@
+<!-- Molde de TODAS as telas: o cabeçalho, a tela da rota atual, o rodapé e o aviso do carrinho -->
 <app-header></app-header>
 
 <main>
+  <!-- router-outlet: o "buraco" onde o Angular desenha a tela da rota atual (Home, Carrinho, Login...) -->
   <router-outlet></router-outlet>
 </main>
 
 <!-- Rodapé: depois do router-outlet, então aparece em todas as telas -->
 <app-footer></app-footer>
 
+<!-- Aviso rápido do carrinho: só aparece enquanto cartService.toast() tem texto (some em 2,5 s) -->
 <div class="toast" *ngIf="cartService.toast()">
   {{ cartService.toast() }}
 </div>

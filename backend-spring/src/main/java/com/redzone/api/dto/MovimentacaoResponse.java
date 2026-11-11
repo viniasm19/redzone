@@ -16,6 +16,7 @@ public record MovimentacaoResponse(
         LocalDateTime data,
         String observacao
 ) {
+    // Recebe: a movimentação do banco. Devolve: a resposta com o id e o nome do produto (não o produto inteiro).
     public static MovimentacaoResponse de(MovimentacaoEstoque m) {
         return new MovimentacaoResponse(
                 m.getId(),

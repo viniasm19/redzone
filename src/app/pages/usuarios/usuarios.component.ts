@@ -19,10 +19,13 @@ export class UsuariosComponent implements OnInit {
   // Validação do e-mail digitado: texto@dominio.ext, sem espaços.
   private static readonly EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  usuarios: Usuario[] = [];
-  usuarioEditando: Usuario | null = null;
-  erro = '';
+  // O HTML espera daqui: usuarios (a lista), usuarioEditando (o formulário de edição), erro
+  // e os métodos editar, cancelar, salvarEdicao e excluir.
+  usuarios: Usuario[] = [];               // todos os usuários (sem senha)
+  usuarioEditando: Usuario | null = null; // null = formulário fechado; um usuário = editando ele
+  erro = '';                              // mensagem de erro
 
+  // Roda quando a tela abre: carrega a lista
   ngOnInit() {
     this.carregar();
   }
@@ -32,6 +35,7 @@ export class UsuariosComponent implements OnInit {
     return email.trim().toLowerCase();
   }
 
+  // GET /usuarios e guarda a lista
   async carregar() {
     this.usuarios = await this.auth.listarUsuarios();
   }
@@ -49,13 +53,16 @@ export class UsuariosComponent implements OnInit {
   }
 
   async salvarEdicao() {
+    // 1) sem usuário em edição, não há o que salvar
     if (!this.usuarioEditando) return;
     this.erro = '';
 
+    // 2) prepara os valores: nome sem espaços nas pontas, e-mail padronizado e a senha digitada
     const nome = this.usuarioEditando.nome.trim();
     const email = this.normalizarEmail(this.usuarioEditando.email);
     const senha = this.usuarioEditando.senha ?? '';
 
+    // 3) confere os três campos antes de chamar a API
     if (!nome) {
       this.erro = 'Informe o nome.';
       return;
@@ -70,6 +77,7 @@ export class UsuariosComponent implements OnInit {
     }
 
     try {
+      // 4) PUT /usuarios/{id} com os dados novos; depois recarrega a lista e fecha o formulário
       await this.auth.atualizarUsuario({ ...this.usuarioEditando, nome, email, senha });
       await this.carregar();
       this.usuarioEditando = null;
@@ -81,6 +89,7 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
+  // Botão "Excluir": DELETE /usuarios/{id} e recarrega a lista
   async excluir(id: number) {
     this.erro = '';
     try {

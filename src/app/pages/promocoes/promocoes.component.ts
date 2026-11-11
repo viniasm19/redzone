@@ -19,10 +19,12 @@ export class PromocoesComponent implements OnInit {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
 
-  produtos: Produto[] = [];
-  carregando = true;
-  erro = '';
+  // O HTML espera daqui: produtos, carregando e erro (o que mostrar) e o método adicionarAoCarrinho.
+  produtos: Produto[] = [];  // produtos em promoção
+  carregando = true;         // true até a resposta da API chegar
+  erro = '';                 // aviso se a API falhar
 
+  // Roda quando a tela abre: GET /produtos?promocao=true
   ngOnInit() {
     this.productService.getPromocoes().subscribe({
       next: dados => {
@@ -36,6 +38,7 @@ export class PromocoesComponent implements OnInit {
     });
   }
 
+  // O card avisou que o botão "Adicionar" foi clicado
   adicionarAoCarrinho(produto: Produto) {
     this.cartService.adicionarAoCarrinho(produto);
   }

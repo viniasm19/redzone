@@ -1,3 +1,13 @@
+<!-- Como ler este HTML (vale para todas as telas):
+     {{ valor }}          mostra um valor do TypeScript na tela
+     [atributo]="x"       liga um atributo ao valor x do TypeScript (ex.: [disabled]="enviando")
+     (evento)="metodo()"  chama um método do TypeScript quando o evento acontece (ex.: um clique)
+     [(ngModel)]="campo"  liga um input a um campo NOS DOIS SENTIDOS: digitar muda o campo, e vice-versa
+     *ngIf / @if          só mostra o pedaço se a condição for verdadeira
+     *ngFor / @for        repete o pedaço para cada item de uma lista
+     routerLink="/x"      link interno do Angular (troca de tela sem recarregar a página) -->
+<!-- Tela inicial: apresentação, barra de categorias e a vitrine de produtos.
+     Usa do TypeScript: categorias, categoriaSelecionada, selecionarCategoria() e irParaProdutos(). -->
 <section class="hero">
 
   <div class="hero-content">
@@ -32,6 +42,7 @@
   </aside>
 
   <main class="content">
+    <!-- A vitrine recebe a categoria escolhida e filtra os produtos sozinha -->
     <app-product-list [categoriaSelecionada]="categoriaSelecionada"></app-product-list>
   </main>
 </section>

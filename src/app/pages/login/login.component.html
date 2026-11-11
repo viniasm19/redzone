@@ -1,3 +1,7 @@
+<!-- Tela de login. Usa do TypeScript: email, senha, erro, erroEmail, returnUrl e entrar(f).
+     #f="ngForm" dá o nome "f" ao formulário; (ngSubmit) chama entrar(f) ao clicar em Entrar ou apertar Enter.
+     novalidate: desliga os balões de erro do navegador (os avisos são os nossos, em <small>).
+     #emailCtrl / #senhaCtrl: apelidos para cada campo, usados para saber se ele foi tocado (touched). -->
 <div class="page">
   <div class="coluna-estreita card auth-card">
     <h2 class="page-title">Login</h2>
@@ -26,6 +30,7 @@
       <button type="submit" class="btn">Entrar</button>
     </form>
 
+    <!-- Os links levam o returnUrl junto: assim quem veio do checkout volta para ele no fim -->
     <div class="links">
       <a routerLink="/cadastro" [queryParams]="returnUrl ? { returnUrl: returnUrl } : {}">Criar conta</a>
       <span class="dot">•</span>
