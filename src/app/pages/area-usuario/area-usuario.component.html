@@ -17,4 +17,40 @@
       <button class="btn-secundario" (click)="sair()">Sair</button>
     </div>
   </div>
+
+  <section class="area-card pedidos">
+    <h2>📦 Meus Pedidos</h2>
+
+    @if (carregando) {
+      <p class="vazio">Carregando pedidos...</p>
+    } @else if (erro) {
+      <p class="vazio erro">{{ erro }}</p>
+    } @else if (pedidos.length === 0) {
+      <p class="vazio">Nenhum pedido ainda</p>
+    } @else {
+      @for (pedido of pedidos; track pedido.id) {
+        <article class="pedido">
+          <header class="pedido-topo">
+            <div>
+              <strong>Pedido #{{ pedido.id }}</strong>
+              <span class="data">{{ pedido.data | date: 'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <!-- A classe muda a cor do selo conforme o status (ex.: status-APROVADO) -->
+            <span class="status" [class]="'status-' + pedido.status">{{ textoStatus(pedido.status) }}</span>
+          </header>
+
+          <ul class="itens">
+            @for (item of pedido.itens; track item.produtoId) {
+              <li>
+                <span>{{ item.quantidade }}x {{ item.nome }}</span>
+                <span>R$ {{ item.subtotal.toFixed(2) }}</span>
+              </li>
+            }
+          </ul>
+
+          <p class="total">Total: <strong>R$ {{ pedido.total.toFixed(2) }}</strong></p>
+        </article>
+      }
+    }
+  </section>
 </div>

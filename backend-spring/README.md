@@ -50,7 +50,7 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 | PUT | `/usuarios/{id}` | Atualiza usuário (inclui a nova senha) | 200, 400, 404, **409** |
 | DELETE | `/usuarios/{id}` | Exclui usuário | 204, 404 |
 | POST | `/pedidos` | Salva um pedido com seus itens (preço e total calculados no back-end; produto em promoção cobra o `precoPromocional`) | 201, 400, 404, 409 |
-| GET | `/pedidos/usuario/{usuarioId}` | Lista os pedidos do usuário | 200, 404 |
+| GET | `/pedidos/usuario/{usuarioId}` | Lista os pedidos do usuário (com `status`) | 200, 404 |
 | GET | `/pedidos/{id}` | Busca um pedido | 200, 404 |
 
 ## Regras
@@ -58,6 +58,7 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 - O **e-mail é único** no banco (`@Column(unique = true)`). Se já existir, a API responde `409 Conflict`.
 - Os campos são validados com Bean Validation (`@NotBlank`, `@Email`, `@Size`, `@Positive`) e erros voltam como `400` com a lista de campos.
 - O `id` é sempre gerado pelo banco: mesmo que o front envie um, ele é ignorado no cadastro.
+- Todo pedido nasce com `status = AGUARDANDO_PAGAMENTO`. Pedidos antigos (coluna `status` nula) são devolvidos como `APROVADO`.
 - CORS liberado para `http://localhost:4200` (`config/CorsConfig`).
 
 ## Estrutura

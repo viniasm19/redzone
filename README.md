@@ -51,7 +51,7 @@ O projeto foi pensado a partir de cinco personas:
 - Redefinição de senha (busca o usuário por e-mail e atualiza a senha com `PUT`)
 - Checkout protegido: quem não está logado é levado ao login e volta ao checkout depois de entrar
 - Tela de pedido confirmado, com atalhos para a Home e para a Área do Usuário
-- Área do Usuário
+- Área do Usuário com o **histórico de pedidos**: data, itens, total e status (Aguardando pagamento, Aprovado, Em separação, Enviado, Entregue). Pedidos antigos, sem status, aparecem como Aprovado
 - Área administrativa: o administrador cadastra, edita e exclui produtos
 - **Sistema de estoque**: cada produto tem uma quantidade em estoque
   - A vitrine mostra "Em estoque", "Últimas X unidades" ou "Esgotado" (e bloqueia a compra quando zera)

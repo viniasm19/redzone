@@ -1,6 +1,7 @@
 package com.redzone.api.dto;
 
 import com.redzone.api.model.Pedido;
+import com.redzone.api.model.StatusPedido;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +13,7 @@ public record PedidoResponse(
         Long usuarioId,
         LocalDateTime data,
         Double total,
+        StatusPedido status,
         List<ItemResponse> itens
 ) {
     public record ItemResponse(
@@ -41,6 +43,7 @@ public record PedidoResponse(
                 pedido.getUsuario().getId(),
                 pedido.getData(),
                 pedido.getTotal(),
+                pedido.getStatus(),
                 itens);
     }
 }

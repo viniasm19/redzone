@@ -5,6 +5,7 @@ import com.redzone.api.dto.PedidoResponse;
 import com.redzone.api.model.ItemPedido;
 import com.redzone.api.model.Pedido;
 import com.redzone.api.model.Produto;
+import com.redzone.api.model.StatusPedido;
 import com.redzone.api.model.TipoMovimentacao;
 import com.redzone.api.model.Usuario;
 import com.redzone.api.repository.PedidoRepository;
@@ -58,6 +59,8 @@ public class PedidoController {
         Pedido pedido = new Pedido();
         pedido.setUsuario(usuario.get());
         pedido.setData(LocalDateTime.now());
+        // Todo pedido nasce esperando o pagamento. Quem muda para APROVADO é o POST /pagamentos.
+        pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
 
         for (PedidoRequest.ItemRequest itemRequest : request.itens()) {
             Optional<Produto> produto = produtoRepository.findById(itemRequest.produtoId());
