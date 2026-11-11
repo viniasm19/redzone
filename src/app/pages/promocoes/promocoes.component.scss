@@ -1,12 +1,6 @@
 .aviso {
-  text-align: center;
   padding: var(--space-6) 0;
   color: var(--color-text-muted);
-
-  a {
-    color: var(--color-primary);
-    font-weight: bold;
-  }
 
   &.erro { color: var(--color-danger); }
 }

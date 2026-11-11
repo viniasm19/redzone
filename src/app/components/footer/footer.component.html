@@ -9,10 +9,10 @@
     <section class="coluna">
       <h3>Atendimento</h3>
       <ul>
-        <li>📍 {{ loja.endereco }}</li>
-        <li>📞 <a [href]="loja.telefoneLink">{{ loja.telefone }}</a></li>
-        <li>✉️ <a [href]="'mailto:' + loja.email">{{ loja.email }}</a></li>
-        <li>🕘 {{ loja.horario }}</li>
+        <li>{{ loja.endereco }}</li>
+        <li><a [href]="loja.telefoneLink">{{ loja.telefone }}</a></li>
+        <li><a [href]="'mailto:' + loja.email">{{ loja.email }}</a></li>
+        <li>{{ loja.horario }}</li>
       </ul>
     </section>
 

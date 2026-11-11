@@ -10,7 +10,7 @@
 
     <!-- ========== PASSO 1: REVISÃO ========== -->
     <ng-container *ngIf="etapa === 'revisao'">
-      <h2 class="page-title">📋 Resumo do Pedido</h2>
+      <h2 class="page-title">Resumo do Pedido</h2>
 
       <div class="confirm-items">
         <div class="confirm-row" *ngFor="let item of itens">
@@ -29,14 +29,14 @@
       <p class="erro-pedido" *ngIf="erro">{{ erro }}</p>
 
       <div class="confirm-actions">
-        <button class="btn-voltar" (click)="voltar()">← Voltar</button>
-        <button class="btn-confirmar" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : '✅ Confirmar Pedido' }}</button>
+        <button class="btn-voltar btn-secundario" (click)="voltar()">← Voltar</button>
+        <button class="btn-confirmar btn-principal" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : 'Confirmar Pedido' }}</button>
       </div>
     </ng-container>
 
     <!-- ========== PASSO 2: PAGAMENTO ========== -->
     <ng-container *ngIf="etapa === 'pagamento' && pedido">
-      <h2 class="page-title">💳 Pagamento</h2>
+      <h2 class="page-title">Pagamento</h2>
 
       <p class="aviso-mock">
         Ambiente de demonstração: o pagamento é <strong>fictício</strong> e sempre aprovado.
@@ -51,10 +51,10 @@
       <fieldset class="formas">
         <legend>Forma de pagamento</legend>
         <label class="forma" [class.selecionada]="formaPagamento === 'PIX'">
-          <input type="radio" name="forma" value="PIX" [(ngModel)]="formaPagamento"> ⚡ Pix
+          <input type="radio" name="forma" value="PIX" [(ngModel)]="formaPagamento"> Pix
         </label>
         <label class="forma" [class.selecionada]="formaPagamento === 'CARTAO'">
-          <input type="radio" name="forma" value="CARTAO" [(ngModel)]="formaPagamento"> 💳 Cartão de crédito
+          <input type="radio" name="forma" value="CARTAO" [(ngModel)]="formaPagamento"> Cartão de crédito
         </label>
       </fieldset>
 
@@ -90,8 +90,8 @@
         <div class="pix-codigo">
           <span>Pix copia e cola (fictício)</span>
           <code>{{ codigoPix }}</code>
-          <button type="button" class="btn-copiar" (click)="copiarCodigoPix()">
-            {{ pixCopiado ? '✔ Copiado' : '📋 Copiar código' }}
+          <button type="button" class="btn-copiar btn-secundario" (click)="copiarCodigoPix()">
+            {{ pixCopiado ? '✔ Copiado' : 'Copiar código' }}
           </button>
         </div>
       </div>
@@ -99,15 +99,15 @@
       <p class="erro-pedido" *ngIf="erro">{{ erro }}</p>
 
       <div class="confirm-actions">
-        <button class="btn-confirmar" (click)="pagar()" [disabled]="enviando">
-          {{ enviando ? 'Processando...' : (formaPagamento === 'PIX' ? '⚡ Já paguei com Pix' : '💳 Pagar com cartão') }}
+        <button class="btn-confirmar btn-principal" (click)="pagar()" [disabled]="enviando">
+          {{ enviando ? 'Processando...' : (formaPagamento === 'PIX' ? 'Já paguei com Pix' : 'Pagar com cartão') }}
         </button>
       </div>
     </ng-container>
 
     <!-- ========== PASSO 3: APROVADO ========== -->
     <div class="aprovado" *ngIf="etapa === 'aprovado'">
-      <div class="aprovado-icone">✅</div>
+      <div class="aprovado-icone">✓</div>
       <h2 class="page-title">Pagamento aprovado</h2>
       <p>Redirecionando...</p>
     </div>

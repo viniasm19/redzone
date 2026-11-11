@@ -1,6 +1,6 @@
-<div class="usuarios-container">
+<div class="page usuarios-container">
 
-  <h1>Usuários</h1>
+  <h1 class="page-title">Usuários</h1>
 
   <p class="erro" *ngIf="erro && !usuarioEditando">{{ erro }}</p>
 
@@ -16,14 +16,14 @@
     <div class="acoes">
 
       <button
-        class="btn-editar"
+        class="btn-editar btn-secundario"
         (click)="editar(usuario)"
       >
         Editar
       </button>
 
       <button
-        class="btn-excluir"
+        class="btn-excluir btn-secundario"
         (click)="excluir(usuario.id!)"
       >
         Excluir
@@ -38,25 +38,28 @@
 <!-- FORM EDITAR -->
 
 <div
-  class="editar-box"
+  class="page coluna-estreita editar-box"
   *ngIf="usuarioEditando"
 >
 
   <h2>Editar Usuário</h2>
 
   <input
+    class="campo"
     type="text"
     [(ngModel)]="usuarioEditando.nome"
     placeholder="Nome"
   />
 
   <input
+    class="campo"
     type="email"
     [(ngModel)]="usuarioEditando.email"
     placeholder="Email"
   />
 
   <input
+    class="campo"
     type="password"
     [(ngModel)]="usuarioEditando.senha"
     placeholder="Senha (mínimo 4 caracteres)"
@@ -64,11 +67,11 @@
 
   <p class="erro" *ngIf="erro">{{ erro }}</p>
 
-  <button (click)="salvarEdicao()">
+  <button class="btn-principal" (click)="salvarEdicao()">
     Salvar Alterações
   </button>
 
-  <button (click)="cancelar()">
+  <button class="btn-secundario" (click)="cancelar()">
     Cancelar
   </button>
 

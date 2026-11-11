@@ -17,7 +17,7 @@
         <p class="precos">
           <s class="preco-antigo">R$ {{ produto.preco.toFixed(2) }}</s>
           <span class="preco">R$ {{ produto.precoPromocional!.toFixed(2) }}</span>
-          <span class="selo-promocao">🔥 Promoção</span>
+          <span class="selo-promocao">Promoção</span>
         </p>
       } @else {
         <p class="preco">R$ {{ produto.preco }}</p>
@@ -32,11 +32,11 @@
       }
 
       @if (produto.garantia) {
-        <p class="garantia">🛡️ Garantia: {{ produto.garantia }}</p>
+        <p class="garantia">Garantia: {{ produto.garantia }}</p>
       }
 
       <button class="btn-primary" (click)="adicionarAoCarrinho()" [disabled]="produto.estoque === 0">
-        {{ produto.estoque === 0 ? 'Indisponível' : '🛒 Adicionar ao Carrinho' }}
+        {{ produto.estoque === 0 ? 'Indisponível' : 'Adicionar ao Carrinho' }}
       </button>
     </div>
   </div>
