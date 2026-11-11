@@ -17,5 +17,10 @@ export class HomeComponent {
   selecionarCategoria(c: string) {
     this.categoriaSelecionada = c;
   }
+
+  // Botão "Ver Produtos" do topo: rola a página suavemente até a vitrine (id="produtos")
+  irParaProdutos() {
+    document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 

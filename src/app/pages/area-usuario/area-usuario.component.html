@@ -17,6 +17,10 @@
     <div class="acoes">
       <button class="btn-primario btn-principal" routerLink="/">Continuar Comprando</button>
       <button class="btn-secundario" (click)="sair()">Sair</button>
+      <!-- A tela de Estoque saiu do menu: o administrador chega nela por aqui -->
+      @if (auth.isAdmin()) {
+        <button class="btn-secundario" routerLink="/estoque">Estoque</button>
+      }
     </div>
   </div>
 

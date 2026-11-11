@@ -6,19 +6,19 @@
     <p>Domine o jogo com equipamentos que combinam performance e estilo.</p>
     <div class="hero-actions">
 
-      <a routerLink="/products" class="btn-principal">
+      <!-- Os produtos estão logo abaixo, nesta mesma tela: o botão só rola até eles -->
+      <button type="button" class="btn-principal" (click)="irParaProdutos()">
         Ver Produtos
-      </a>
+      </button>
       <a routerLink="/cart" class="btn-secundario">
         Ir para Carrinho
       </a>
 
     </div>
   </div>
-  <div class="hero-glow" aria-hidden="true"></div>
 </section>
 
-<section class="page layout">
+<section class="page layout" id="produtos">
   <aside class="sidebar">
     <h3>Categorias</h3>
     <ul class="cat-list">

@@ -46,6 +46,6 @@ export class ProductDetailComponent implements OnInit {
   }
 
   voltar() {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/']); // os produtos ficam na tela inicial
   }
 }
