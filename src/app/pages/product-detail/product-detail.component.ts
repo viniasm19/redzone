@@ -6,6 +6,12 @@ import { CartService } from '../../services/cart.service';
 import { Produto } from '../../models/produto.model';
 import { ESTOQUE_MINIMO } from '../../services/stock.service';
 
+// Uma linha da ficha técnica. "Memória: 8 GB" vira { rotulo: 'Memória', valor: '8 GB' };
+// uma linha sem ":" fica só com o valor.
+interface Especificacao {
+  rotulo: string;
+  valor: string;
+}
 
 @Component({
   selector: 'app-product-detail',
@@ -17,6 +23,7 @@ import { ESTOQUE_MINIMO } from '../../services/stock.service';
 export class ProductDetailComponent implements OnInit {
 
   produto: Produto | null = null;
+  especificacoes: Especificacao[] = [];
   estoqueMinimo = ESTOQUE_MINIMO;
 
   constructor(
@@ -28,10 +35,32 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    // pega a lista da API e separa o produto da rota /product/:id
-    this.productService.getProdutos().subscribe(produtos => {
-      this.produto = produtos.find(p => p.id === id) ?? null;
+    // GET /produtos/{id}: se o produto não existir (404), a tela fica vazia, como antes
+    this.productService.getProduto(id).subscribe({
+      next: produto => {
+        this.produto = produto;
+        this.especificacoes = this.separarEspecificacoes(produto.especificacoes);
+      },
+      error: () => (this.produto = null)
     });
+  }
+
+  // As especificações chegam num texto só, uma por linha. Aqui viram uma lista para a tela.
+  // Linhas vazias são descartadas: assim, se não sobrar nada, a seção nem aparece.
+  private separarEspecificacoes(texto?: string | null): Especificacao[] {
+    if (!texto) {
+      return [];
+    }
+    return texto
+      .split(/\r?\n/)
+      .map(linha => linha.trim())
+      .filter(linha => linha.length > 0)
+      .map(linha => {
+        const posicao = linha.indexOf(':');
+        return posicao > 0
+          ? { rotulo: linha.slice(0, posicao).trim(), valor: linha.slice(posicao + 1).trim() }
+          : { rotulo: '', valor: linha };
+      });
   }
 
   adicionarAoCarrinho() {

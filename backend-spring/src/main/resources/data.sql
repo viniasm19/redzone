@@ -22,3 +22,24 @@ INSERT INTO produtos (nome, preco, imagem, categoria, descricao, estoque) VALUES
 INSERT INTO produtos (nome, preco, imagem, categoria, descricao, estoque) VALUES ('Mouse Gamer RGB', 129.9, '/img/produtos/mouse-gamer.jpg', 'Acessórios', 'Mouse com sensor de alta precisão e DPI ajustável.', 30);
 INSERT INTO produtos (nome, preco, imagem, categoria, descricao, estoque) VALUES ('Teclado Mecânico RGB', 349.9, '/img/produtos/teclado.jpg', 'Acessórios', 'Teclado mecânico com switches responsivos e iluminação por tecla.', 18);
 INSERT INTO produtos (nome, preco, imagem, categoria, descricao, estoque) VALUES ('Mousepad Speed Grande', 79.9, '/img/produtos/mousepad.jpg', 'Acessórios', 'Mousepad extra grande com base antiderrapante e superfície speed.', 40);
+
+-- Detalhes opcionais (marca, garantia e especificações) só em ALGUNS produtos:
+-- os outros ficam com esses campos nulos, e a tela de detalhe simplesmente não mostra essas seções.
+-- Nas especificações, cada linha é um item da ficha técnica (CHAR(10) = quebra de linha).
+UPDATE produtos SET marca = 'HyperSound', garantia = '12 meses',
+  especificacoes = 'Conexão: USB' || CHAR(10) || 'Padrão polar: cardioide' || CHAR(10) || 'Taxa de amostragem: 48 kHz' || CHAR(10) || 'Acompanha: tripé e filtro pop'
+  WHERE nome = 'Microfone Condensador USB';
+UPDATE produtos SET marca = 'ErgoPlay', garantia = '24 meses',
+  especificacoes = 'Peso suportado: até 120 kg' || CHAR(10) || 'Reclinação: 90° a 180°' || CHAR(10) || 'Revestimento: couro sintético' || CHAR(10) || 'Braços: 4D ajustáveis'
+  WHERE nome = 'Cadeira Gamer Ergonômica';
+UPDATE produtos SET marca = 'NVIDIA', garantia = '36 meses',
+  especificacoes = 'Memória: 8 GB GDDR6' || CHAR(10) || 'Interface: PCI Express 4.0' || CHAR(10) || 'Saídas: 3x DisplayPort, 1x HDMI' || CHAR(10) || 'Fonte recomendada: 550 W'
+  WHERE nome = 'Placa de Vídeo RTX 4060 8GB';
+UPDATE produtos SET marca = 'AMD', garantia = '12 meses',
+  especificacoes = 'Núcleos / threads: 6 / 12' || CHAR(10) || 'Clock: 3.5 GHz (até 4.4 GHz)' || CHAR(10) || 'Soquete: AM4'
+  WHERE nome = 'Processador Ryzen 5 5600';
+UPDATE produtos SET marca = 'KeyForce', garantia = '12 meses',
+  especificacoes = 'Switch: mecânico red (linear)' || CHAR(10) || 'Layout: ABNT2' || CHAR(10) || 'Iluminação: RGB por tecla'
+  WHERE nome = 'Teclado Mecânico RGB';
+-- Só marca, sem garantia nem especificações (para mostrar que cada campo é independente)
+UPDATE produtos SET marca = 'ClickPro' WHERE nome = 'Mouse Gamer RGB';

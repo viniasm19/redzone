@@ -34,7 +34,8 @@
 }
 
 .form-container input,
-.form-container select {
+.form-container select,
+.form-container textarea {
   padding: 12px;
   border-radius: 10px;
   border: 1px solid rgba(255, 59, 59, 0.2);
@@ -43,7 +44,13 @@
   color: white;
 }
 
-.form-container input::placeholder {
+.form-container textarea {
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form-container input::placeholder,
+.form-container textarea::placeholder {
   color: rgba(255, 255, 255, 0.35);
 }
 

@@ -58,6 +58,7 @@ O projeto foi pensado a partir de cinco personas:
   - O carrinho não deixa colocar mais unidades do que existem
   - Ao finalizar o pedido, o back-end confere o estoque de novo e dá baixa. Se faltar algum item, nada é salvo e a API responde `409`
   - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
+- **Detalhes do produto**: marca, garantia e ficha técnica (especificações), todos opcionais. A tela de detalhe só mostra o que estiver preenchido
 - Interface responsiva e componentes reutilizáveis
 
 ### 🔄 Fluxo de compra
@@ -187,7 +188,9 @@ O `data.sql` carrega ainda os usuários mariana, rafael, sofia e tiago (`@email.
 
 Apenas o administrador vê os botões de **Editar**, **Excluir**, o formulário de **Cadastrar Produto** e a tela **📦 Estoque**.
 
-> Quem já tinha a pasta `backend-spring/data/` de antes: a coluna `estoque` é criada sozinha, mas com **0** em todos os produtos (o `data.sql` não roda de novo). Dê entrada pela tela de Estoque, ou apague a pasta `data` para recarregar os dados de exemplo.
+> Quem já tinha a pasta `backend-spring/data/` de antes: as colunas novas (`marca`, `garantia`, `especificacoes`, `preco_promocional`, e nos pedidos `status` e `forma_pagamento`) são criadas sozinhas e ficam vazias nos registros antigos, sem apagar nada. Os exemplos do `data.sql` só aparecem num banco novo.
+
+> A coluna `estoque` é criada sozinha, mas com **0** em todos os produtos (o `data.sql` não roda de novo). Dê entrada pela tela de Estoque, ou apague a pasta `data` para recarregar os dados de exemplo.
 
 ## 🧪 Testes
 

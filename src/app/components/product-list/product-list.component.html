@@ -50,6 +50,18 @@
 
     </select>
 
+    <!-- Detalhes opcionais: se ficarem vazios, a tela de detalhe não mostra a seção -->
+    <input type="text" placeholder="Marca (opcional)" [(ngModel)]="novoProduto.marca">
+
+    <input type="text" placeholder="Garantia (opcional, ex.: 12 meses)" [(ngModel)]="novoProduto.garantia">
+
+    <textarea rows="4" placeholder="Especificações (opcional, uma por linha, ex.: Conexão: USB)"
+              [(ngModel)]="novoProduto.especificacoes"></textarea>
+
+    <label class="rotulo" for="preco-promocional">Preço promocional (vazio = sem promoção)</label>
+    <input id="preco-promocional" type="number" min="0" step="0.01" placeholder="Preço promocional"
+           [(ngModel)]="novoProduto.precoPromocional">
+
     <!-- Estoque inicial só no cadastro. Depois, entrada/saída é pela tela de Estoque. -->
     <ng-container *ngIf="!editandoId">
       <label class="rotulo" for="estoque-inicial">Estoque inicial</label>

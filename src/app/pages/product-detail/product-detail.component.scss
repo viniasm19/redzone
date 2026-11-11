@@ -97,3 +97,58 @@
     grid-template-columns: 1fr;
   }
 }
+// ---------- Detalhes opcionais ----------
+.detail-info {
+  .marca,
+  .garantia,
+  .descricao {
+    margin: 0;
+  }
+
+  .marca strong { color: var(--texto-destaque); }
+  .garantia { color: rgba(197, 198, 199, 0.85); }
+}
+
+.especificacoes {
+  margin-top: 30px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid rgba(255, 59, 59, 0.15);
+
+  h2 {
+    color: var(--texto-destaque);
+    margin: 0 0 16px;
+    font-size: 22px;
+  }
+
+  dl { margin: 0; }
+
+  .linha {
+    display: flex;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    &:last-child { border-bottom: none; }
+  }
+
+  dt {
+    flex: 0 0 200px;
+    color: rgba(197, 198, 199, 0.6);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--texto-destaque);
+  }
+}
+
+@media (max-width: 768px) {
+  .especificacoes .linha {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .especificacoes dt { flex-basis: auto; }
+}

@@ -6,6 +6,12 @@
     <div class="detail-info">
       <span class="categoria">{{ produto.categoria }}</span>
       <h1>{{ produto.nome }}</h1>
+
+      <!-- Cada detalhe opcional só aparece se existir: nada de título com conteúdo vazio -->
+      @if (produto.marca) {
+        <p class="marca">Marca: <strong>{{ produto.marca }}</strong></p>
+      }
+
       <p class="descricao">{{ produto.descricao }}</p>
       <p class="preco">R$ {{ produto.preco }}</p>
 
@@ -17,9 +23,29 @@
         <p class="estoque estoque-ok">{{ produto.estoque }} unidades em estoque</p>
       }
 
+      @if (produto.garantia) {
+        <p class="garantia">🛡️ Garantia: {{ produto.garantia }}</p>
+      }
+
       <button class="btn-primary" (click)="adicionarAoCarrinho()" [disabled]="produto.estoque === 0">
         {{ produto.estoque === 0 ? 'Indisponível' : '🛒 Adicionar ao Carrinho' }}
       </button>
     </div>
   </div>
+
+  @if (especificacoes.length > 0) {
+    <section class="especificacoes">
+      <h2>Especificações</h2>
+      <dl>
+        @for (esp of especificacoes; track $index) {
+          <div class="linha">
+            @if (esp.rotulo) {
+              <dt>{{ esp.rotulo }}</dt>
+            }
+            <dd>{{ esp.valor }}</dd>
+          </div>
+        }
+      </dl>
+    </section>
+  }
 </div>
