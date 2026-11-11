@@ -50,6 +50,17 @@
 
     </select>
 
+    <!-- Estoque inicial só no cadastro. Depois, entrada/saída é pela tela de Estoque. -->
+    <ng-container *ngIf="!editandoId">
+      <label class="rotulo" for="estoque-inicial">Estoque inicial</label>
+      <input id="estoque-inicial" type="number" min="0" step="1" placeholder="Estoque inicial"
+             [(ngModel)]="novoProduto.estoque">
+    </ng-container>
+
+    <p class="dica" *ngIf="editandoId">
+      Para mudar a quantidade em estoque, use a tela <a routerLink="/estoque">📦 Estoque</a>.
+    </p>
+
 
     <p class="erro" *ngIf="erro">{{ erro }}</p>
 

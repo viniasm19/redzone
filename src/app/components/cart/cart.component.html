@@ -16,6 +16,9 @@
         <div class="item-info">
           <h4>{{ item.produto.nome }}</h4>
           <p>Preço unitário: R$ {{ item.produto.preco.toFixed(2) }}</p>
+          <p class="disponivel" *ngIf="item.quantidade >= item.produto.estoque">
+            Máximo disponível: {{ item.produto.estoque }}
+          </p>
         </div>
 
         <div class="item-qtd">
@@ -25,6 +28,7 @@
           <strong>{{ item.quantidade }}</strong>
 
           <button class="btn-qtd" (click)="aumentar(item.produto.id)"
+                  [disabled]="item.quantidade >= item.produto.estoque"
                   title="Adicionar mais um" [attr.aria-label]="'Adicionar mais um ' + item.produto.nome">+</button>
         </div>
 

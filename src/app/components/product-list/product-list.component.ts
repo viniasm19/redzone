@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { Produto } from '../../models/produto.model';
 import { ProductService } from '../../services/product.service';
@@ -8,12 +9,13 @@ import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 
 // Formulário de produto (o mesmo para cadastrar e editar). Não tem id: o id vem de editandoId.
-const FORM_VAZIO = { nome: '', preco: 0, imagem: '', categoria: '' };
+// O estoque só é usado no CADASTRO (estoque inicial). Na edição, quem mexe no estoque é a tela de Estoque.
+const FORM_VAZIO = { nome: '', preco: 0, imagem: '', categoria: '', estoque: 0 };
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, ProductItemComponent, FormsModule],
+  imports: [CommonModule, ProductItemComponent, FormsModule, RouterModule],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
@@ -69,6 +71,11 @@ export class ProductListComponent implements OnInit {
 
     if (!p.nome.trim() || !(p.preco > 0) || !p.categoria) {
       this.erro = 'Preencha nome, preço (maior que zero) e categoria.';
+      return;
+    }
+
+    if (!this.editandoId && !(Number.isInteger(p.estoque) && p.estoque >= 0)) {
+      this.erro = 'O estoque inicial deve ser um número inteiro, zero ou maior.';
       return;
     }
 

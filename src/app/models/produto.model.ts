@@ -6,4 +6,5 @@ export interface Produto {
   imagem: string; // caminho em /public (ex.: /img/produtos/headset.jpg) ou link
   categoria: string;
   descricao?: string;
+  estoque: number; // unidades disponíveis (só muda pela tela de Estoque ou quando alguém compra)
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
@@ -44,8 +45,13 @@ export class OrderConfirmComponent implements OnInit {
       await this.orderService.criarPedido(usuario.id, this.itens); // salva o pedido no banco
       this.cartService.limparCarrinho(); // só limpa o carrinho depois que a API confirmou
       this.router.navigate(['/order-success']);
-    } catch {
-      this.erro = 'Não foi possível finalizar o pedido. Tente novamente.';
+    } catch (e) {
+      // 409 = algum produto acabou enquanto a pessoa comprava. O back-end diz qual na "mensagem".
+      if (e instanceof HttpErrorResponse && e.status === 409 && e.error?.mensagem) {
+        this.erro = `${e.error.mensagem} Volte ao carrinho e ajuste a quantidade.`;
+      } else {
+        this.erro = 'Não foi possível finalizar o pedido. Tente novamente.';
+      }
       this.enviando = false;
     }
   }

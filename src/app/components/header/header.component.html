@@ -20,6 +20,11 @@
     <a *ngIf="!isLogado()" routerLink="/cadastro" routerLinkActive="active">
     📝Cadastro</a>
 
+    <!-- Só o administrador vê a tela de Estoque -->
+    <a *ngIf="isAdmin()" routerLink="/estoque" routerLinkActive="active">
+      📦 Estoque
+    </a>
+
     <ng-container *ngIf="isLogado()">
       <a class="profile" routerLink="/area-usuario">
         Olá, {{ usuario()?.nome }}

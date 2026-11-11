@@ -19,6 +19,7 @@ export class HeaderComponent {
 
   usuario = this.auth.usuarioLogado;
   isLogado = computed(() => this.auth.isAuthenticated());
+  isAdmin = computed(() => this.auth.isAdmin());
 
   sair() {
     this.auth.logout();

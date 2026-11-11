@@ -1,0 +1,13 @@
+// Uma linha do histórico de estoque, como a API (GET /estoque/movimentacoes) devolve.
+export type TipoMovimentacao = 'ENTRADA' | 'SAIDA' | 'VENDA';
+
+export interface Movimentacao {
+  id: number;
+  produtoId: number;
+  produtoNome: string;
+  tipo: TipoMovimentacao;
+  quantidade: number;
+  estoqueApos: number; // quanto ficou no estoque depois dela
+  data: string;
+  observacao?: string;
+}
