@@ -1,26 +1,116 @@
 <div class="confirm-container">
   <div class="confirm-card">
-    <h2>📋 Resumo do Pedido</h2>
 
-    <div class="confirm-items">
-      <div class="confirm-row" *ngFor="let item of itens">
-        <img [src]="item.produto.imagem" [alt]="item.produto.nome">
-        <span class="item-nome">{{ item.produto.nome }}</span>
-        <span class="item-qtd">x{{ item.quantidade }}</span>
-        <span class="item-preco">R$ {{ (precoAtual(item.produto) * item.quantidade).toFixed(2) }}</span>
+    <!-- Indicador dos passos -->
+    <ol class="passos">
+      <li [class.ativo]="etapa === 'revisao'" [class.feito]="etapa !== 'revisao'">1. Revisão</li>
+      <li [class.ativo]="etapa === 'pagamento'" [class.feito]="etapa === 'aprovado'">2. Pagamento</li>
+      <li [class.ativo]="etapa === 'aprovado'">3. Confirmação</li>
+    </ol>
+
+    <!-- ========== PASSO 1: REVISÃO ========== -->
+    <ng-container *ngIf="etapa === 'revisao'">
+      <h2>📋 Resumo do Pedido</h2>
+
+      <div class="confirm-items">
+        <div class="confirm-row" *ngFor="let item of itens">
+          <img [src]="item.produto.imagem" [alt]="item.produto.nome">
+          <span class="item-nome">{{ item.produto.nome }}</span>
+          <span class="item-qtd">x{{ item.quantidade }}</span>
+          <span class="item-preco">R$ {{ (precoAtual(item.produto) * item.quantidade).toFixed(2) }}</span>
+        </div>
       </div>
+
+      <div class="confirm-total">
+        <span>Total:</span>
+        <span class="total-valor">R$ {{ total.toFixed(2) }}</span>
+      </div>
+
+      <p class="erro-pedido" *ngIf="erro">{{ erro }}</p>
+
+      <div class="confirm-actions">
+        <button class="btn-voltar" (click)="voltar()">← Voltar</button>
+        <button class="btn-confirmar" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : '✅ Confirmar Pedido' }}</button>
+      </div>
+    </ng-container>
+
+    <!-- ========== PASSO 2: PAGAMENTO ========== -->
+    <ng-container *ngIf="etapa === 'pagamento' && pedido">
+      <h2>💳 Pagamento</h2>
+
+      <p class="aviso-mock">
+        Ambiente de demonstração: o pagamento é <strong>fictício</strong> e sempre aprovado.
+        Não digite dados reais de cartão.
+      </p>
+
+      <div class="confirm-total">
+        <span>Pedido #{{ pedido.id }}</span>
+        <span class="total-valor">R$ {{ pedido.total.toFixed(2) }}</span>
+      </div>
+
+      <fieldset class="formas">
+        <legend>Forma de pagamento</legend>
+        <label class="forma" [class.selecionada]="formaPagamento === 'PIX'">
+          <input type="radio" name="forma" value="PIX" [(ngModel)]="formaPagamento"> ⚡ Pix
+        </label>
+        <label class="forma" [class.selecionada]="formaPagamento === 'CARTAO'">
+          <input type="radio" name="forma" value="CARTAO" [(ngModel)]="formaPagamento"> 💳 Cartão de crédito
+        </label>
+      </fieldset>
+
+      <!-- Cartão: só validação de formato. Estes campos NÃO são enviados para a API. -->
+      <div class="cartao" *ngIf="formaPagamento === 'CARTAO'">
+        <label>
+          Número do cartão
+          <input name="numero" inputmode="numeric" autocomplete="off" maxlength="23"
+                 placeholder="0000 0000 0000 0000" [(ngModel)]="cartao.numero" />
+          <small class="field-error" *ngIf="tentouPagar && erroNumero">{{ erroNumero }}</small>
+        </label>
+
+        <div class="cartao-linha">
+          <label>
+            Validade
+            <input name="validade" inputmode="numeric" autocomplete="off" maxlength="5"
+                   placeholder="MM/AA" [(ngModel)]="cartao.validade" />
+            <small class="field-error" *ngIf="tentouPagar && erroValidade">{{ erroValidade }}</small>
+          </label>
+
+          <label>
+            CVV
+            <input name="cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4"
+                   placeholder="123" [(ngModel)]="cartao.cvv" />
+            <small class="field-error" *ngIf="tentouPagar && erroCvv">{{ erroCvv }}</small>
+          </label>
+        </div>
+      </div>
+
+      <!-- Pix: código e QR code FICTÍCIOS -->
+      <div class="pix" *ngIf="formaPagamento === 'PIX'">
+        <img src="/img/pix-qrcode-ficticio.svg" alt="QR code fictício do Pix" width="200" height="228" />
+        <div class="pix-codigo">
+          <span>Pix copia e cola (fictício)</span>
+          <code>{{ codigoPix }}</code>
+          <button type="button" class="btn-copiar" (click)="copiarCodigoPix()">
+            {{ pixCopiado ? '✔ Copiado' : '📋 Copiar código' }}
+          </button>
+        </div>
+      </div>
+
+      <p class="erro-pedido" *ngIf="erro">{{ erro }}</p>
+
+      <div class="confirm-actions">
+        <button class="btn-confirmar" (click)="pagar()" [disabled]="enviando">
+          {{ enviando ? 'Processando...' : (formaPagamento === 'PIX' ? '⚡ Já paguei com Pix' : '💳 Pagar com cartão') }}
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- ========== PASSO 3: APROVADO ========== -->
+    <div class="aprovado" *ngIf="etapa === 'aprovado'">
+      <div class="aprovado-icone">✅</div>
+      <h2>Pagamento aprovado</h2>
+      <p>Redirecionando...</p>
     </div>
 
-    <div class="confirm-total">
-      <span>Total:</span>
-      <span class="total-valor">R$ {{ total.toFixed(2) }}</span>
-    </div>
-
-    <p class="erro-pedido" *ngIf="erro">{{ erro }}</p>
-
-    <div class="confirm-actions">
-      <button class="btn-voltar" (click)="voltar()">← Voltar</button>
-      <button class="btn-confirmar" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : '✅ Confirmar Pedido' }}</button>
-    </div>
   </div>
 </div>

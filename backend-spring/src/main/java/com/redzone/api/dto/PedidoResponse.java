@@ -1,5 +1,6 @@
 package com.redzone.api.dto;
 
+import com.redzone.api.model.FormaPagamento;
 import com.redzone.api.model.Pedido;
 import com.redzone.api.model.StatusPedido;
 
@@ -14,6 +15,7 @@ public record PedidoResponse(
         LocalDateTime data,
         Double total,
         StatusPedido status,
+        FormaPagamento formaPagamento, // null enquanto não foi pago
         List<ItemResponse> itens
 ) {
     public record ItemResponse(
@@ -44,6 +46,7 @@ public record PedidoResponse(
                 pedido.getData(),
                 pedido.getTotal(),
                 pedido.getStatus(),
+                pedido.getFormaPagamento(),
                 itens);
     }
 }

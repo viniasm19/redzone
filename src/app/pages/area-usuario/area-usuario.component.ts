@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
-import { Pedido, STATUS_PEDIDO_TEXTO, StatusPedido } from '../../models/pedido.model';
+import { FORMA_PAGAMENTO_TEXTO, Pedido, STATUS_PEDIDO_TEXTO, StatusPedido } from '../../models/pedido.model';
 
 @Component({
   selector: 'app-area-usuario',
@@ -43,6 +43,8 @@ export class AreaUsuarioComponent implements OnInit {
   textoStatus(status: StatusPedido) {
     return STATUS_PEDIDO_TEXTO[status] ?? status;
   }
+
+  textoForma = FORMA_PAGAMENTO_TEXTO;
 
   sair() {
     this.auth.logout();

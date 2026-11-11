@@ -48,7 +48,12 @@
             }
           </ul>
 
-          <p class="total">Total: <strong>R$ {{ pedido.total.toFixed(2) }}</strong></p>
+          <p class="total">
+            @if (pedido.formaPagamento) {
+              <span class="forma">Pago com {{ textoForma[pedido.formaPagamento] }}</span>
+            }
+            Total: <strong>R$ {{ pedido.total.toFixed(2) }}</strong>
+          </p>
         </article>
       }
     }

@@ -14,6 +14,14 @@ export const STATUS_PEDIDO_TEXTO: Record<StatusPedido, string> = {
   ENTREGUE: 'Entregue'
 };
 
+// Os mesmos valores do enum FormaPagamento do back-end
+export type FormaPagamento = 'CARTAO' | 'PIX';
+
+export const FORMA_PAGAMENTO_TEXTO: Record<FormaPagamento, string> = {
+  CARTAO: 'Cartão de crédito',
+  PIX: 'Pix'
+};
+
 export interface ItemPedido {
   produtoId: number;
   nome: string;
@@ -29,5 +37,6 @@ export interface Pedido {
   data: string; // ISO, ex.: 2026-11-08T23:51:00.123
   total: number;
   status: StatusPedido; // pedidos antigos, sem status no banco, chegam como APROVADO
+  formaPagamento: FormaPagamento | null; // null enquanto o pedido não foi pago (e nos pedidos antigos)
   itens: ItemPedido[];
 }

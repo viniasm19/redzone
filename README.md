@@ -50,6 +50,7 @@ O projeto foi pensado a partir de cinco personas:
 - Cadastro e login de usuários, com validação de e-mail e senha
 - Redefinição de senha (busca o usuário por e-mail e atualiza a senha com `PUT`)
 - Checkout protegido: quem não está logado é levado ao login e volta ao checkout depois de entrar
+- **Pagamento fictício** no checkout: Pix (código e QR code de mentira) ou cartão (só validação de formato de número, validade e CVV). Os dados do cartão **nunca saem do navegador**: a API recebe só o id do pedido e a forma de pagamento
 - Tela de pedido confirmado, com atalhos para a Home e para a Área do Usuário
 - Área do Usuário com o **histórico de pedidos**: data, itens, total e status (Aguardando pagamento, Aprovado, Em separação, Enviado, Entregue). Pedidos antigos, sem status, aparecem como Aprovado
 - Área administrativa: o administrador cadastra, edita e exclui produtos
@@ -66,8 +67,10 @@ O projeto foi pensado a partir de cinco personas:
 
 ```
 Home → Produto | Carrinho
-Carrinho → Login (se não estiver logado) → Checkout → Home | Área do Usuário
-Carrinho → Checkout (se estiver logado)  → Home | Área do Usuário
+Carrinho → Login (se não estiver logado) → Checkout → Pagamento → Home | Área do Usuário
+Carrinho → Checkout (se estiver logado)  → Pagamento → Home | Área do Usuário
+
+Checkout: cria o pedido (Aguardando pagamento) → escolhe Pix ou cartão → POST /pagamentos → Aprovado
 ```
 
 ## 📁 Estrutura do projeto
@@ -168,6 +171,7 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 | DELETE | `/usuarios/{id}` | Excluir usuário |
 | POST | `/pedidos` | Salvar o pedido (envia `usuarioId` e itens com `produtoId` e `quantidade`) |
 | GET | `/pedidos/usuario/{usuarioId}` | Listar os pedidos de um usuário |
+| POST | `/pagamentos` | Pagamento fictício: envia só `pedidoId` e `formaPagamento` (`CARTAO` ou `PIX`); sempre aprova e o pedido vira `APROVADO` |
 | POST | `/estoque/{produtoId}/entrada` | Somar unidades ao estoque (`quantidade`, `observacao`) |
 | POST | `/estoque/{produtoId}/saida` | Tirar unidades (perda/ajuste); `409` se não houver o suficiente |
 | GET | `/estoque/movimentacoes?produtoId=` | Histórico de movimentações (de todos ou de um produto) |

@@ -150,5 +150,11 @@ h2 {
   margin: 0;
   text-align: right;
 
+  .forma {
+    float: left;
+    font-size: 13px;
+    color: rgba(197, 198, 199, 0.6);
+  }
+
   strong { color: var(--neon-red); }
 }

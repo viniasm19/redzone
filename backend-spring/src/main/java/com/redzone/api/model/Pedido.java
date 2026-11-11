@@ -44,6 +44,12 @@ public class Pedido {
     @Column(length = 30)
     private StatusPedido status;
 
+    // Como foi pago (CARTAO ou PIX). Nulo enquanto o pedido não foi pago, e nos pedidos antigos.
+    // Nenhum dado do cartão é guardado: só a FORMA de pagamento.
+    @Enumerated(EnumType.STRING)
+    @Column(name = "forma_pagamento", length = 20)
+    private FormaPagamento formaPagamento;
+
     // Um pedido -> vários itens. mappedBy = "pedido": quem guarda a chave estrangeira é o ItemPedido.
     // cascade ALL: ao salvar o pedido, os itens são salvos junto (e apagados junto, se o pedido for apagado).
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -104,6 +110,14 @@ public class Pedido {
 
     public void setStatus(StatusPedido status) {
         this.status = status;
+    }
+
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public void setFormaPagamento(FormaPagamento formaPagamento) {
+        this.formaPagamento = formaPagamento;
     }
 
     public List<ItemPedido> getItens() {
