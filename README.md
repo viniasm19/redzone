@@ -61,7 +61,7 @@ O projeto foi pensado a partir de cinco personas:
   - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
 - **Promoções** (`/promocoes`): produtos com preço promocional, com o preço antigo riscado. O pedido cobra o preço promocional (lido do banco)
 - Campos opcionais de produto (marca, garantia, especificações) guardados no banco e aceitos pela API. Eles **não aparecem** na tela de detalhe, que mostra só imagem, nome, descrição, preço e estoque
-- **Rodapé** em todas as telas com endereço, telefone, e-mail, horário e redes sociais. Os dados ficam em `src/app/config/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
+- **Rodapé** em todas as telas com o nome da loja, endereço, telefone e e-mail. Os dados ficam em `src/app/config/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
 - Interface responsiva e componentes reutilizáveis
 
 ### 🔄 Fluxo de compra
