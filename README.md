@@ -61,6 +61,7 @@ O projeto foi pensado a partir de cinco personas:
   - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
 - **Promoções** (`/promocoes`): produtos com preço promocional, com o preço antigo riscado. O pedido cobra o preço promocional (lido do banco)
 - **Detalhes do produto**: marca, garantia e ficha técnica (especificações), todos opcionais. A tela de detalhe só mostra o que estiver preenchido
+- **Rodapé** em todas as telas com endereço, telefone, e-mail, horário e redes sociais. Os dados ficam em `src/app/config/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
 - Interface responsiva e componentes reutilizáveis
 
 ### 🔄 Fluxo de compra
@@ -79,13 +80,13 @@ Checkout: cria o pedido (Aguardando pagamento) → escolhe Pix ou cartão → PO
 redzone/
 ├── src/
 │   └── app/
-│       ├── components/   (header, product-item, product-list)
+│       ├── components/   (header, footer, product-item, product-list)
 │       ├── pages/        (home, login, register, forgot-password, product-detail,
-│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart)
-│       ├── services/     (auth, cart, product, order, stock)
+│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart, promocoes)
+│       ├── services/     (auth, cart, product, order, payment, stock)
 │       ├── guards/       (auth.guard)
 │       ├── models/
-│       └── config/       (api.ts — URL base da API)
+│       └── config/       (api.ts — URL base da API; loja.ts — dados do rodapé)
 ├── public/
 ├── backend-spring/       (API REST em Spring Boot + banco H2)
 ├── angular.json

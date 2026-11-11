@@ -4,6 +4,9 @@
   <router-outlet></router-outlet>
 </main>
 
+<!-- Rodapé: depois do router-outlet, então aparece em todas as telas -->
+<app-footer></app-footer>
+
 <div class="toast" *ngIf="cartService.toast()">
   {{ cartService.toast() }}
 </div>
