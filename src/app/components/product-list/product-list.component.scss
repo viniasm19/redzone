@@ -1,47 +1,47 @@
+// A largura, o respiro e o título vêm das classes globais .page e .page-title.
 .vitrine-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  position: relative;
-  z-index: 1;
+  gap: var(--space-5);
+
+  .page-title { margin-bottom: 0; }
 }
 
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  width: 100%;
-  max-width: 1000px;
+// Dentro da Home a vitrine já está numa .page (com a barra de categorias):
+// aqui ela não pode ganhar outra margem/largura por cima.
+:host-context(.layout) .vitrine-container {
+  padding: 0;
+  max-width: none;
 }
 
 .form-container {
-  width: 400px;
-  max-width: 100;
-  background: var(--bg-card);
-  padding: 25px;
-  border-radius: 16px;
-  color: white;
+  width: 100%;
+  max-width: var(--content-narrow);
+  align-self: center;
+  background: var(--color-surface);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-strong);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .form-container h3 {
-  color: var(--neon-red);
+  color: var(--color-primary);
   margin: 0;
 }
 
 .form-container input,
 .form-container select,
 .form-container textarea {
-  padding: 12px;
-  border-radius: 10px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
   border: 1px solid rgba(255, 59, 59, 0.2);
   outline: none;
   background: rgba(255, 255, 255, 0.05);
-  color: white;
+  color: var(--color-text-strong);
 }
 
 .form-container textarea {
@@ -59,11 +59,11 @@
 }
 
 .form-container button {
-  padding: 12px;
-  border-radius: 10px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
   border: none;
-  background: var(--neon-red);
-  color: var(--bg-principal);
+  background: var(--color-primary);
+  color: var(--color-bg);
   cursor: pointer;
   font-weight: bold;
   box-shadow: 0 0 14px rgba(255, 59, 59, 0.3);
@@ -75,13 +75,13 @@
 
 .actions {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
 
   button {
     flex: 1;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
     border: none;
     cursor: pointer;
     font-weight: bold;
@@ -92,11 +92,9 @@
   button:first-child {
     background: transparent;
     border: 1px solid rgba(255, 59, 59, 0.4);
-    color: var(--neon-red);
+    color: var(--color-primary);
 
-    &:hover {
-      background: rgba(255, 59, 59, 0.1);
-    }
+    &:hover { background: rgba(255, 59, 59, 0.1); }
   }
 
   button:last-child {
@@ -104,21 +102,26 @@
     border: 1px solid rgba(255, 80, 80, 0.4);
     color: #ff5050;
 
-    &:hover {
-      background: rgba(255, 80, 80, 0.1);
-    }
+    &:hover { background: rgba(255, 80, 80, 0.1); }
   }
 }
+
 .form-container .rotulo {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: -6px;
+  margin-bottom: calc(var(--space-1) * -1);
+}
+
+.form-container .dica,
+.form-container .erro {
+  font-size: 13px;
+  margin: 0;
 }
 
 .form-container .dica {
-  font-size: 13px;
   color: rgba(255, 255, 255, 0.6);
-  margin: 0;
 
-  a { color: var(--neon-red); }
+  a { color: var(--color-primary); }
 }
+
+.form-container .erro { color: #ff6b6b; }

@@ -1,6 +1,8 @@
-<div class="area-container">
-  <div class="area-card">
-    <h2>👤 Minha Área</h2>
+<div class="page">
+<div class="coluna-media area-container">
+  <h2 class="page-title">👤 Minha Área</h2>
+
+  <div class="card area-card">
 
     <p class="dado">
       <span>Nome</span>
@@ -18,8 +20,8 @@
     </div>
   </div>
 
-  <section class="area-card pedidos">
-    <h2>📦 Meus Pedidos</h2>
+  <section class="card area-card pedidos">
+    <h3 class="secao-titulo">📦 Meus Pedidos</h3>
 
     @if (carregando) {
       <p class="vazio">Carregando pedidos...</p>
@@ -52,10 +54,11 @@
             @if (pedido.formaPagamento) {
               <span class="forma">Pago com {{ textoForma[pedido.formaPagamento] }}</span>
             }
-            Total: <strong>R$ {{ pedido.total.toFixed(2) }}</strong>
+            <span class="valor">Total: <strong>R$ {{ pedido.total.toFixed(2) }}</strong></span>
           </p>
         </article>
       }
     }
   </section>
+</div>
 </div>

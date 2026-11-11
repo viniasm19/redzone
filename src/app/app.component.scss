@@ -1,11 +1,12 @@
 .toast {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: var(--neon-red);
-    color: #0a0f1a;
-    padding: 14px 22px;
-    border-radius: 10px;
+    bottom: var(--space-5);
+    right: var(--space-5);
+    max-width: calc(100% - 2 * var(--space-5));
+    background: var(--color-primary);
+    color: var(--color-bg);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
     font-weight: bold;
     box-shadow: 0 0 20px rgba(255, 59, 59, 0.4);
     animation: fadeIn 0.3s ease;

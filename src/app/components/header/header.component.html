@@ -1,41 +1,45 @@
-<header class="dark-header">
- <div class="logo" routerLink="/" style="cursor: pointer;">
-  RED<span>ZONE</span>
-</div>
-
-  <nav>
-    <a routerLink="/products" routerLinkActive="active">
-      🛍️ Produtos
+<header class="header">
+  <div class="header-conteudo">
+    <a class="logo" routerLink="/" (click)="fecharMenu()" aria-label="RedZone, página inicial">
+      RED<span>ZONE</span>
     </a>
 
-    <a routerLink="/promocoes" routerLinkActive="active">
-      🔥 Promoções
-    </a>
+    <!-- Botão ☰: só aparece em telas pequenas -->
+    <button type="button" class="btn-menu" (click)="alternarMenu()"
+            [attr.aria-expanded]="menuAberto()" aria-controls="menu-principal"
+            [attr.aria-label]="menuAberto() ? 'Fechar menu' : 'Abrir menu'">
+      {{ menuAberto() ? '✕' : '☰' }}
+    </button>
 
-    <a routerLink="/cart" routerLinkActive="active" class="cart-btn">
-      🛒 Carrinho
-      <span class="badge" *ngIf="cartService.quantidadeTotal() > 0">
-        {{ cartService.quantidadeTotal() }}
-      </span>
-    </a>
+    <nav id="menu-principal" class="menu" [class.aberto]="menuAberto()">
+      <!-- Esquerda: navegação da loja -->
+      <div class="menu-grupo">
+        <a routerLink="/products" routerLinkActive="active" (click)="fecharMenu()">🛍️ Produtos</a>
+        <a routerLink="/promocoes" routerLinkActive="active" (click)="fecharMenu()">🔥 Promoções</a>
+        <a routerLink="/cart" routerLinkActive="active" class="cart-btn" (click)="fecharMenu()">
+          🛒 Carrinho
+          <span class="badge" *ngIf="cartService.quantidadeTotal() > 0">
+            {{ cartService.quantidadeTotal() }}
+          </span>
+        </a>
 
-    <a *ngIf="!isLogado()" routerLink="/login" routerLinkActive="active">
-     👤 Login</a>
-    <a *ngIf="!isLogado()" routerLink="/cadastro" routerLinkActive="active">
-    📝Cadastro</a>
+        <!-- Só o administrador vê a tela de Estoque -->
+        <a *ngIf="isAdmin()" routerLink="/estoque" routerLinkActive="active" (click)="fecharMenu()">📦 Estoque</a>
+      </div>
 
-    <!-- Só o administrador vê a tela de Estoque -->
-    <a *ngIf="isAdmin()" routerLink="/estoque" routerLinkActive="active">
-      📦 Estoque
-    </a>
+      <!-- Direita: conta do usuário -->
+      <div class="menu-grupo conta">
+        <ng-container *ngIf="!isLogado()">
+          <a routerLink="/login" routerLinkActive="active" (click)="fecharMenu()">👤 Login</a>
+          <a routerLink="/cadastro" routerLinkActive="active" class="destaque" (click)="fecharMenu()">📝 Cadastro</a>
+        </ng-container>
 
-    <ng-container *ngIf="isLogado()">
-      <a class="profile" routerLink="/area-usuario">
-        Olá, {{ usuario()?.nome }}
-      </a>
-      <a class="profile" href="#" (click)="sair(); $event.preventDefault()">
-        Sair
-      </a>
-    </ng-container>
-  </nav>
+        <ng-container *ngIf="isLogado()">
+          <span class="ola">Olá, {{ usuario()?.nome }}</span>
+          <a class="profile" routerLink="/area-usuario" routerLinkActive="active" (click)="fecharMenu()">Minha Área</a>
+          <a class="profile" href="#" (click)="sair(); $event.preventDefault()">Sair</a>
+        </ng-container>
+      </div>
+    </nav>
+  </div>
 </header>

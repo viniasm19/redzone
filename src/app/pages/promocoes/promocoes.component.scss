@@ -1,24 +1,12 @@
-.promocoes {
-  position: relative;
-  z-index: 1;
-
-  h2 { margin-bottom: 8px; }
-}
-
-.subtitulo {
-  margin: 0 0 30px;
-  color: rgba(197, 198, 199, 0.8);
-}
-
 .aviso {
   text-align: center;
-  padding: 40px 0;
-  color: rgba(197, 198, 199, 0.8);
+  padding: var(--space-6) 0;
+  color: var(--color-text-muted);
 
   a {
-    color: var(--neon-red);
+    color: var(--color-primary);
     font-weight: bold;
   }
 
-  &.erro { color: #ff6b6b; }
+  &.erro { color: var(--color-danger); }
 }

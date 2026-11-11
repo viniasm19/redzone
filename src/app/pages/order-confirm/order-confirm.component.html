@@ -1,5 +1,5 @@
-<div class="confirm-container">
-  <div class="confirm-card">
+<div class="page">
+  <div class="coluna-media card confirm-card">
 
     <!-- Indicador dos passos -->
     <ol class="passos">
@@ -10,7 +10,7 @@
 
     <!-- ========== PASSO 1: REVISÃO ========== -->
     <ng-container *ngIf="etapa === 'revisao'">
-      <h2>📋 Resumo do Pedido</h2>
+      <h2 class="page-title">📋 Resumo do Pedido</h2>
 
       <div class="confirm-items">
         <div class="confirm-row" *ngFor="let item of itens">
@@ -36,7 +36,7 @@
 
     <!-- ========== PASSO 2: PAGAMENTO ========== -->
     <ng-container *ngIf="etapa === 'pagamento' && pedido">
-      <h2>💳 Pagamento</h2>
+      <h2 class="page-title">💳 Pagamento</h2>
 
       <p class="aviso-mock">
         Ambiente de demonstração: o pagamento é <strong>fictício</strong> e sempre aprovado.
@@ -108,7 +108,7 @@
     <!-- ========== PASSO 3: APROVADO ========== -->
     <div class="aprovado" *ngIf="etapa === 'aprovado'">
       <div class="aprovado-icone">✅</div>
-      <h2>Pagamento aprovado</h2>
+      <h2 class="page-title">Pagamento aprovado</h2>
       <p>Redirecionando...</p>
     </div>
 
