@@ -44,7 +44,7 @@ O projeto foi pensado a partir de cinco personas:
 
 ## ✨ Funcionalidades
 
-- Listagem de produtos com filtro por categoria
+- Listagem de produtos com filtro por categoria **na própria tela inicial** (o menu tem só o logo, o Carrinho e a conta do usuário)
 - Página de detalhe do produto
 - Carrinho de compras com botões **+** e **−** para ajustar a quantidade de cada item
 - Cadastro e login de usuários, com validação de e-mail e senha
@@ -59,9 +59,9 @@ O projeto foi pensado a partir de cinco personas:
   - O carrinho não deixa colocar mais unidades do que existem
   - Ao finalizar o pedido, o back-end confere o estoque de novo e dá baixa. Se faltar algum item, nada é salvo e a API responde `409`
   - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
-- **Promoções** (`/promocoes`): produtos com preço promocional, com o preço antigo riscado. O pedido cobra o preço promocional (lido do banco)
-- **Detalhes do produto**: marca, garantia e ficha técnica (especificações), todos opcionais. A tela de detalhe só mostra o que estiver preenchido
-- **Rodapé** em todas as telas com endereço, telefone, e-mail, horário e redes sociais. Os dados ficam em `src/app/config/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
+- **Promoções** (`/promocoes`, sem link no menu): produtos com preço promocional, com o preço antigo riscado. O pedido cobra o preço promocional (lido do banco)
+- Campos opcionais de produto (marca, garantia, especificações) guardados no banco e aceitos pela API. Eles **não aparecem** na tela de detalhe, que mostra só imagem, nome, descrição, preço e estoque
+- **Rodapé** em todas as telas com o nome da loja, endereço, telefone e e-mail. Os dados ficam em `src/app/config/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
 - Interface responsiva e componentes reutilizáveis
 
 ### 🔄 Fluxo de compra
@@ -193,7 +193,7 @@ Requisitos no back-end Spring Boot:
 
 O `data.sql` carrega ainda os usuários mariana, rafael, sofia e tiago (`@email.com`), todos com a senha `nome123`.
 
-Apenas o administrador vê os botões de **Editar**, **Excluir**, o formulário de **Cadastrar Produto** e a tela **📦 Estoque**.
+Apenas o administrador vê os botões de **Editar**, **Excluir**, o formulário de **Cadastrar Produto** e o botão **Estoque** (na Minha Área), que leva à tela de estoque.
 
 > Quem já tinha a pasta `backend-spring/data/` de antes: as colunas novas (`marca`, `garantia`, `especificacoes`, `preco_promocional`, e nos pedidos `status` e `forma_pagamento`) são criadas sozinhas e ficam vazias nos registros antigos, sem apagar nada. Os exemplos do `data.sql` só aparecem num banco novo.
 

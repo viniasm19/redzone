@@ -11,30 +11,23 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  border-color: rgba(255, 59, 59, 0.2);
-  box-shadow: 0 0 30px rgba(255, 59, 59, 0.1);
-}
 
-.secao-titulo {
-  margin: 0;
-  color: var(--color-text-strong);
-  font-size: 20px;
+  .secao-titulo { margin: 0; }
 }
 
 .dado {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
 
   span {
-    font-size: 13px;
+    font-size: var(--font-size-sm);
     color: var(--color-text-muted);
   }
 
   strong {
-    font-size: 18px;
     color: var(--color-text-strong);
+    font-weight: 500;
   }
 }
 
@@ -45,47 +38,20 @@
   margin-top: var(--space-2);
 }
 
-.btn-primario,
-.btn-secundario {
-  padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-md);
-  font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.btn-primario {
-  background: var(--color-primary);
-  color: var(--color-bg);
-  border: none;
-  box-shadow: 0 0 16px rgba(255, 59, 59, 0.3);
-
-  &:hover { opacity: 0.85; }
-}
-
-.btn-secundario {
-  background: transparent;
-  color: var(--color-primary);
-  border: 1px solid var(--color-primary);
-
-  &:hover { background: var(--color-primary-soft); }
-}
-
 // ---------- Histórico de pedidos ----------
 .vazio {
   margin: 0;
   color: var(--color-text-muted);
 
-  &.erro { color: #ff6b6b; }
+  &.erro { color: var(--color-danger); }
 }
 
 .pedido {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--color-border);
 }
 
 .pedido-topo {
@@ -95,27 +61,25 @@
   gap: var(--space-3);
   flex-wrap: wrap;
 
-  strong { color: var(--color-text-strong); }
+  strong {
+    color: var(--color-text-strong);
+    font-weight: 600;
+  }
 
   .data {
     margin-left: var(--space-3);
-    font-size: 13px;
+    font-size: var(--font-size-sm);
     color: var(--color-text-muted);
   }
 }
 
+// Status: só o texto, pequeno; a cor apenas diferencia "aguardando" do resto
 .status {
-  font-size: 12px;
-  font-weight: bold;
-  padding: var(--space-1) var(--space-3);
-  border-radius: 20px;
-  border: 1px solid currentColor;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
 }
 .status-AGUARDANDO_PAGAMENTO { color: var(--color-warning); }
 .status-APROVADO { color: var(--color-success); }
-.status-EM_SEPARACAO { color: #42a5f5; }
-.status-ENVIADO { color: #ab47bc; }
-.status-ENTREGUE { color: #9e9e9e; }
 
 .itens {
   list-style: none;
@@ -123,13 +87,13 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-1);
 
   li {
     display: flex;
     justify-content: space-between;
     gap: var(--space-3);
-    font-size: 14px;
+    font-size: var(--font-size-sm);
   }
 }
 
@@ -142,11 +106,14 @@
   flex-wrap: wrap;
 
   .forma {
-    font-size: 13px;
+    font-size: var(--font-size-sm);
     color: var(--color-text-muted);
   }
 
   .valor { margin-left: auto; }
 
-  strong { color: var(--color-primary); }
+  strong {
+    color: var(--color-text-strong);
+    font-weight: 600;
+  }
 }

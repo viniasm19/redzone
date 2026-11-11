@@ -11,12 +11,15 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
+// Tela de cadastro (/cadastro). O HTML espera daqui: nome, email, senha (ligados aos campos),
+// erro, erroEmail, returnUrl e o método cadastrar(f). Funciona igual ao LoginComponent.
 export class RegisterComponent {
-  nome = '';
-  email = '';
-  senha = '';
-  erro = '';
+  nome = '';   // campo Nome
+  email = '';  // campo Email
+  senha = '';  // campo Senha
+  erro = '';   // mensagem de erro (ex.: e-mail já cadastrado)
 
+  // auth = cadastro; router = trocar de tela; route = ler o ?returnUrl= do endereço
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -47,23 +50,30 @@ export class RegisterComponent {
     return url && url.startsWith('/') && !url.startsWith('//') ? url : null;
   }
 
+  // Botão "Criar conta". Recebe: o formulário.
   async cadastrar(form: NgForm) {
+    // 1) apaga o erro anterior
     this.erro = '';
 
+    // 2) campos inválidos: não chama a API
     if (form.invalid || this.erroEmail) {
       return;
     }
 
+    // 3) padroniza o e-mail
     this.email = this.normalizarEmail(this.email);
 
     try {
+      // 4) cadastra (POST /usuarios) e já faz o login (o AuthService faz os dois)
       await this.auth.register({
         nome: this.nome,
         email: this.email,
         senha: this.senha
       });
+      // 5) volta para onde estava (ex.: checkout) ou para a Home
       this.router.navigateByUrl(this.returnUrl ?? '/');
     } catch (e: any) {
+      // 6) mostra o erro (ex.: "Já existe um usuário com este email.")
       this.erro = e?.message ?? 'Falha ao cadastrar.';
     }
   }

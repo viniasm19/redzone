@@ -15,27 +15,36 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-// @Entity: esta classe vira a tabela "produtos" no banco; cada objeto é uma linha.
+// =====================================================================
+// Produto: um item à venda na loja.
+// =====================================================================
+// @Entity: esta classe vira a tabela "produtos" no banco; cada objeto Produto é uma linha.
+// @Table(name = "produtos"): o nome da tabela.
+// (As anotações @Id, @GeneratedValue, @Column e @NotBlank estão explicadas em detalhe no Usuario.java.)
 @Entity
 @Table(name = "produtos")
 public class Produto {
 
-    // Chave primária, gerada pelo banco (auto-incremento)
+    // @Id + @GeneratedValue: chave primária, gerada pelo banco (auto-incremento: 1, 2, 3...)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Regras de validação: o @Valid do controller as confere e, se falharem, a API responde 400
+    // Regras de validação: o @Valid do controller as confere e, se falharem, a API responde 400.
+    // @NotBlank: obrigatório e não pode ser só espaços. @Column(nullable = false): NOT NULL no banco.
     @NotBlank(message = "Informe o nome do produto.")
     @Column(nullable = false)
     private String nome;
 
+    // @NotNull: obrigatório (para números usa-se @NotNull, porque @NotBlank é só para texto).
+    // @Positive: precisa ser maior que zero (não existe produto de R$ 0,00 nem negativo).
     @NotNull(message = "Informe o preço.")
     @Positive(message = "O preço deve ser maior que zero.")
     @Column(nullable = false)
     private Double preco;
 
-    // Caminho ou link da imagem (ex.: /img/produtos/headset.jpg)
+    // Caminho ou link da imagem (ex.: /img/produtos/headset.jpg).
+    // @Column(length = 500): a coluna guarda até 500 caracteres (o padrão seria 255).
     @Column(length = 500)
     private String imagem;
 
@@ -43,10 +52,12 @@ public class Produto {
     @Column(nullable = false)
     private String categoria;
 
+    // Descrição do produto (opcional: não tem @NotBlank)
     @Column(length = 500)
     private String descricao;
 
     // Quantas unidades existem no estoque.
+    // @Min(0): não aceita número negativo.
     // @ColumnDefault("0"): quem já tinha o banco criado ganha a coluna nova com 0 nos produtos antigos.
     // Depois de cadastrado, o estoque só muda por movimentação (entrada, saída ou venda).
     @Min(value = 0, message = "O estoque não pode ser negativo.")
@@ -58,6 +69,7 @@ public class Produto {
     // Todos aceitam nulo: os produtos antigos (cadastrados antes destes campos existirem)
     // continuam válidos, e o ddl-auto=update só cria as colunas novas, sem apagar nada.
 
+    // @Size(max = 100): no máximo 100 caracteres (a validação avisa antes de o banco recusar)
     @Size(max = 100, message = "A marca pode ter no máximo 100 caracteres.")
     @Column(length = 100)
     private String marca;
@@ -75,9 +87,11 @@ public class Produto {
     // Preço de promoção. Nulo = produto fora de promoção.
     // @Positive só é conferido quando o valor NÃO é nulo (o Bean Validation ignora campos nulos).
     @Positive(message = "O preço promocional deve ser maior que zero.")
+    // @Column(name = ...): no Java o campo é "precoPromocional"; no banco a coluna é "preco_promocional"
     @Column(name = "preco_promocional")
     private Double precoPromocional;
 
+    // Construtor vazio: o Hibernate e o Jackson precisam dele para criar o objeto
     public Produto() {
     }
 
@@ -87,6 +101,8 @@ public class Produto {
     @JsonIgnore
     @AssertTrue(message = "O preço promocional deve ser menor que o preço normal.")
     public boolean isPrecoPromocionalValido() {
+        // Passo a passo: é válido se (1) não há promoção, ou (2) ainda não há preço para comparar
+        // (quem reclama do preço vazio é o @NotNull), ou (3) a promoção é menor que o preço.
         return precoPromocional == null || preco == null || precoPromocional < preco;
     }
 
@@ -95,8 +111,11 @@ public class Produto {
     // @JsonIgnore: o front já recebe preco e precoPromocional e faz a mesma conta sozinho.
     @JsonIgnore
     public Double getPrecoAtual() {
+        // "condição ? A : B" é um if/else numa linha: se tem promoção, devolve ela; senão, o preço normal
         return precoPromocional != null ? precoPromocional : preco;
     }
+
+    // ---------- Getters e setters (leem e trocam os campos; o Jackson e o Hibernate usam) ----------
 
     public Long getId() {
         return id;

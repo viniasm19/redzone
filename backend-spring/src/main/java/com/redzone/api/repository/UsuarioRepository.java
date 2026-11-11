@@ -7,6 +7,8 @@ import java.util.Optional;
 
 // Além dos métodos prontos do JpaRepository, o Spring cria a consulta pelo NOME do método:
 // findByEmail -> SELECT ... WHERE email = ?
+// Interface: o Spring Data escreve o código destes métodos sozinho (ver ProdutoRepository.java).
+// Optional<Usuario> = "pode vir um usuário, ou pode vir vazio" (quando ninguém tem aquele e-mail).
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     // findByEmail: usado no reset de senha
@@ -15,5 +17,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     // IgnoreCase: "Lucas@Email.com" e "lucas@email.com" são o mesmo usuário (usado no login)
     Optional<Usuario> findByEmailIgnoreCase(String email);
 
+    // true se existe alguém com este e-mail exato (não é usado hoje pelos controllers)
     boolean existsByEmail(String email);
 }

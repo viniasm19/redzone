@@ -10,17 +10,24 @@ export interface CartItem {
 // então recarregar a página (F5) não esvazia o carrinho.
 // Ele respeita o estoque: não deixa colocar mais unidades do que existem.
 // (A palavra final é do back-end, que confere de novo o estoque ao finalizar o pedido.)
+// @Injectable({ providedIn: 'root' }): um único carrinho para o app inteiro (todas as telas veem o mesmo).
 @Injectable({ providedIn: 'root' })
 export class CartService {
+  // Nome da "gaveta" do localStorage onde o carrinho fica guardado
   private static readonly CHAVE = 'redzone.carrinho';
 
+  // signal = valor que o Angular "observa": quando muda, as telas que o usam se atualizam sozinhas.
+  // "lista" é privada (só este service altera); as telas leem "itens", a versão só de leitura.
   private lista = signal<CartItem[]>(CartService.lerSalvo());
   itens = this.lista.asReadonly();
 
+  // Lê o carrinho guardado no navegador (roda uma vez, quando o app abre).
   private static lerSalvo(): CartItem[] {
     try {
+      // 1) pega o texto guardado e transforma em objeto (ou lista vazia, se não houver nada)
       const texto = localStorage.getItem(CartService.CHAVE);
       const dados = texto ? JSON.parse(texto) : [];
+      // 2) só aceita se for mesmo uma lista (proteção contra um valor estranho no storage)
       return Array.isArray(dados) ? dados : [];
     } catch {
       return [];
@@ -49,6 +56,8 @@ export class CartService {
   private timer?: ReturnType<typeof setTimeout>;
 
   // Quantas unidades deste produto já estão no carrinho
+  // Recebe: o id do produto. Devolve: a quantidade dele no carrinho (0 se não estiver lá).
+  // "?." e "??": se não achar o item, não quebra e usa 0.
   quantidadeNoCarrinho(id: number) {
     return this.lista().find(i => i.produto.id === id)?.quantidade ?? 0;
   }
@@ -58,7 +67,9 @@ export class CartService {
     return this.quantidadeNoCarrinho(produto.id) < produto.estoque;
   }
 
+  // Recebe: o produto clicado. Não devolve nada (muda o carrinho e mostra um aviso).
   adicionarAoCarrinho(produto: Produto) {
+    // 1) sem estoque para mais uma unidade: só avisa e para aqui
     if (!this.podeAdicionar(produto)) {
       this.mostrarToast(
         produto.estoque === 0
@@ -68,17 +79,21 @@ export class CartService {
       return;
     }
 
+    // 2) .some(...) = "algum item da lista é este produto?"
     const jaEstaNoCarrinho = this.lista().some(i => i.produto.id === produto.id);
 
+    // 3) já está: soma 1 na quantidade. Não está: entra na lista com quantidade 1
     if (jaEstaNoCarrinho) {
       this.alterarQuantidade(produto.id, +1);
     } else {
       this.lista.update(l => [...l, { produto, quantidade: 1 }]);
     }
 
+    // 4) avisa que deu certo
     this.mostrarToast(`✅ ${produto.nome} adicionado ao carrinho!`);
   }
 
+  // Botão "+" do carrinho. Recebe: o id do produto.
   aumentarQuantidade(id: number) {
     const item = this.lista().find(i => i.produto.id === id);
     if (item) {
@@ -86,21 +101,27 @@ export class CartService {
     }
   }
 
+  // Botão "−" do carrinho (se chegar a 0, o item sai)
   diminuirQuantidade(id: number) {
     this.alterarQuantidade(id, -1);
   }
 
+  // Botão "Remover": .filter mantém todos os itens, MENOS o deste produto
   removerDoCarrinho(id: number) {
     this.lista.update(l => l.filter(i => i.produto.id !== id));
   }
 
+  // Esvazia o carrinho (botão "Limpar" e depois que o pedido é criado)
   limparCarrinho() {
     this.lista.set([]);
   }
 
+  // Mostra um aviso por 2,5 segundos. Recebe: o texto do aviso.
   private mostrarToast(mensagem: string) {
+    // 1) coloca o texto no signal: o app.component.html mostra o aviso
     this._toast.set(mensagem);
     clearTimeout(this.timer); // se já tinha um aviso, o novo ganha os 2,5 s inteiros
+    // 2) daqui a 2500 ms, apaga o texto e o aviso some
     this.timer = setTimeout(() => this._toast.set(null), 2500);
   }
 

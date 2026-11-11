@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+// Conversa com a tabela "movimentacoes_estoque" (o histórico do estoque).
 public interface MovimentacaoEstoqueRepository extends JpaRepository<MovimentacaoEstoque, Long> {
 
     // O Spring Data lê o NOME do método e monta o SQL sozinho:

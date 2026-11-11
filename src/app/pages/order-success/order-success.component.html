@@ -1,19 +1,20 @@
+<!-- Tela "Pedido Confirmado!". Usa do TypeScript: auth (nome de quem comprou), continuar() e irParaAreaUsuario(). -->
 <div class="page">
 
     <div class="coluna-media card success-card">
-        <div class="success-icon">✅</div>
+        <div class="success-icon">✓</div>
 
         <h1 class="page-title">Pedido Confirmado!</h1>
         <p>Obrigado pela sua compra, <strong>{{ auth.usuarioLogado()?.nome }}</strong>!</p>
         <p class="muted">Seu pedido foi recebido com sucesso.</p>
 
         <div class="success-actions">
-            <button class="btn-continuar" (click)="continuar()">
-                🛍️ Continuar Comprando
+            <button class="btn-continuar btn-principal" (click)="continuar()">
+                Continuar Comprando
             </button>
 
             <button class="btn-secundario" (click)="irParaAreaUsuario()">
-                👤 Minha Área
+                Minha Área
             </button>
         </div>
     </div>

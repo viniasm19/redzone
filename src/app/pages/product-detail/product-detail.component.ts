@@ -6,13 +6,6 @@ import { CartService } from '../../services/cart.service';
 import { Produto, emPromocao } from '../../models/produto.model';
 import { ESTOQUE_MINIMO } from '../../services/stock.service';
 
-// Uma linha da ficha técnica. "Memória: 8 GB" vira { rotulo: 'Memória', valor: '8 GB' };
-// uma linha sem ":" fica só com o valor.
-interface Especificacao {
-  rotulo: string;
-  valor: string;
-}
-
 @Component({
   selector: 'app-product-detail',
   standalone: true,
@@ -20,12 +13,14 @@ interface Especificacao {
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
+// Tela de detalhe de um produto (/product/:id). Mostra imagem, nome, descrição, preço e estoque.
+// O HTML espera daqui: produto (null enquanto carrega: a tela só aparece quando ele chega),
+// estoqueMinimo, emPromocao e os métodos adicionarAoCarrinho e voltar.
 export class ProductDetailComponent implements OnInit {
 
-  produto: Produto | null = null;
-  especificacoes: Especificacao[] = [];
-  estoqueMinimo = ESTOQUE_MINIMO;
-  emPromocao = emPromocao;
+  produto: Produto | null = null; // o produto da tela (null = ainda não chegou ou não existe)
+  estoqueMinimo = ESTOQUE_MINIMO; // até quantas unidades mostrar "Corra! Só restam X"
+  emPromocao = emPromocao;        // função do model, exposta para o HTML
 
   constructor(
     private route: ActivatedRoute,
@@ -34,36 +29,19 @@ export class ProductDetailComponent implements OnInit {
     private router: Router
   ) {}
 
+  // Roda quando a tela abre
   ngOnInit() {
+    // 1) lê o :id do endereço (/product/7 -> "7") e transforma em número
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    // 2) busca o produto na API e guarda quando chegar
     // GET /produtos/{id}: se o produto não existir (404), a tela fica vazia, como antes
     this.productService.getProduto(id).subscribe({
-      next: produto => {
-        this.produto = produto;
-        this.especificacoes = this.separarEspecificacoes(produto.especificacoes);
-      },
+      next: produto => (this.produto = produto),
       error: () => (this.produto = null)
     });
   }
 
-  // As especificações chegam num texto só, uma por linha. Aqui viram uma lista para a tela.
-  // Linhas vazias são descartadas: assim, se não sobrar nada, a seção nem aparece.
-  private separarEspecificacoes(texto?: string | null): Especificacao[] {
-    if (!texto) {
-      return [];
-    }
-    return texto
-      .split(/\r?\n/)
-      .map(linha => linha.trim())
-      .filter(linha => linha.length > 0)
-      .map(linha => {
-        const posicao = linha.indexOf(':');
-        return posicao > 0
-          ? { rotulo: linha.slice(0, posicao).trim(), valor: linha.slice(posicao + 1).trim() }
-          : { rotulo: '', valor: linha };
-      });
-  }
-
+  // Botão "Adicionar ao Carrinho"
   adicionarAoCarrinho() {
     // Só vai para o carrinho se ainda havia unidade para colocar (senão o toast avisa e fica aqui)
     if (this.produto && this.cartService.podeAdicionar(this.produto)) {
@@ -74,7 +52,8 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
+  // Botão "← Voltar"
   voltar() {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/']); // os produtos ficam na tela inicial
   }
 }

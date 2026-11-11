@@ -1,8 +1,10 @@
+<!-- Vitrine + formulário do admin. Usa do TypeScript: produtos, isAdmin(), novoProduto, editandoId, erro,
+     categorias e os métodos adicionarAoCarrinho, editarProduto, deleteProduto, addProduto e resetForm. -->
 <div class="page vitrine-container">
 
-  <h2 class="page-title">🔥 Equipamentos Disponíveis</h2>
+  <h2 class="page-title">Equipamentos Disponíveis</h2>
 
-  <!-- 🔝 LISTA DE PRODUTOS -->
+  <!-- LISTA DE PRODUTOS -->
   <div class="products-grid">
 
     <div *ngFor="let prod of produtos; trackBy: trackById">
@@ -14,11 +16,11 @@
       <!-- AÇÕES -->
       <div class="actions" *ngIf="isAdmin()">
         <button (click)="editarProduto(prod)">
-          ✏️ Editar
+          Editar
         </button>
 
         <button (click)="deleteProduto(prod.id)">
-          🗑️ Excluir
+          Excluir
         </button>
 
       </div>
@@ -27,10 +29,10 @@
 
   </div>
 
-  <!-- 🔻 FORMULÁRIO -->
+  <!-- FORMULÁRIO -->
   <div class="form-container" *ngIf="isAdmin()">
 
-    <h3>{{ editandoId ? '✏️ Editar Produto' : '➕ Cadastrar Produto' }}</h3>
+    <h3>{{ editandoId ? 'Editar Produto' : 'Cadastrar Produto' }}</h3>
 
     <input type="text" placeholder="Nome do produto" [(ngModel)]="novoProduto.nome">
 
@@ -70,18 +72,18 @@
     </ng-container>
 
     <p class="dica" *ngIf="editandoId">
-      Para mudar a quantidade em estoque, use a tela <a routerLink="/estoque">📦 Estoque</a>.
+      Para mudar a quantidade em estoque, use a tela <a routerLink="/estoque">Estoque</a>.
     </p>
 
 
     <p class="erro" *ngIf="erro">{{ erro }}</p>
 
     <button (click)="addProduto()">
-      {{ editandoId ? '💾 Salvar alterações' : '💾 Adicionar Produto' }}
+      {{ editandoId ? 'Salvar alterações' : 'Adicionar Produto' }}
     </button>
 
     <button *ngIf="editandoId" (click)="resetForm()">
-      ✖ Cancelar edição
+      Cancelar edição
     </button>
 
   </div>

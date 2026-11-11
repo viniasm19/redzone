@@ -18,6 +18,7 @@ public record PedidoResponse(
         FormaPagamento formaPagamento, // null enquanto não foi pago
         List<ItemResponse> itens
 ) {
+    // Como cada item aparece na resposta: nome e imagem do produto, quantidade, preço e subtotal
     public record ItemResponse(
             Long produtoId,
             String nome,
@@ -29,7 +30,10 @@ public record PedidoResponse(
     }
 
     // Converte a entidade do banco no formato que vai para o front
+    // Recebe: o pedido do banco. Devolve: o PedidoResponse pronto para virar JSON.
     public static PedidoResponse de(Pedido pedido) {
+        // 1) converte cada ItemPedido (entidade) num ItemResponse (só os dados que o front precisa).
+        //    stream().map(...).toList() = "para cada item da lista, faça esta conversão e junte numa lista nova"
         List<ItemResponse> itens = pedido.getItens().stream()
                 .map(i -> new ItemResponse(
                         i.getProduto().getId(),
@@ -40,6 +44,8 @@ public record PedidoResponse(
                         i.getSubtotal()))
                 .toList();
 
+        // 2) monta a resposta com os dados do pedido e a lista de itens convertida.
+        //    Do usuário vai só o id: nada de nome, e-mail ou senha.
         return new PedidoResponse(
                 pedido.getId(),
                 pedido.getUsuario().getId(),

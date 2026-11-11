@@ -1,43 +1,13 @@
+<!-- Rodapé enxuto: só o essencial (nome da loja, endereço e contato). Os dados vêm do config/loja.ts -->
 <footer class="rodape">
   <div class="rodape-conteudo">
+    <div class="logo">RED<span>ZONE</span></div>
 
-    <section class="coluna marca">
-      <div class="logo">RED<span>ZONE</span></div>
-      <p>{{ loja.slogan }}</p>
-    </section>
-
-    <section class="coluna">
-      <h3>Atendimento</h3>
-      <ul>
-        <li>📍 {{ loja.endereco }}</li>
-        <li>📞 <a [href]="loja.telefoneLink">{{ loja.telefone }}</a></li>
-        <li>✉️ <a [href]="'mailto:' + loja.email">{{ loja.email }}</a></li>
-        <li>🕘 {{ loja.horario }}</li>
-      </ul>
-    </section>
-
-    <section class="coluna">
-      <h3>Navegação</h3>
-      <ul>
-        <li><a routerLink="/products">Produtos</a></li>
-        <li><a routerLink="/promocoes">Promoções</a></li>
-        <li><a routerLink="/cart">Carrinho</a></li>
-        <li><a routerLink="/area-usuario">Minha Área</a></li>
-      </ul>
-    </section>
-
-    <section class="coluna">
-      <h3>Redes sociais</h3>
-      <ul>
-        <!-- target="_blank" abre em nova aba; rel="noopener" impede a página nova de controlar esta -->
-        @for (rede of loja.redesSociais; track rede.nome) {
-          <li>
-            <a [href]="rede.url" target="_blank" rel="noopener">{{ rede.icone }} {{ rede.nome }}</a>
-          </li>
-        }
-      </ul>
-    </section>
-
+    <address class="contato">
+      <span>{{ loja.endereco }}</span>
+      <a [href]="loja.telefoneLink">{{ loja.telefone }}</a>
+      <a [href]="'mailto:' + loja.email">{{ loja.email }}</a>
+    </address>
   </div>
 
   <p class="copyright">© {{ ano }} {{ loja.nome }} · Projeto acadêmico — Centro Universitário Senac</p>

@@ -17,6 +17,9 @@ import java.util.List;
 // Os campos opcionais (marca, garantia, especificacoes, precoPromocional) não precisam de código extra:
 // o @RequestBody converte o JSON direto para a entidade Produto, campo por campo, pelo nome.
 // Se o front não mandar algum deles, ele fica nulo.
+// @RestController: esta classe recebe requisições HTTP e devolve respostas em JSON.
+//   (É um @Controller + @ResponseBody: o que os métodos retornam vira JSON automaticamente.)
+// @RequestMapping("..."): o começo do endereço de todas as rotas desta classe.
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
@@ -34,16 +37,20 @@ public class ProdutoController {
     // GET /produtos?promocao=true -> só os produtos em promoção (com precoPromocional preenchido)
     // required = false: o parâmetro é opcional; sem ele (ou com promocao=false) a lista é completa.
     @GetMapping
+    // @RequestParam: lê um parâmetro do endereço, o que vem depois do "?" (ex.: /produtos?promocao=true).
     public List<Produto> listar(@RequestParam(required = false) Boolean promocao) {
+        // 1) Boolean.TRUE.equals(...) dá true só se veio "true" (e não quebra se o parâmetro veio vazio/null)
         if (Boolean.TRUE.equals(promocao)) {
             return repository.findByPrecoPromocionalIsNotNull();
         }
+        // 2) sem filtro: todos os produtos
         return repository.findAll();
     }
 
     // GET /produtos/{id} -> 200 com o produto, ou 404
     @GetMapping("/{id}")
     public ResponseEntity<Produto> buscarPorId(@PathVariable Long id) {
+        // achou -> 200 com o produto; não achou -> 404 (Optional: ver UsuarioController.buscarPorId)
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -52,19 +59,25 @@ public class ProdutoController {
     // POST /produtos -> 201 com o produto salvo.
     // @Valid confere as regras do model (nome, preço, categoria); se falhar, a API responde 400.
     // O estoque inicial pode vir no cadastro; se vier, já entra no histórico como ENTRADA.
+    // @Transactional: as duas gravações (produto e histórico) acontecem juntas. Se uma falhar, nenhuma fica salva.
     @PostMapping
     @Transactional
     public ResponseEntity<Produto> criar(@Valid @RequestBody Produto produto) {
+        // 1) ignora um id vindo do front: o save() vai CRIAR um produto novo
         produto.setId(null); // quem gera o id é o banco, mesmo que o front envie um
+        // 2) se o front não mandou o estoque, começa com 0
         if (produto.getEstoque() == null) {
             produto.setEstoque(0);
         }
 
+        // 3) salva o produto (o banco gera o id)
         Produto salvo = repository.save(produto);
+        // 4) se começou com unidades, registra essa entrada no histórico de estoque
         if (salvo.getEstoque() > 0) {
             movimentacaoRepository.save(new MovimentacaoEstoque(
                     salvo, TipoMovimentacao.ENTRADA, salvo.getEstoque(), "Estoque inicial"));
         }
+        // 5) responde 201 (Created) com o produto salvo
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
@@ -73,10 +86,14 @@ public class ProdutoController {
     // use /estoque/{id}/entrada ou /saida, que registram a movimentação no histórico.
     @PutMapping("/{id}")
     public ResponseEntity<Produto> atualizar(@PathVariable Long id, @Valid @RequestBody Produto produto) {
+        // 1) procura o produto atual no banco ("atual"); se não existir, cai no orElse -> 404
         return repository.findById(id)
                 .map(atual -> {
+                    // 2) usa o id do endereço: o save() vai ALTERAR este produto
                     produto.setId(id); // save() com um id que já existe faz UPDATE (sem id, faria INSERT)
+                    // 3) mantém o estoque que está no banco, ignorando o que o front mandou
                     produto.setEstoque(atual.getEstoque());
+                    // 4) salva e responde 200 com o produto atualizado
                     return ResponseEntity.ok(repository.save(produto));
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -88,13 +105,17 @@ public class ProdutoController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        // 1) não existe: 404
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
+        // 2) apaga o histórico de estoque do produto (senão o banco não deixa apagar o produto)
         movimentacaoRepository.deleteByProdutoId(id);
+        // 3) apaga o produto
         repository.deleteById(id);
         repository.flush(); // força o DELETE agora, para o erro de pedido (se houver) acontecer aqui dentro
+        // 4) 204: apagado, sem corpo na resposta
         return ResponseEntity.noContent().build();
     }
 }

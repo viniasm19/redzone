@@ -20,10 +20,12 @@ import java.time.LocalDateTime;
 @Table(name = "movimentacoes_estoque")
 public class MovimentacaoEstoque {
 
+    // Chave primária gerada pelo banco
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // @ManyToOne + @JoinColumn: a coluna produto_id aponta para o produto movimentado.
     // Muitas movimentações -> um produto (coluna produto_id)
     @ManyToOne(optional = false)
     @JoinColumn(name = "produto_id", nullable = false)
@@ -43,23 +45,33 @@ public class MovimentacaoEstoque {
     @Column(name = "estoque_apos", nullable = false)
     private Integer estoqueApos;
 
+    // Quando a movimentação aconteceu
     @Column(name = "data_movimentacao", nullable = false)
     private LocalDateTime data;
 
+    // Texto livre e opcional (ex.: "Reposição do fornecedor")
     @Column(length = 255)
     private String observacao;
 
+    // Construtor vazio: exigido pelo Hibernate
     public MovimentacaoEstoque() {
     }
 
+    // Construtor usado pelo sistema para registrar uma movimentação.
+    // Recebe: o produto (JÁ com o estoque novo), o tipo, a quantidade e a observação.
     public MovimentacaoEstoque(Produto produto, TipoMovimentacao tipo, Integer quantidade, String observacao) {
+        // 1) copia os dados recebidos para os campos
         this.produto = produto;
         this.tipo = tipo;
         this.quantidade = quantidade;
         this.observacao = observacao;
+        // 2) guarda quanto o produto ficou no estoque (por isso o produto já deve vir atualizado)
         this.estoqueApos = produto.getEstoque();
+        // 3) marca a data e a hora de agora
         this.data = LocalDateTime.now();
     }
+
+    // ---------- Getters (só leitura: uma movimentação não muda depois de gravada) ----------
 
     public Long getId() {
         return id;

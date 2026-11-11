@@ -1,6 +1,10 @@
-<div class="estoque-container">
+<!-- Controle de estoque (/estoque, só o admin; o botão fica na Minha Área). Usa do TypeScript: produtos,
+     totalUnidades, qtdBaixo, qtdEsgotados, valorEmEstoque (resumo), busca e somenteBaixo (filtros),
+     produtosFiltrados, forms (quantidade e observação de cada linha), status(), movimentar(), verHistorico(),
+     movimentacoes e rotuloTipo(). -->
+<div class="page estoque-container">
 
-  <h1>📦 Controle de Estoque</h1>
+  <h1 class="page-title">Controle de Estoque</h1>
 
   <!-- Resumo -->
   <div class="resumo">
@@ -28,7 +32,7 @@
 
   <!-- Filtros -->
   <div class="filtros">
-    <input type="text" placeholder="🔎 Buscar por nome ou categoria" [(ngModel)]="busca">
+    <input type="text" placeholder="Buscar por nome ou categoria" [(ngModel)]="busca">
     <label>
       <input type="checkbox" [(ngModel)]="somenteBaixo">
       Só estoque baixo / esgotado
@@ -70,8 +74,8 @@
                    [(ngModel)]="forms[p.id].quantidade" [attr.aria-label]="'Quantidade de ' + p.nome">
             <input type="text" placeholder="Observação (opcional)" maxlength="255"
                    [(ngModel)]="forms[p.id].observacao" [attr.aria-label]="'Observação para ' + p.nome">
-            <button class="btn-entrada" (click)="movimentar(p, 'ENTRADA')">➕ Entrada</button>
-            <button class="btn-saida" (click)="movimentar(p, 'SAIDA')" [disabled]="p.estoque === 0">➖ Saída</button>
+            <button class="btn-entrada" (click)="movimentar(p, 'ENTRADA')">Entrada</button>
+            <button class="btn-saida" (click)="movimentar(p, 'SAIDA')" [disabled]="p.estoque === 0">Saída</button>
           </td>
           <td>
             <button class="btn-link" (click)="verHistorico(p)">Histórico</button>
@@ -87,7 +91,7 @@
   <!-- Histórico de movimentações -->
   <div class="historico">
     <div class="historico-topo">
-      <h2>🕒 Histórico {{ historicoDe ? 'de ' + historicoDe.nome : 'geral' }}</h2>
+      <h2>Histórico {{ historicoDe ? 'de ' + historicoDe.nome : 'geral' }}</h2>
       <button class="btn-link" *ngIf="historicoDe" (click)="verHistorico(null)">Ver de todos</button>
     </div>
 

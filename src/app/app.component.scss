@@ -1,44 +1,25 @@
+// Aviso rápido (toast) do carrinho: cinza escuro, discreto, sem brilho
 .toast {
-    position: fixed;
-    bottom: var(--space-5);
-    right: var(--space-5);
-    max-width: calc(100% - 2 * var(--space-5));
-    background: var(--color-primary);
-    color: var(--color-bg);
-    padding: var(--space-3) var(--space-5);
-    border-radius: var(--radius-md);
-    font-weight: bold;
-    box-shadow: 0 0 20px rgba(255, 59, 59, 0.4);
-    animation: fadeIn 0.3s ease;
-    z-index: 9999;
+  position: fixed;
+  bottom: var(--space-5);
+  right: var(--space-5);
+  max-width: calc(100% - 2 * var(--space-5));
+  background: var(--color-text-strong);
+  color: var(--color-bg);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  animation: fadeIn 0.2s ease;
+  z-index: 9999;
 }
 
+// Área das páginas: fundo liso (sem imagem nem "véu" escuro por cima)
 main {
-    min-height: 100vh;
-    background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    position: relative;
-}
-
-main::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(10, 15, 26, 0.75);
-    pointer-events: none;
-    z-index: 0;
+  min-height: 70vh;
+  background: var(--color-bg);
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -11,12 +11,14 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss'
 })
+// Tela "Esqueci a senha" (/forgot-password). O HTML espera daqui: email e novaSenha (campos),
+// erro, sucesso (mensagens), erroEmail, returnUrl e o método resetar(f).
 export class ForgotPasswordComponent {
 
-  email = '';
-  novaSenha = '';
-  erro = '';
-  sucesso = '';
+  email = '';      // campo Email
+  novaSenha = '';  // campo Nova Senha
+  erro = '';       // mensagem de erro (ex.: "Email não encontrado.")
+  sucesso = '';    // mensagem de sucesso
 
   constructor(
     private auth: AuthService,
@@ -48,23 +50,30 @@ export class ForgotPasswordComponent {
     return ForgotPasswordComponent.EMAIL_VALIDO.test(email) ? '' : 'Digite um email válido.';
   }
 
+  // Botão "Atualizar Senha". Recebe: o formulário.
   async resetar(form: NgForm) {
+    // 1) limpa as mensagens anteriores
     this.erro = '';
     this.sucesso = '';
 
+    // 2) campos inválidos: não chama a API
     if (form.invalid || this.erroEmail) {
       return;
     }
 
+    // 3) padroniza o e-mail
     this.email = this.normalizarEmail(this.email);
 
     try {
+      // 4) busca o usuário pelo e-mail e grava a senha nova (o AuthService faz as duas chamadas)
       await this.auth.redefinirSenha(this.email, this.novaSenha);
       this.sucesso = 'Senha atualizada com sucesso!';
 
+      // 5) depois de 2 segundos (2000 ms), leva ao login, mantendo o returnUrl
       setTimeout(() => this.router.navigate(['/login'], { queryParams: this.returnUrl ? { returnUrl: this.returnUrl } : {} }), 2000);
 
     } catch (e: any) {
+      // 6) mostra o erro
       this.erro = e?.message ?? 'Erro ao resetar senha.';
     }
   }

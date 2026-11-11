@@ -23,6 +23,9 @@ const FORM_VAZIO: Omit<Produto, 'id'> = {
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
+// Vitrine de produtos + formulário do administrador. Aparece dentro da Home (e na rota /products).
+// O HTML espera daqui: produtos (os cards), isAdmin() (mostrar botões de admin), novoProduto/editandoId/erro
+// (o formulário), categorias (o select) e os métodos dos botões.
 export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
@@ -43,6 +46,7 @@ export class ProductListComponent implements OnInit {
     this.filtrar();
   }
 
+  // Roda quando a vitrine aparece: busca os produtos na API
   ngOnInit() {
     this.loadProdutos();
   }
@@ -52,6 +56,7 @@ export class ProductListComponent implements OnInit {
     return this.auth.isAdmin();
   }
 
+  // GET /produtos e, quando a resposta chegar (subscribe), guarda tudo e aplica o filtro da categoria
   loadProdutos() {
     this.productService.getProdutos().subscribe(dados => {
       this.todos = dados;
@@ -59,20 +64,24 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  // "Todos": mostra a lista inteira; senão, só os produtos da categoria escolhida
   private filtrar() {
     this.produtos =
       this.categoria === 'Todos' ? this.todos : this.todos.filter(p => p.categoria === this.categoria);
   }
 
+  // Ajuda o *ngFor a reaproveitar os cards (pelo id) em vez de redesenhar todos quando a lista muda
   trackById(_: number, item: Produto) {
     return item.id;
   }
 
   // Botão do formulário: editando -> PUT (atualiza); senão -> POST (cria)
   addProduto() {
+    // 1) apaga o erro anterior; "p" é só um apelido curto para o formulário
     this.erro = '';
     const p = this.novoProduto;
 
+    // 2) confere os campos obrigatórios (a API confere de novo, mas assim o admin vê o erro na hora)
     if (!p.nome.trim() || !(p.preco > 0) || !p.categoria) {
       this.erro = 'Preencha nome, preço (maior que zero) e categoria.';
       return;
@@ -102,10 +111,12 @@ export class ProductListComponent implements OnInit {
       precoPromocional: promocional
     };
 
+    // 3) escolhe a chamada: PUT se está editando, POST se é um produto novo
     const requisicao = this.editandoId
       ? this.productService.updateProduto({ ...dados, id: this.editandoId })
       : this.productService.addProduto(dados);
 
+    // 4) envia; quando der certo (next), recarrega a lista e limpa o formulário; se der errado (error), avisa
     requisicao.subscribe({
       next: () => {
         this.loadProdutos(); // recarrega a lista com o que ficou salvo no banco
@@ -115,11 +126,13 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  // Recebe: um texto (ou nada). Devolve: o texto sem espaços nas pontas, ou null se ficar vazio.
   private textoOuNull(texto?: string | null): string | null {
     const limpo = (texto ?? '').trim();
     return limpo ? limpo : null;
   }
 
+  // Botão "Excluir" (admin): DELETE /produtos/{id} e recarrega a lista
   deleteProduto(id: number) {
     this.erro = '';
     this.productService.deleteProduto(id).subscribe({
@@ -129,18 +142,21 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  // Botão "Editar" (admin): copia o produto para o formulário
   editarProduto(produto: Produto) {
     const { id, ...dados } = produto; // separa o id do resto dos campos
     this.novoProduto = dados;
     this.editandoId = id;
   }
 
+  // Limpa o formulário e sai do modo de edição
   resetForm() {
     this.novoProduto = { ...FORM_VAZIO };
     this.editandoId = null;
     this.erro = '';
   }
 
+  // O card avisou (evento addToCart) que o botão "Adicionar" foi clicado: repassa ao CartService
   adicionarAoCarrinho(produto: Produto) {
     this.cartService.adicionarAoCarrinho(produto);
   }

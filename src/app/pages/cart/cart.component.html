@@ -1,11 +1,24 @@
+<!-- Como ler este HTML (vale para todas as telas):
+     {{ valor }}          mostra um valor do TypeScript na tela
+     [atributo]="x"       liga um atributo ao valor x do TypeScript (ex.: [disabled]="enviando")
+     (evento)="metodo()"  chama um método do TypeScript quando o evento acontece (ex.: um clique)
+     [(ngModel)]="campo"  liga um input a um campo NOS DOIS SENTIDOS: digitar muda o campo, e vice-versa
+     *ngIf / @if          só mostra o pedaço se a condição for verdadeira
+     *ngFor / @for        repete o pedaço para cada item de uma lista
+     routerLink="/x"      link interno do Angular (troca de tela sem recarregar a página) -->
+<!-- Tela do carrinho. Usa do TypeScript: itens(), total(), quantidadeTotal(), precoAtual(), emPromocao()
+     e os métodos remover, aumentar, diminuir, limpar e finalizarCompra.
+     itens() tem parênteses porque é um signal: chamar o signal lê o valor atual. -->
 <div class="page cart-container">
-  <h2 class="page-title">🛒 Seu Carrinho</h2>
+  <h2 class="page-title">Seu Carrinho</h2>
 
+  <!-- Carrinho vazio -->
   <div *ngIf="itens().length === 0" class="carrinho-vazio">
     <p>Seu carrinho está vazio... Que tal adicionar alguns itens?</p>
-    <button routerLink="/" class="btn-voltar">Ver Produtos</button>
+    <button routerLink="/" class="btn-voltar btn-principal">Ver Produtos</button>
   </div>
 
+  <!-- Carrinho com itens: a lista à esquerda e o resumo à direita -->
   <div *ngIf="itens().length > 0" class="cart-content">
 
     <div class="cart-items-list">
@@ -31,6 +44,7 @@
 
           <strong>{{ item.quantidade }}</strong>
 
+          <!-- O "+" fica desligado quando já tem no carrinho tudo o que existe no estoque -->
           <button class="btn-qtd" (click)="aumentar(item.produto.id)"
                   [disabled]="item.quantidade >= item.produto.estoque"
                   title="Adicionar mais um" [attr.aria-label]="'Adicionar mais um ' + item.produto.nome">+</button>
@@ -44,7 +58,7 @@
         </div>
 
         <button class="btn-remover" (click)="remover(item.produto.id)">
-          ❌
+          Remover
         </button>
 
       </div>
@@ -63,11 +77,11 @@
         <span>R$ {{ total().toFixed(2) }}</span>
       </div>
 
-      <button class="btn-finalizar" (click)="finalizarCompra()">
+      <button class="btn-finalizar btn-principal" (click)="finalizarCompra()">
         Finalizar Compra
       </button>
 
-      <button class="btn-limpar" (click)="limpar()">
+      <button class="btn-limpar btn-secundario" (click)="limpar()">
         Limpar Carrinho
       </button>
     </div>

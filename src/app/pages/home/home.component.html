@@ -1,3 +1,13 @@
+<!-- Como ler este HTML (vale para todas as telas):
+     {{ valor }}          mostra um valor do TypeScript na tela
+     [atributo]="x"       liga um atributo ao valor x do TypeScript (ex.: [disabled]="enviando")
+     (evento)="metodo()"  chama um método do TypeScript quando o evento acontece (ex.: um clique)
+     [(ngModel)]="campo"  liga um input a um campo NOS DOIS SENTIDOS: digitar muda o campo, e vice-versa
+     *ngIf / @if          só mostra o pedaço se a condição for verdadeira
+     *ngFor / @for        repete o pedaço para cada item de uma lista
+     routerLink="/x"      link interno do Angular (troca de tela sem recarregar a página) -->
+<!-- Tela inicial: apresentação, barra de categorias e a vitrine de produtos.
+     Usa do TypeScript: categorias, categoriaSelecionada, selecionarCategoria() e irParaProdutos(). -->
 <section class="hero">
 
   <div class="hero-content">
@@ -6,19 +16,19 @@
     <p>Domine o jogo com equipamentos que combinam performance e estilo.</p>
     <div class="hero-actions">
 
-      <a routerLink="/products" class="btn-primary">
+      <!-- Os produtos estão logo abaixo, nesta mesma tela: o botão só rola até eles -->
+      <button type="button" class="btn-principal" (click)="irParaProdutos()">
         Ver Produtos
-      </a>
-      <a routerLink="/cart" class="btn-primary">
+      </button>
+      <a routerLink="/cart" class="btn-secundario">
         Ir para Carrinho
       </a>
 
     </div>
   </div>
-  <div class="hero-glow" aria-hidden="true"></div>
 </section>
 
-<section class="page layout">
+<section class="page layout" id="produtos">
   <aside class="sidebar">
     <h3>Categorias</h3>
     <ul class="cat-list">
@@ -32,6 +42,7 @@
   </aside>
 
   <main class="content">
+    <!-- A vitrine recebe a categoria escolhida e filtra os produtos sozinha -->
     <app-product-list [categoriaSelecionada]="categoriaSelecionada"></app-product-list>
   </main>
 </section>
