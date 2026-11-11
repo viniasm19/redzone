@@ -43,3 +43,9 @@ UPDATE produtos SET marca = 'KeyForce', garantia = '12 meses',
   WHERE nome = 'Teclado Mecânico RGB';
 -- Só marca, sem garantia nem especificações (para mostrar que cada campo é independente)
 UPDATE produtos SET marca = 'ClickPro' WHERE nome = 'Mouse Gamer RGB';
+
+-- Promoções: só quem tem preco_promocional preenchido aparece em /promocoes (GET /produtos?promocao=true)
+UPDATE produtos SET preco_promocional = 219.9 WHERE nome = 'Microfone Condensador USB';
+UPDATE produtos SET preco_promocional = 999.9 WHERE nome = 'Cadeira Gamer Ergonômica';
+UPDATE produtos SET preco_promocional = 329.9 WHERE nome = 'SSD NVMe 1TB';
+UPDATE produtos SET preco_promocional = 279.9 WHERE nome = 'Teclado Mecânico RGB';

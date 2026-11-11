@@ -58,6 +58,7 @@ O projeto foi pensado a partir de cinco personas:
   - O carrinho não deixa colocar mais unidades do que existem
   - Ao finalizar o pedido, o back-end confere o estoque de novo e dá baixa. Se faltar algum item, nada é salvo e a API responde `409`
   - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
+- **Promoções** (`/promocoes`): produtos com preço promocional, com o preço antigo riscado. O pedido cobra o preço promocional (lido do banco)
 - **Detalhes do produto**: marca, garantia e ficha técnica (especificações), todos opcionais. A tela de detalhe só mostra o que estiver preenchido
 - Interface responsiva e componentes reutilizáveis
 
@@ -157,6 +158,7 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 | Método | Rota | Uso |
 |---|---|---|
 | GET | `/produtos` | Listar produtos |
+| GET | `/produtos?promocao=true` | Só os produtos em promoção (com `precoPromocional`) |
 | POST / PUT / DELETE | `/produtos` e `/produtos/{id}` | Cadastrar, editar e excluir (administrador) |
 | POST | `/login` | Login: o back-end confere e-mail e senha (200 com id, nome e e-mail; 401 se inválidos) |
 | GET | `/usuarios` | Listar usuários (tela de administração) |

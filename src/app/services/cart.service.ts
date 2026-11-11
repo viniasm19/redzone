@@ -1,5 +1,5 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
-import { Produto } from '../models/produto.model';
+import { Produto, precoAtual } from '../models/produto.model';
 
 export interface CartItem {
   produto: Produto;
@@ -40,7 +40,8 @@ export class CartService {
 
   // computed = valor calculado a partir de um signal; recalcula sozinho quando o carrinho muda.
   quantidadeTotal = computed(() => this.lista().reduce((soma, i) => soma + i.quantidade, 0));
-  total = computed(() => this.lista().reduce((soma, i) => soma + i.produto.preco * i.quantidade, 0));
+  // Usa o preço atual (promocional, se houver). É só uma prévia: o total de verdade quem calcula é o back-end.
+  total = computed(() => this.lista().reduce((soma, i) => soma + precoAtual(i.produto) * i.quantidade, 0));
 
   // Aviso que aparece por 2,5 segundos
   private _toast = signal<string | null>(null);

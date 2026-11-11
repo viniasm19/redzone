@@ -152,3 +152,29 @@
 
   .especificacoes dt { flex-basis: auto; }
 }
+
+// ---------- Promoção ----------
+.detail-info .precos {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 0;
+
+  .preco { margin: 0; }
+}
+
+.preco-antigo {
+  color: rgba(197, 198, 199, 0.55);
+  font-size: 18px;
+}
+
+.selo-promocao {
+  background: var(--neon-red);
+  color: var(--bg-principal);
+  font-size: 13px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+  align-self: center;
+}

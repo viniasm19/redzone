@@ -8,6 +8,10 @@
       🛍️ Produtos
     </a>
 
+    <a routerLink="/promocoes" routerLinkActive="active">
+      🔥 Promoções
+    </a>
+
     <a routerLink="/cart" routerLinkActive="active" class="cart-btn">
       🛒 Carrinho
       <span class="badge" *ngIf="cartService.quantidadeTotal() > 0">

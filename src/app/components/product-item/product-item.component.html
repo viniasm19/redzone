@@ -1,10 +1,22 @@
-<div class="product-card" [class.esgotado]="produto.estoque === 0"
+<div class="product-card" [class.esgotado]="produto.estoque === 0" [class.promocao]="emPromocao"
      [routerLink]="['/product', produto.id]" style="cursor: pointer;">
+
+  @if (emPromocao) {
+    <span class="selo-promocao">🔥 Promoção</span>
+  }
 
   <img [src]="produto.imagem || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070'"/>
   <h3>{{ produto.nome }}</h3>
   <p>{{ produto.categoria }}</p>
-  <p>R$ {{ produto.preco }}</p>
+  <!-- Em promoção: preço antigo riscado + preço promocional em destaque -->
+  @if (emPromocao) {
+    <p class="precos">
+      <s class="preco-antigo">R$ {{ produto.preco.toFixed(2) }}</s>
+      <span class="preco preco-promocional">R$ {{ produto.precoPromocional!.toFixed(2) }}</span>
+    </p>
+  } @else {
+    <p>R$ {{ produto.preco }}</p>
+  }
 
   <!-- Etiqueta de estoque: esgotado, poucas unidades ou disponível -->
   @if (produto.estoque === 0) {

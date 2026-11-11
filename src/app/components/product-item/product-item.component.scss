@@ -69,3 +69,41 @@
 .estoque-ok { color: #4caf50; }
 .estoque-baixo { color: #ffb300; }
 .estoque-zero { color: #9e9e9e; text-transform: uppercase; letter-spacing: 1px; }
+// ---------- Promoção ----------
+.product-card {
+  position: relative;
+
+  &.promocao { border: 1px solid rgba(255, 59, 59, 0.5); }
+}
+
+.selo-promocao {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  background: var(--neon-red);
+  color: var(--bg-principal);
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.precos {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.preco-antigo {
+  color: rgba(197, 198, 199, 0.55);
+  font-size: 14px;
+}
+
+.preco-promocional {
+  color: var(--neon-red);
+  font-size: 22px;
+  font-weight: bold;
+}

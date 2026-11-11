@@ -37,7 +37,7 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 
 | Método | Rota | Descrição | Respostas |
 |---|---|---|---|
-| GET | `/produtos` | Lista os produtos | 200 |
+| GET | `/produtos` | Lista os produtos (`?promocao=true`: só os que têm `precoPromocional`) | 200 |
 | GET | `/produtos/{id}` | Busca um produto | 200, 404 |
 | POST | `/produtos` | Cadastra produto | 201, 400 |
 | PUT | `/produtos/{id}` | Atualiza produto | 200, 400, 404 |
@@ -49,7 +49,7 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 | POST | `/usuarios` | Cadastra usuário | 201, 400, **409** (e-mail repetido) |
 | PUT | `/usuarios/{id}` | Atualiza usuário (inclui a nova senha) | 200, 400, 404, **409** |
 | DELETE | `/usuarios/{id}` | Exclui usuário | 204, 404 |
-| POST | `/pedidos` | Salva um pedido com seus itens (preço e total calculados no back-end) | 201, 400, 404 |
+| POST | `/pedidos` | Salva um pedido com seus itens (preço e total calculados no back-end; produto em promoção cobra o `precoPromocional`) | 201, 400, 404, 409 |
 | GET | `/pedidos/usuario/{usuarioId}` | Lista os pedidos do usuário | 200, 404 |
 | GET | `/pedidos/{id}` | Busca um pedido | 200, 404 |
 

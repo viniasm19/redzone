@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
+import { precoAtual } from '../../models/produto.model';
 
 @Component({
   selector: 'app-order-confirm',
@@ -22,6 +23,8 @@ export class OrderConfirmComponent implements OnInit {
   // "Foto" do carrinho ao entrar na tela: continua na tela mesmo depois de limpar o carrinho
   itens = this.cartService.itens();
   total = this.cartService.total();
+
+  precoAtual = precoAtual; // para o HTML calcular o subtotal com o preço promocional
 
   enviando = false; // true enquanto espera a API: desabilita o botão (evita pedido duplicado)
   erro = '';

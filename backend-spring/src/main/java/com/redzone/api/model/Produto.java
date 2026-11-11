@@ -90,6 +90,14 @@ public class Produto {
         return precoPromocional == null || preco == null || precoPromocional < preco;
     }
 
+    // Quanto o produto custa AGORA: o preço promocional, se houver, senão o preço normal.
+    // É este valor que o pedido cobra (sempre lido do banco, nunca do front).
+    // @JsonIgnore: o front já recebe preco e precoPromocional e faz a mesma conta sozinho.
+    @JsonIgnore
+    public Double getPrecoAtual() {
+        return precoPromocional != null ? precoPromocional : preco;
+    }
+
     public Long getId() {
         return id;
     }

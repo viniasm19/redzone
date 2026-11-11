@@ -7,7 +7,7 @@
         <img [src]="item.produto.imagem" [alt]="item.produto.nome">
         <span class="item-nome">{{ item.produto.nome }}</span>
         <span class="item-qtd">x{{ item.quantidade }}</span>
-        <span class="item-preco">R$ {{ (item.produto.preco * item.quantidade).toFixed(2) }}</span>
+        <span class="item-preco">R$ {{ (precoAtual(item.produto) * item.quantidade).toFixed(2) }}</span>
       </div>
     </div>
 

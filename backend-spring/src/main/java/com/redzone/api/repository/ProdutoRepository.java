@@ -11,4 +11,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     // Pelo nome, o Spring monta: SELECT * FROM produtos WHERE estoque <= ? ORDER BY estoque ASC
     List<Produto> findByEstoqueLessThanEqualOrderByEstoqueAsc(Integer limite);
+
+    // Produtos em promoção = os que têm preço promocional preenchido.
+    // Pelo nome, o Spring monta: SELECT * FROM produtos WHERE preco_promocional IS NOT NULL
+    List<Produto> findByPrecoPromocionalIsNotNull();
 }

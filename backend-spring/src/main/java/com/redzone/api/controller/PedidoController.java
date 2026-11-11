@@ -68,7 +68,8 @@ public class PedidoController {
             ItemPedido item = new ItemPedido();
             item.setProduto(produto.get());
             item.setQuantidade(itemRequest.quantidade());
-            item.setPrecoUnitario(produto.get().getPreco()); // preço vem do banco, não do front
+            // Preço vem do banco, não do front. Se o produto está em promoção, cobra o preço promocional.
+            item.setPrecoUnitario(produto.get().getPrecoAtual());
             pedido.adicionarItem(item);
 
             // Dá baixa no estoque. Se faltar unidade, lança EstoqueInsuficienteException -> 409

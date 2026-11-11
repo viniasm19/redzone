@@ -12,6 +12,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -108,5 +110,47 @@ class ProdutoTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nome\": \"Cabo HDMI\", \"preco\": 29.9, \"categoria\": \"Acessórios\", \"precoPromocional\": 39.9}"))
                 .andExpect(status().isBadRequest());
+    }
+
+    // ---------- Etapa 2: promoções ----------
+
+    @Test
+    void filtroDePromocaoDevolveSoProdutosComPrecoPromocional() throws Exception {
+        long emPromocao = produtoRepository.findAll().stream().filter(p -> p.getPrecoPromocional() != null).count();
+
+        mvc.perform(get("/produtos").param("promocao", "true"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value((int) emPromocao))
+                // todos os itens da resposta têm precoPromocional
+                .andExpect(jsonPath("$[?(@.precoPromocional == null)]").isEmpty())
+                .andExpect(jsonPath("$[*].nome", hasItem("Microfone Condensador USB")))
+                .andExpect(jsonPath("$[*].nome", not(hasItem("Headset Gamer"))));
+    }
+
+    @Test
+    void semOFiltroAListaContinuaCompleta() throws Exception {
+        int total = (int) produtoRepository.count();
+
+        mvc.perform(get("/produtos"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(total));
+
+        mvc.perform(get("/produtos").param("promocao", "false"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(total));
+    }
+
+    @Test
+    void pedidoDeProdutoEmPromocaoCobraOPrecoPromocionalDoBanco() throws Exception {
+        Produto microfone = produto("Microfone Condensador USB"); // preço 259.9, promocional 219.9
+
+        // o front tenta mandar um preço falso: deve ser ignorado
+        mvc.perform(post("/pedidos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"usuarioId\": 2, \"itens\": [{\"produtoId\": " + microfone.getId()
+                                + ", \"quantidade\": 2, \"precoUnitario\": 0.01}]}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.itens[0].precoUnitario").value(219.9))
+                .andExpect(jsonPath("$.total").value(439.8));
     }
 }

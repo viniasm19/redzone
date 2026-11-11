@@ -30,9 +30,14 @@ public class ProdutoController {
         this.movimentacaoRepository = movimentacaoRepository;
     }
 
-    // GET /produtos -> lista todos
+    // GET /produtos               -> lista todos
+    // GET /produtos?promocao=true -> só os produtos em promoção (com precoPromocional preenchido)
+    // required = false: o parâmetro é opcional; sem ele (ou com promocao=false) a lista é completa.
     @GetMapping
-    public List<Produto> listar() {
+    public List<Produto> listar(@RequestParam(required = false) Boolean promocao) {
+        if (Boolean.TRUE.equals(promocao)) {
+            return repository.findByPrecoPromocionalIsNotNull();
+        }
         return repository.findAll();
     }
 

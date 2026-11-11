@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
-import { Produto } from '../../models/produto.model';
+import { Produto, emPromocao } from '../../models/produto.model';
 import { ESTOQUE_MINIMO } from '../../services/stock.service';
 
 // Uma linha da ficha técnica. "Memória: 8 GB" vira { rotulo: 'Memória', valor: '8 GB' };
@@ -25,6 +25,7 @@ export class ProductDetailComponent implements OnInit {
   produto: Produto | null = null;
   especificacoes: Especificacao[] = [];
   estoqueMinimo = ESTOQUE_MINIMO;
+  emPromocao = emPromocao;
 
   constructor(
     private route: ActivatedRoute,

@@ -15,7 +15,11 @@
 
         <div class="item-info">
           <h4>{{ item.produto.nome }}</h4>
-          <p>Preço unitário: R$ {{ item.produto.preco.toFixed(2) }}</p>
+          <p>
+            Preço unitário:
+            <s *ngIf="emPromocao(item.produto)">R$ {{ item.produto.preco.toFixed(2) }}</s>
+            R$ {{ precoAtual(item.produto).toFixed(2) }}
+          </p>
           <p class="disponivel" *ngIf="item.quantidade >= item.produto.estoque">
             Máximo disponível: {{ item.produto.estoque }}
           </p>
@@ -35,7 +39,7 @@
         <div class="item-subtotal">
           <p>
             Subtotal: R$
-            {{ (item.produto.preco * item.quantidade).toFixed(2) }}
+            {{ (precoAtual(item.produto) * item.quantidade).toFixed(2) }}
           </p>
         </div>
 

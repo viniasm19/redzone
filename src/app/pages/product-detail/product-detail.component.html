@@ -13,7 +13,15 @@
       }
 
       <p class="descricao">{{ produto.descricao }}</p>
-      <p class="preco">R$ {{ produto.preco }}</p>
+      @if (emPromocao(produto)) {
+        <p class="precos">
+          <s class="preco-antigo">R$ {{ produto.preco.toFixed(2) }}</s>
+          <span class="preco">R$ {{ produto.precoPromocional!.toFixed(2) }}</span>
+          <span class="selo-promocao">🔥 Promoção</span>
+        </p>
+      } @else {
+        <p class="preco">R$ {{ produto.preco }}</p>
+      }
 
       @if (produto.estoque === 0) {
         <p class="estoque estoque-zero">Produto esgotado</p>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
+import { emPromocao, precoAtual } from '../../models/produto.model';
 
 @Component({
   selector: 'app-cart',
@@ -20,6 +21,10 @@ export class CartComponent {
   itens = this.cartService.itens;
   total = this.cartService.total;
   quantidadeTotal = this.cartService.quantidadeTotal;
+
+  // Funções do model, expostas para o HTML (o template só enxerga o que está na classe)
+  precoAtual = precoAtual;
+  emPromocao = emPromocao;
 
   remover(id: number) {
     this.cartService.removerDoCarrinho(id);
