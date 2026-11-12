@@ -65,7 +65,7 @@
       <div class="cartao" *ngIf="formaPagamento === 'CARTAO'">
         <label>
           Número do cartão
-          <input name="numero" inputmode="numeric" autocomplete="off" maxlength="23"
+          <input class="campo" name="numero" inputmode="numeric" autocomplete="off" maxlength="23"
                  placeholder="0000 0000 0000 0000" [(ngModel)]="cartao.numero" />
           <small class="field-error" *ngIf="tentouPagar && erroNumero">{{ erroNumero }}</small>
         </label>
@@ -73,14 +73,14 @@
         <div class="cartao-linha">
           <label>
             Validade
-            <input name="validade" inputmode="numeric" autocomplete="off" maxlength="5"
+            <input class="campo" name="validade" inputmode="numeric" autocomplete="off" maxlength="5"
                    placeholder="MM/AA" [(ngModel)]="cartao.validade" />
             <small class="field-error" *ngIf="tentouPagar && erroValidade">{{ erroValidade }}</small>
           </label>
 
           <label>
             CVV
-            <input name="cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4"
+            <input class="campo" name="cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4"
                    placeholder="123" [(ngModel)]="cartao.cvv" />
             <small class="field-error" *ngIf="tentouPagar && erroCvv">{{ erroCvv }}</small>
           </label>

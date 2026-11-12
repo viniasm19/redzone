@@ -36,7 +36,8 @@ O projeto foi pensado a partir de cinco personas:
 - Angular 19
 - TypeScript
 - HTML5
-- SCSS
+- SCSS (variáveis de cor, espaçamento e sombra em `src/styles.scss`)
+- Fonte Inter (pacote `@fontsource-variable/inter`, instalada pelo `npm install`, sem depender do Google Fonts)
 - Node.js
 - Java 17 + Spring Boot 3 (Web, Data JPA, Validation): back-end na pasta `backend-spring`, porta 8080
 - H2 (banco de dados em arquivo, persistente)

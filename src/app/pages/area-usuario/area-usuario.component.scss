@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  border-radius: var(--radius-xl);
 
   .secao-titulo { margin: 0; }
 }
@@ -50,8 +51,12 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-4) 0;
-  border-top: 1px solid var(--color-border);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition);
+
+  &:hover { border-color: var(--color-border-strong); }
 }
 
 .pedido-topo {
@@ -73,13 +78,17 @@
   }
 }
 
-// Status: só o texto, pequeno; a cor apenas diferencia "aguardando" do resto
+// Status: pílula pequena com fundo clarinho da cor do status
 .status {
-  font-size: var(--font-size-sm);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
   color: var(--color-text);
+  font-size: 12px;
+  font-weight: 600;
 }
-.status-AGUARDANDO_PAGAMENTO { color: var(--color-warning); }
-.status-APROVADO { color: var(--color-success); }
+.status-AGUARDANDO_PAGAMENTO { background: var(--color-warning-soft); color: var(--color-warning); }
+.status-APROVADO { background: var(--color-success-soft); color: var(--color-success); }
 
 .itens {
   list-style: none;

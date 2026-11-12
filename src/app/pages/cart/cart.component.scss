@@ -1,24 +1,34 @@
 // Largura, respiro e título: classes globais .page e .page-title
 
+// Carrinho vazio: um card centralizado com o convite para comprar
 .carrinho-vazio {
-  padding: var(--space-6) 0;
+  padding: var(--space-7) var(--space-5);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
   color: var(--color-text-muted);
+  text-align: center;
 
-  .btn-voltar { margin-top: var(--space-4); }
+  p { margin: 0; font-size: 16px; }
+  .btn-voltar { margin-top: var(--space-5); }
 }
 
 .cart-content {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: var(--space-6);
+  grid-template-columns: 1fr 360px;
+  gap: var(--space-5);
   align-items: start;
 }
 
-// Lista de itens: linhas separadas por uma linha fina, sem "caixinhas"
+// Lista de itens dentro de um card branco, com linhas separadas
 .cart-items-list {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-border);
+  padding: 0 var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .cart-item-row {
@@ -28,11 +38,14 @@
   padding: var(--space-4) 0;
   border-bottom: 1px solid var(--color-border);
 
+  &:last-child { border-bottom: none; }
+
   img {
-    width: 72px;
-    height: 72px;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
     object-fit: cover;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     background: var(--color-surface-2);
   }
 
@@ -56,13 +69,17 @@
     s { margin-right: var(--space-1); }
   }
 
+  // Seletor de quantidade: os botões − e + juntos numa "pílula"
   .item-qtd {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
+    padding: 2px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
 
     strong {
-      min-width: 24px;
+      min-width: 26px;
       text-align: center;
       color: var(--color-text-strong);
     }
@@ -71,12 +88,14 @@
   .btn-qtd {
     width: 30px;
     height: 30px;
-    border: 1px solid var(--color-border-strong);
-    border-radius: var(--radius-sm);
-    background: var(--color-surface);
+    border: none;
+    border-radius: 50%;
+    background: transparent;
     color: var(--color-text-strong);
+    font-size: 16px;
     line-height: 1;
     cursor: pointer;
+    transition: background var(--transition);
 
     &:hover:not(:disabled) { background: var(--color-surface-2); }
 
@@ -88,6 +107,8 @@
   }
 
   .item-subtotal {
+    min-width: 150px;
+    text-align: right;
     color: var(--color-text-strong);
     font-weight: 600;
 
@@ -95,24 +116,31 @@
   }
 
   .btn-remover {
-    background: transparent;
+    padding: var(--space-1) var(--space-2);
     border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
     color: var(--color-text-muted);
     font-size: var(--font-size-sm);
-    text-decoration: underline;
     cursor: pointer;
+    transition: color var(--transition), background var(--transition);
 
-    &:hover { color: var(--color-danger); }
+    &:hover { color: var(--color-danger); background: var(--color-danger-soft); }
   }
 }
 
+// Resumo do pedido: card que "gruda" no topo ao rolar a página (sticky)
 .cart-summary {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-4));
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  background: var(--color-surface-2);
-  border-radius: var(--radius-md);
   padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 
   h3 {
     margin: 0;
@@ -125,17 +153,21 @@
 .summary-row {
   display: flex;
   justify-content: space-between;
+  color: var(--color-text-muted);
 
   &.total {
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--color-border-strong);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
     color: var(--color-text-strong);
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 700;
   }
 }
 
 .btn-finalizar,
 .btn-limpar { width: 100%; }
+
+.btn-finalizar { min-height: 50px; }
 
 // Aviso "máximo disponível" quando o item chegou no limite do estoque
 .disponivel {
@@ -143,18 +175,19 @@
 }
 
 @media (max-width: 900px) {
-  .cart-content {
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-  }
+  .cart-content { grid-template-columns: 1fr; }
+  .cart-summary { position: static; }
 }
 
-// No celular, a linha do item quebra: imagem + nome em cima, quantidade e subtotal embaixo
+// No celular, a linha do item quebra: foto + nome em cima, quantidade e subtotal embaixo
 @media (max-width: 600px) {
+  .cart-items-list { padding: 0 var(--space-4); }
+
   .cart-item-row {
     flex-wrap: wrap;
 
-    .item-info { flex-basis: calc(100% - 72px - var(--space-4)); }
-    .item-subtotal { margin-left: auto; }
+    img { width: 64px; height: 64px; }
+    .item-info { flex-basis: calc(100% - 64px - var(--space-4)); }
+    .item-subtotal { min-width: 0; margin-left: auto; }
   }
 }

@@ -2,89 +2,85 @@
   display: block;
 }
 
-// Card do produto: branco, borda fina, sem sombra e sem "pular" no hover
+// Card do produto: branco, cantos arredondados. No hover ele "sobe" um pouco e ganha sombra.
 .product-card {
-  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-surface);
+  overflow: hidden;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 
-  &:hover { border-color: var(--color-border-strong); }
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: transparent;
+
+    img { transform: scale(1.04); } // zoom suave na foto
+  }
+
+  // Esgotado: a foto fica mais clara
+  &.esgotado img { opacity: 0.45; }
+}
+
+// ---------- Foto ----------
+.foto {
+  position: relative;
+  aspect-ratio: 4 / 3; // todas as fotos com o mesmo formato, mesmo que as imagens sejam diferentes
+  overflow: hidden;
+  background: var(--color-surface-2);
 
   img {
     width: 100%;
-    height: 170px;
+    height: 100%;
+    display: block;
     object-fit: cover;
-    object-position: center;
-    border-radius: var(--radius-sm);
-    background: var(--color-surface-2);
+    transition: transform 0.4s ease;
   }
-
-  h3 {
-    color: var(--color-text-strong);
-    margin: var(--space-3) 0 var(--space-1);
-    font-size: var(--font-size);
-    font-weight: 600;
-    line-height: 1.4;
-  }
-
-  p { margin: 0 0 var(--space-1); }
-
-  // 2º parágrafo do card: a categoria, em texto de apoio
-  h3 + p {
-    color: var(--color-text-muted);
-    font-size: var(--font-size-sm);
-  }
-
-  .btn-comprar {
-    margin-top: auto; // empurra o botão para o pé do card: todos ficam alinhados na grade
-    width: 100%;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-strong);
-    color: var(--color-text-strong);
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-sm);
-    font-size: var(--font-size-sm);
-    cursor: pointer;
-
-    &:hover:not(:disabled) { background: var(--color-surface-2); }
-
-    &:disabled {
-      color: var(--color-text-muted);
-      cursor: not-allowed;
-    }
-  }
-
-  // Produto esgotado: só a imagem fica mais clara
-  &.esgotado img { opacity: 0.5; }
 }
 
-// Etiqueta de estoque: texto pequeno, cor só para diferenciar
-.estoque {
-  font-size: var(--font-size-sm);
-  margin: 0 0 var(--space-3) !important;
-}
-.estoque-ok { color: var(--color-text-muted); }
-.estoque-baixo { color: var(--color-warning); }
-.estoque-zero { color: var(--color-text-muted); }
-
-// ---------- Promoção ----------
-// Selo discreto: só texto pequeno com borda, no canto da imagem
+// Selo de promoção: pílula branca com texto vermelho, no canto da foto
 .selo-promocao {
   position: absolute;
-  top: calc(var(--space-4) + var(--space-2));
-  left: calc(var(--space-4) + var(--space-2));
-  z-index: 1;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
   background: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
-  color: var(--color-text-strong);
+  color: var(--color-primary);
   font-size: 12px;
-  padding: 0 var(--space-2);
-  border-radius: var(--radius-sm);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+// ---------- Textos ----------
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+
+  p { margin: 0; }
+}
+
+.categoria {
+  margin-bottom: var(--space-1) !important;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+h3 {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-strong);
+  font-size: var(--font-size);
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .precos {
@@ -94,13 +90,68 @@
   flex-wrap: wrap;
 }
 
+.preco,
+.preco-promocional {
+  color: var(--color-text-strong);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.preco-promocional { color: var(--color-primary); }
+
 .preco-antigo {
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
 
-.preco,
-.preco-promocional {
+// Etiqueta de estoque: texto pequeno
+.estoque {
+  margin: var(--space-1) 0 var(--space-4) !important;
+  font-size: var(--font-size-sm);
+}
+.estoque-ok { color: var(--color-success); }
+.estoque-baixo { color: var(--color-warning); }
+.estoque-zero { color: var(--color-text-muted); }
+
+// ---------- Botão ----------
+// Fica no pé do card (margin-top: auto): todos os botões da grade alinham na mesma altura.
+// Começa claro e fica escuro no hover.
+.btn-comprar {
+  margin-top: auto;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
   color: var(--color-text-strong);
+  font-size: 14px;
   font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+
+  &:hover:not(:disabled) {
+    background: var(--color-text-strong);
+    border-color: var(--color-text-strong);
+    color: #ffffff;
+  }
+
+  &:disabled {
+    background: var(--color-surface-2);
+    border-color: var(--color-surface-2);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+  }
+}
+
+// No celular (2 cards por linha) os textos diminuem um pouco
+@media (max-width: 520px) {
+  .info { padding: var(--space-3); }
+  h3 { font-size: 14px; }
+  .preco, .preco-promocional { font-size: 16px; }
+  .btn-comprar {
+    padding: 0 var(--space-1);
+    font-size: 12px;
+    white-space: nowrap; // o texto cabe numa linha só, sem quebrar
+  }
 }
