@@ -7,8 +7,8 @@
 // 2) BASE: o que vale para a página toda (fonte, fundo, box-sizing).
 // 3) PEÇAS COMPARTILHADAS: botões, campos, cards e o layout das páginas.
 //
-// Visual: moderno e simples. Fundo cinza bem claro, cards brancos com cantos arredondados,
-// sombras suaves, a fonte Inter e UMA cor de destaque (o vermelho da marca).
+// Visual: moderno, simples e ESCURO. Fundo quase preto, cards um tom acima, cantos arredondados,
+// a fonte Inter, o vermelho da marca como destaque e um pouco de ciano como cor complementar.
 // =====================================================================
 
 :root {
@@ -21,34 +21,44 @@
   --space-6: 40px;
   --space-7: 64px;
 
-  // ---------- Cores neutras ----------
-  --color-bg: #f6f6f8;            // fundo da página (cinza bem claro: os cards brancos "saltam" dele)
-  --color-surface: #ffffff;       // fundo dos cards
-  --color-surface-2: #f1f1f4;     // cinza claro para áreas internas (fundo das fotos, hover)
-  --color-border: #e8e8ec;        // bordas e linhas divisórias
-  --color-border-strong: #d4d4da; // borda dos campos de formulário
-  --color-text: #3f3f46;          // texto normal
-  --color-text-strong: #18181b;   // títulos e valores importantes
-  --color-text-muted: #71717a;    // textos de apoio (legendas, datas)
-  --color-dark: #121216;          // fundo escuro do banner da Home
+  // ---------- Cores neutras (tema ESCURO) ----------
+  --color-bg: #0a0a0d;            // fundo da página: quase preto
+  --color-surface: #141419;       // fundo dos cards (um tom acima do fundo, para separar)
+  --color-surface-2: #1d1d24;     // áreas internas dos cards (fundo das fotos, hover)
+  --color-border: rgba(255, 255, 255, 0.08);        // bordas e linhas: branco bem transparente
+  --color-border-strong: rgba(255, 255, 255, 0.16); // borda dos campos de formulário
+  --color-text: #c9c9d1;          // texto normal (cinza claro: cansa menos que o branco puro)
+  --color-text-strong: #f6f6f8;   // títulos e valores importantes (quase branco)
+  --color-text-muted: #8a8a96;    // textos de apoio (legendas, datas)
+  --color-dark: #101016;          // fundo do banner da Home
+  --color-on-light: #0a0a0d;      // texto escuro para usar em cima de um fundo claro
 
-  // ---------- Cor de destaque (a ÚNICA cor forte do site) ----------
-  --color-primary: #e11d2e;
-  --color-primary-hover: #c4152a;
-  --color-primary-soft: #fdecee;  // fundo bem clarinho do vermelho (selos, item selecionado)
+  // ---------- Cor de destaque principal: VERMELHO ----------
+  // Botões principais, preço em promoção, contador do carrinho, o "RED" do logo.
+  --color-primary: #ff2e43;
+  --color-primary-hover: #e3182e;
+  --color-primary-soft: rgba(255, 46, 67, 0.14); // vermelho transparente (fundos de selos, halo de foco)
   --color-on-primary: #ffffff;    // texto em cima de um botão vermelho
 
+  // ---------- Cor complementar: CIANO ----------
+  // O ciano fica do lado OPOSTO ao vermelho no círculo das cores, por isso os dois combinam.
+  // Aparece pouco, só em detalhes: "Em estoque", status Aprovado, categoria escolhida,
+  // links no hover, contorno de foco do teclado e um brilho no banner.
+  --color-accent: #22d3ee;
+  --color-accent-soft: rgba(34, 211, 238, 0.12);
+
   // ---------- Mensagens ----------
-  --color-success: #16803c;
-  --color-success-soft: #ecf8f0;
-  --color-warning: #a35f00;
-  --color-warning-soft: #fdf5e6;
-  --color-danger: #c81e1e;
-  --color-danger-soft: #fdeeee;
+  --color-success: var(--color-accent); // "deu certo" usa o ciano, a cor complementar
+  --color-success-soft: var(--color-accent-soft);
+  --color-warning: #fbbf24;
+  --color-warning-soft: rgba(251, 191, 36, 0.12);
+  --color-danger: #ff6b78;
+  --color-danger-soft: rgba(255, 46, 67, 0.12);
 
   // ---------- Tipografia ----------
   // 'Inter Variable' vem do pacote @fontsource-variable/inter (instalado no projeto e listado no angular.json).
   // Se ela não carregar, o navegador usa a fonte do sistema.
+  color-scheme: dark; // avisa o navegador: barras de rolagem, calendário etc. também no modo escuro
   --font-family: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --font-size: 15px;      // corpo do texto
   --font-size-sm: 13px;   // textos de apoio
@@ -64,9 +74,11 @@
   --radius-xl: 24px;
   --radius-pill: 999px;   // cantos totalmente redondos (botões em forma de pílula)
 
-  --shadow-sm: 0 1px 2px rgba(18, 18, 22, 0.05);
-  --shadow-md: 0 6px 20px rgba(18, 18, 22, 0.07);
-  --shadow-lg: 0 16px 40px rgba(18, 18, 22, 0.1);
+  // No fundo escuro a sombra precisa ser bem mais forte para aparecer
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 8px 24px rgba(255, 46, 67, 0.3); // "brilho" vermelho dos botões no hover
 
   --transition: 0.2s ease; // velocidade padrão das animações (hover)
 
@@ -124,6 +136,15 @@ img {
 
 a {
   color: var(--color-primary);
+  transition: color var(--transition);
+
+  &:hover { color: var(--color-accent); }
+}
+
+// Cor do texto selecionado com o mouse
+::selection {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 h1, h2, h3, h4 {
@@ -140,7 +161,7 @@ textarea {
 
 // Contorno visível ao navegar pelo teclado (Tab): importante para acessibilidade
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -166,7 +187,7 @@ textarea {
   &:hover:not(:disabled) {
     background: var(--color-primary-hover);
     border-color: var(--color-primary-hover);
-    box-shadow: 0 6px 16px rgba(225, 29, 46, 0.25);
+    box-shadow: var(--glow-primary);
   }
 
   &:active:not(:disabled) { transform: translateY(1px); }
@@ -199,6 +220,7 @@ textarea {
   &:hover:not(:disabled) {
     background: var(--color-surface-2);
     border-color: var(--color-text-muted);
+    color: var(--color-text-strong);
   }
 
   &:disabled {
@@ -272,7 +294,7 @@ textarea {
   margin: 0 auto;
 }
 
-// Card padrão: branco, cantos arredondados, borda bem clara e sombra suave
+// Card padrão: um tom acima do fundo, cantos arredondados, borda fina e sombra
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);

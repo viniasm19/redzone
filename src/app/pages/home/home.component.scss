@@ -3,7 +3,8 @@
   padding-bottom: 0; // o espaço até a vitrine fica por conta da seção de baixo
 }
 
-// Cartão escuro, com cantos bem arredondados e um brilho vermelho bem fraquinho no canto
+// Cartão do banner: um tom acima do fundo preto, com dois brilhos suaves:
+// vermelho no canto de cima (a marca) e ciano no canto de baixo (a cor complementar)
 .hero {
   position: relative;
   overflow: hidden;
@@ -14,8 +15,10 @@
   min-height: 340px;
   padding: var(--space-7) var(--space-7);
   border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
   background:
-    radial-gradient(circle at 85% 20%, rgba(225, 29, 46, 0.35), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255, 46, 67, 0.4), transparent 45%),
+    radial-gradient(circle at 10% 110%, rgba(34, 211, 238, 0.18), transparent 40%),
     var(--color-dark);
   color: #d4d4d8;
 }
@@ -25,14 +28,26 @@
   z-index: 1;
 }
 
-// Etiqueta pequena acima do título, em forma de pílula
+// Etiqueta pequena acima do título, em forma de pílula, com uma bolinha ciano na frente
 .hero-etiqueta {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-bottom: var(--space-4);
   padding: var(--space-1) var(--space-3);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(34, 211, 238, 0.3);
   border-radius: var(--radius-pill);
-  color: #e4e4e7;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px var(--color-accent);
+  }
   font-size: var(--font-size-sm);
   font-weight: 500;
 }
@@ -61,7 +76,7 @@
   flex-wrap: wrap;
 }
 
-// Botão claro sobre o fundo escuro
+// Botão "fantasma" sobre o fundo escuro
 .btn-hero-secundario {
   display: inline-flex;
   align-items: center;
@@ -128,11 +143,11 @@
   &:hover { border-color: var(--color-text-muted); color: var(--color-text-strong); }
 }
 
-// Categoria escolhida: pílula escura
+// Categoria escolhida: pílula com o ciano (a cor complementar)
 .cat-btn.active {
-  background: var(--color-text-strong);
-  border-color: var(--color-text-strong);
-  color: #ffffff;
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .content {

@@ -2,7 +2,8 @@
   display: block;
 }
 
-// Card do produto: branco, cantos arredondados. No hover ele "sobe" um pouco e ganha sombra.
+// Card do produto: escuro, cantos arredondados. No hover ele "sobe" um pouco, ganha sombra
+// e uma borda vermelha suave (o "brilho" da marca).
 .product-card {
   height: 100%;
   display: flex;
@@ -16,7 +17,7 @@
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-md), 0 0 0 1px rgba(255, 46, 67, 0.35);
     border-color: transparent;
 
     img { transform: scale(1.04); } // zoom suave na foto
@@ -42,15 +43,15 @@
   }
 }
 
-// Selo de promoção: pílula branca com texto vermelho, no canto da foto
+// Selo de promoção: pílula vermelha no canto da foto
 .selo-promocao {
   position: absolute;
   top: var(--space-3);
   left: var(--space-3);
   padding: 2px var(--space-3);
   border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   font-size: 12px;
   font-weight: 600;
   box-shadow: var(--shadow-sm);
@@ -116,14 +117,14 @@ h3 {
 
 // ---------- Botão ----------
 // Fica no pé do card (margin-top: auto): todos os botões da grade alinham na mesma altura.
-// Começa claro e fica escuro no hover.
+// Começa discreto (escuro, com borda) e fica vermelho no hover.
 .btn-comprar {
   margin-top: auto;
   width: 100%;
   min-height: 40px;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
+  background: transparent;
   color: var(--color-text-strong);
   font-size: 14px;
   font-weight: 600;
@@ -131,9 +132,9 @@ h3 {
   transition: background var(--transition), color var(--transition), border-color var(--transition);
 
   &:hover:not(:disabled) {
-    background: var(--color-text-strong);
-    border-color: var(--color-text-strong);
-    color: #ffffff;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
   }
 
   &:disabled {

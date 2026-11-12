@@ -1,4 +1,4 @@
-// Aviso rápido (toast) do carrinho: pílula escura flutuando no canto, com sombra
+// Aviso rápido (toast) do carrinho: pílula escura com borda ciano, flutuando no canto
 .toast {
   position: fixed;
   bottom: var(--space-5);
@@ -6,8 +6,9 @@
   max-width: calc(100% - 2 * var(--space-5));
   padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-pill);
-  background: var(--color-text-strong);
-  color: #ffffff;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  background: var(--color-surface-2);
+  color: var(--color-text-strong);
   font-size: 14px;
   font-weight: 500;
   box-shadow: var(--shadow-lg);
