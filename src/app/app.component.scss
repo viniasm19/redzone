@@ -1,25 +1,35 @@
-// Aviso rápido (toast) do carrinho: cinza escuro, discreto, sem brilho
+// Aviso rápido (toast) do carrinho: pílula escura com borda ciano, flutuando no canto
 .toast {
   position: fixed;
   bottom: var(--space-5);
   right: var(--space-5);
   max-width: calc(100% - 2 * var(--space-5));
-  background: var(--color-text-strong);
-  color: var(--color-bg);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-  animation: fadeIn 0.2s ease;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  background: var(--color-surface-2);
+  color: var(--color-text-strong);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.25s ease;
   z-index: 9999;
 }
 
-// Área das páginas: fundo liso (sem imagem nem "véu" escuro por cima)
+// :host = a própria tag <app-root>. Ela vira uma coluna da altura da tela (cabeçalho, página, rodapé)
+// e a página (main) estica para ocupar o que sobrar: assim, numa página curta, o rodapé fica
+// lá embaixo, em vez de deixar uma faixa vazia abaixo dele.
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 main {
-  min-height: 70vh;
-  background: var(--color-bg);
+  flex: 1;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }

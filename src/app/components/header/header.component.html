@@ -17,6 +17,11 @@
       <!-- Esquerda: só o Carrinho. Os produtos ficam na tela inicial (o logo leva até ela). -->
       <div class="menu-grupo">
         <a routerLink="/cart" routerLinkActive="active" class="cart-btn" (click)="fecharMenu()">
+          <!-- Ícone de sacola desenhado em SVG (só decoração: aria-hidden esconde do leitor de tela) -->
+          <svg class="icone" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M6 7h12l-1 13H7L6 7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M9 7a3 3 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
           Carrinho
           <span class="badge" *ngIf="cartService.quantidadeTotal() > 0">
             {{ cartService.quantidadeTotal() }}

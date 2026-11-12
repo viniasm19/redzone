@@ -1,6 +1,8 @@
 // Largura (.coluna-media), card (.card) e título (.page-title) vêm do styles.scss global
 .success-card {
-  padding: var(--space-6) var(--space-5);
+  padding: var(--space-7) var(--space-5);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,17 +12,19 @@
   .page-title { margin: 0; }
 }
 
-// Ícone de confirmação: um "✓" simples num círculo de borda fina
+// Ícone de confirmação: "✓" grande num círculo verde clarinho
 .success-icon {
-  width: 48px;
-  height: 48px;
+  width: 72px;
+  height: 72px;
+  margin-bottom: var(--space-2);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-success);
   border-radius: 50%;
+  background: var(--color-success-soft);
   color: var(--color-success);
-  font-size: 22px;
+  font-size: 34px;
+  font-weight: 700;
 }
 
 p {
