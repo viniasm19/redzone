@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // (some quando o teste acaba), para não mexer no banco em arquivo (pasta data/).
 @SpringBootTest
 @AutoConfigureMockMvc
-// create-drop: as tabelas são recriadas (e o data.sql recarregado) a cada teste, então um teste não
+// create-drop: as tabelas são recriadas (e o data.sql recarregado) a cada teste.
 // enxerga o que o outro alterou.
 @TestPropertySource(properties = {
         "spring.datasource.url=jdbc:h2:mem:teste",
@@ -35,6 +35,7 @@ class EstoqueTest {
     @Autowired
     ProdutoRepository produtoRepository;
 
+    // Busca um produto pelo nome no banco de teste.
     private Produto produto(String nome) {
         return produtoRepository.findAll().stream()
                 .filter(p -> p.getNome().equals(nome))
@@ -43,6 +44,7 @@ class EstoqueTest {
     }
 
     @Test
+    // Entrada e saída mudam o estoque e geram histórico.
     void entradaESaidaAlteramOEstoqueEGravamHistorico() throws Exception {
         Produto headset = produto("Headset Gamer"); // data.sql: 15 unidades
 
@@ -65,6 +67,7 @@ class EstoqueTest {
     }
 
     @Test
+    // Saída maior que o estoque dá 409 e não mexe em nada.
     void saidaMaiorQueOEstoqueResponde409() throws Exception {
         Produto microfone = produto("Microfone Condensador USB"); // 8 unidades
 
@@ -77,6 +80,7 @@ class EstoqueTest {
     }
 
     @Test
+    // Pedido dá baixa no estoque.
     void pedidoDaBaixaNoEstoque() throws Exception {
         Produto headset = produto("Headset Gamer"); // 15
 
@@ -89,6 +93,7 @@ class EstoqueTest {
     }
 
     @Test
+    // Pedido sem estoque não salva nada e dá 409.
     void pedidoSemEstoqueNaoSalvaNadaEResponde409() throws Exception {
         Produto headset = produto("Headset Gamer");        // 15
         Produto mesa = produto("Mesa Gamer com LED");      // 0 (esgotada)
@@ -106,6 +111,7 @@ class EstoqueTest {
     }
 
     @Test
+    // Editar um produto não muda o estoque.
     void editarProdutoNaoMexeNoEstoque() throws Exception {
         Produto headset = produto("Headset Gamer");
 

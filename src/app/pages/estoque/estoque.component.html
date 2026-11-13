@@ -1,7 +1,5 @@
-<!-- Controle de estoque (/estoque, só o admin; o botão fica na Minha Área). Usa do TypeScript: produtos,
-     totalUnidades, qtdBaixo, qtdEsgotados, valorEmEstoque (resumo), busca e somenteBaixo (filtros),
-     produtosFiltrados, forms (quantidade e observação de cada linha), status(), movimentar(), verHistorico(),
-     movimentacoes e rotuloTipo(). -->
+<!-- Controle de estoque (/estoque, só o admin; o botão fica na Minha Área). -->
+<!-- Container da tela de estoque. -->
 <div class="page estoque-container">
 
   <h1 class="page-title">Controle de Estoque</h1>
@@ -97,6 +95,7 @@
 
     <p class="vazio" *ngIf="movimentacoes.length === 0">Nenhuma movimentação registrada ainda.</p>
 
+    <!-- Uma linha para cada movimentação. -->
     <ul *ngIf="movimentacoes.length > 0">
       <li *ngFor="let m of movimentacoes; trackBy: trackById" [ngClass]="m.tipo.toLowerCase()">
         <span class="tipo">{{ rotuloTipo(m.tipo) }}</span>

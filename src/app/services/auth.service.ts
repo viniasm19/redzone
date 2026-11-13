@@ -4,8 +4,8 @@ import { firstValueFrom } from 'rxjs';
 import { API_URL } from '../config/api';
 import { Usuario, UsuarioLogado } from '../models/usuario.model';
 
-// Cuida de TUDO que é sobre conta: login, cadastro, logout, reset de senha e o CRUD de usuários do admin.
-// @Injectable({ providedIn: 'root' }): um único AuthService para o app inteiro (todas as telas veem o mesmo login).
+// Cuida de TUDO que é sobre conta: login, cadastro, logout.
+// @Injectable({ providedIn: 'root' }).
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);       // faz as chamadas para a API
@@ -14,14 +14,13 @@ export class AuthService {
   // Nome da "gaveta" do sessionStorage onde o usuário logado fica guardado
   private static readonly CHAVE = 'redzone.usuario';
 
-  // Quem está logado. Fica guardado no sessionStorage: recarregar a página (F5) NÃO desloga,
-  // mas fechar a aba sim. A senha nunca é guardada (a API só devolve id, nome e e-mail).
-  // signal = valor que o Angular observa; quando muda, as telas que o usam atualizam sozinhas.
+  // Quem está logado. Fica guardado no sessionStorage.
+  // mas fechar a aba sim. A senha nunca é guardada (a API só devolve id.
   private _usuarioLogado = signal<UsuarioLogado | null>(this.lerSalvo());
   usuarioLogado = this._usuarioLogado.asReadonly();
 
   // Lê o usuário guardado no sessionStorage (roda uma vez, quando o app abre).
-  // Devolve: o usuário, ou null se não houver ninguém (ou se o navegador bloquear o storage).
+  // Devolve: o usuário.
   private lerSalvo(): UsuarioLogado | null {
     try {
       // 1) pega o texto guardado (o storage só guarda texto)
@@ -54,7 +53,7 @@ export class AuthService {
     return this._usuarioLogado() !== null;
   }
 
-  // O administrador é quem tem este e-mail (regra simples, só para o trabalho acadêmico).
+  // O administrador é quem tem este e-mail (regra simples.
   isAdmin() {
     return this._usuarioLogado()?.email === 'admin@redzone.com';
   }
@@ -66,14 +65,11 @@ export class AuthService {
 
   // ---------- Login e cadastro ----------
 
-  // POST /login: quem confere e-mail e senha é o back-end. A API devolve só id, nome e e-mail
+  // POST /login: quem confere e-mail e senha é o back-end. A API devolve só id.
   // (a senha nunca volta para o navegador).
-  // O e-mail já chega normalizado (trim + minúsculas): quem faz isso é a tela onde ele foi digitado.
-  // Recebe: e-mail e senha. Não devolve nada: se der certo, o usuário fica salvo; se não, lança um Error.
-  // "async": a função espera a API com "await" sem travar a tela.
   async login(dados: { email: string; senha: string }) {
     try {
-      // 1) POST /login e espera a resposta (firstValueFrom transforma a resposta numa Promise)
+      // 1) POST /login e espera a resposta (firstValueFrom transforma a resposta numa.
       const usuario = await firstValueFrom(
         this.http.post<UsuarioLogado>(`${API_URL}/login`, {
           email: dados.email,
@@ -124,9 +120,7 @@ export class AuthService {
   }
 
   // Reset de senha SEM listar todos os usuários:
-  //   1) GET /usuarios/email/{email} -> findByEmail no back-end
-  //   2) PUT /usuarios/{id}          -> atualiza o usuário com a senha nova
-  // (o e-mail também já chega normalizado pela tela)
+  // 1) GET /usuarios/email/{email} -> findByEmail no back-end
   async redefinirSenha(email: string, novaSenha: string) {
     try {
       // 1) busca o usuário pelo e-mail (a resposta vem sem a senha)
@@ -134,7 +128,7 @@ export class AuthService {
         this.http.get<Usuario>(`${this.url}/email/${encodeURIComponent(email)}`)
       );
       // 2) manda o mesmo usuário de volta, agora com a senha nova.
-      //    { ...usuario, senha: novaSenha } = "copie todos os campos do usuário e troque só a senha"
+      // { ...usuario, senha.
       await this.atualizarUsuario({ ...usuario, senha: novaSenha });
     } catch (e) {
       if (e instanceof HttpErrorResponse && e.status === 404) {

@@ -12,9 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 // CRUD de usuários em /usuarios. O login fica em /login (AuthController).
-// @RestController: esta classe recebe requisições HTTP e devolve respostas em JSON.
-//   (É um @Controller + @ResponseBody: o que os métodos retornam vira JSON automaticamente.)
-// @RequestMapping("..."): o começo do endereço de todas as rotas desta classe.
+// @RestController: esta classe recebe requisições HTTP e devolve respostas em.
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -28,7 +26,6 @@ public class UsuarioController {
 
     // GET /usuarios -> lista todos
     // Não recebe nada. Devolve: a lista de usuários (o Spring responde 200 sozinho).
-    // A senha não aparece no JSON por causa do @JsonProperty(WRITE_ONLY) do Usuario.
     @GetMapping
     public List<Usuario> listar() {
         return repository.findAll();
@@ -39,8 +36,7 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
         // findById devolve um Optional (pode estar vazio):
-        //   .map(...)    -> se achou, transforma em "200 com o usuário"
-        //   .orElse(...) -> se não achou, usa "404 sem corpo"
+        // .map(...)    -> se achou, transforma em "200 com o usuário"
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -49,7 +45,7 @@ public class UsuarioController {
     // GET /usuarios/email/{email} -> 200 ou 404 (usado na tela "esqueci a senha")
     @GetMapping("/email/{email}")
     public ResponseEntity<Usuario> buscarPorEmail(@PathVariable String email) {
-        // mesma ideia do buscarPorId, mas procurando pelo e-mail (sem diferença de maiúsculas)
+        // mesma ideia do buscarPorId.
         return repository.findByEmailIgnoreCase(email.trim())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -57,16 +53,16 @@ public class UsuarioController {
 
     // POST /usuarios -> 201, ou 409 se o e-mail já estiver cadastrado
     @PostMapping
-    // Recebe: o JSON do usuário novo (nome, email, senha), já validado pelo @Valid (400 se faltar algo).
+    // Recebe: o JSON do usuário novo (nome, email, senha).
     public ResponseEntity<?> criar(@Valid @RequestBody Usuario usuario) {
-        // 1) se já existe alguém com este e-mail (sem diferença de maiúsculas), responde 409
+        // 1) se já existe alguém com este e-mail (sem diferença de maiúsculas).
         if (repository.findByEmailIgnoreCase(usuario.getEmail().trim()).isPresent()) {
             return emailDuplicado();
         }
 
-        // 2) apaga um id que o front tenha mandado: assim o save() sempre CRIA (INSERT), nunca altera outro usuário
+        // 2) apaga um id que o front tenha mandado: assim o save() sempre CRIA (INSERT).
         usuario.setId(null); // quem gera o id é o banco, mesmo que o front envie um
-        // 3) salva e responde 201 (Created = "criado") com o usuário salvo (já com o id novo e sem a senha)
+        // 3) salva e responde 201 (Created = "criado") com o usuário salvo (já com o id.
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(usuario));
     }
 
@@ -87,7 +83,7 @@ public class UsuarioController {
             return emailDuplicado();
         }
 
-        // 3) usa o id do endereço (não o do corpo) e salva: o save() com um id existente faz UPDATE
+        // 3) usa o id do endereço (não o do corpo) e salva.
         usuario.setId(id); // id já existe -> save() faz UPDATE
         // 4) responde 200 com o usuário atualizado
         return ResponseEntity.ok(repository.save(usuario));
@@ -95,7 +91,6 @@ public class UsuarioController {
 
     // DELETE /usuarios/{id} -> 204 ou 404
     // ResponseEntity<Void>: a resposta não tem corpo (só o código HTTP).
-    // Se o usuário já tiver pedidos, o banco recusa e o ApiExceptionHandler responde 409.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         // 1) não existe: 404
@@ -103,7 +98,7 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
 
-        // 2) apaga e responde 204 (No Content = "deu certo, mas não tenho nada para mostrar")
+        // 2) apaga e responde 204 (No Content = "deu certo.
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

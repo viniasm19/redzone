@@ -13,19 +13,17 @@ import { AuthService } from '../../services/auth.service';
 })
 // Cabeçalho: mostra Login/Cadastro ou "Olá, nome" conforme quem está logado.
 // Em telas pequenas, os links ficam escondidos atrás do botão ☰ (menu recolhível).
-// O HTML espera daqui: cartService (contador do carrinho), usuario (nome), isLogado (qual grupo mostrar),
-// menuAberto (menu do celular) e os métodos alternarMenu, fecharMenu e sair.
 export class HeaderComponent {
   private auth = inject(AuthService);
   private router = inject(Router);
   public cartService = inject(CartService); // public: o HTML lê cartService.quantidadeTotal()
 
   usuario = this.auth.usuarioLogado;                       // signal com quem está logado (ou null)
-  // computed = valor calculado a partir de signals; recalcula sozinho quando alguém loga ou sai
+  // computed = valor calculado a partir de signals.
   isLogado = computed(() => this.auth.isAuthenticated());
   isAdmin = computed(() => this.auth.isAdmin());           // (o menu não usa mais; mantido para quem precisar)
 
-  // Menu do celular aberto ou fechado. Só tem efeito visual em telas pequenas (o CSS decide).
+  // Menu do celular aberto ou fechado.
   menuAberto = signal(false);
 
   // Botão ☰: abre se estava fechado, fecha se estava aberto
@@ -33,7 +31,7 @@ export class HeaderComponent {
     this.menuAberto.update(aberto => !aberto);
   }
 
-  // Ao clicar num link, o menu do celular se fecha (senão ele ficaria aberto por cima da página nova)
+  // Ao clicar num link.
   fecharMenu() {
     this.menuAberto.set(false);
   }

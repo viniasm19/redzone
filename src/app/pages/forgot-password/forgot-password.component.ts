@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss'
 })
-// Tela "Esqueci a senha" (/forgot-password). O HTML espera daqui: email e novaSenha (campos),
+// Tela "Esqueci a senha" (/forgot-password). O HTML espera daqui.
 // erro, sucesso (mensagens), erroEmail, returnUrl e o método resetar(f).
 export class ForgotPasswordComponent {
 
@@ -26,7 +26,7 @@ export class ForgotPasswordComponent {
     private route: ActivatedRoute
   ) {}
 
-  // Se a pessoa veio do checkout, guarda para onde voltar depois de entrar (só caminhos do próprio site).
+  // Se a pessoa veio do checkout.
   get returnUrl(): string | null {
     const url = this.route.snapshot.queryParamMap.get('returnUrl');
     return url && url.startsWith('/') && !url.startsWith('//') ? url : null;
@@ -36,12 +36,12 @@ export class ForgotPasswordComponent {
   private static readonly EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   // Padroniza o e-mail digitado: "  Lucas@Email.com " vira "lucas@email.com".
-  // (fica aqui, na tela onde o usuário digita; o AuthService recebe o e-mail já pronto)
+  // (fica aqui, na tela onde o usuário digita.
   private normalizarEmail(email: string): string {
     return email.trim().toLowerCase();
   }
 
-  // Mensagem de erro do campo e-mail ('' = e-mail válido). A tela usa para avisar o usuário.
+  // Mensagem de erro do campo e-mail ('' = e-mail válido).
   get erroEmail(): string {
     const email = this.normalizarEmail(this.email);
     if (!email) {
@@ -65,7 +65,7 @@ export class ForgotPasswordComponent {
     this.email = this.normalizarEmail(this.email);
 
     try {
-      // 4) busca o usuário pelo e-mail e grava a senha nova (o AuthService faz as duas chamadas)
+      // 4) busca o usuário pelo e-mail e grava a senha nova (o AuthService faz as duas.
       await this.auth.redefinirSenha(this.email, this.novaSenha);
       this.sucesso = 'Senha atualizada com sucesso!';
 

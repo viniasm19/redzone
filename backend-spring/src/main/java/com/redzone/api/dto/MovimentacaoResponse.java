@@ -5,7 +5,7 @@ import com.redzone.api.model.TipoMovimentacao;
 
 import java.time.LocalDateTime;
 
-// O que a API DEVOLVE de cada movimentação: só o necessário do produto (id e nome), não ele inteiro.
+// O que a API DEVOLVE de cada movimentação.
 public record MovimentacaoResponse(
         Long id,
         Long produtoId,
@@ -16,7 +16,7 @@ public record MovimentacaoResponse(
         LocalDateTime data,
         String observacao
 ) {
-    // Recebe: a movimentação do banco. Devolve: a resposta com o id e o nome do produto (não o produto inteiro).
+    // Recebe: a movimentação do banco. Devolve.
     public static MovimentacaoResponse de(MovimentacaoEstoque m) {
         return new MovimentacaoResponse(
                 m.getId(),

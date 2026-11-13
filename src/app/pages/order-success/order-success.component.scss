@@ -1,4 +1,4 @@
-// Largura (.coluna-media), card (.card) e título (.page-title) vêm do styles.scss global
+// Largura (.coluna-media).
 .success-card {
   padding: var(--space-7) var(--space-5);
   border-radius: var(--radius-xl);
@@ -38,6 +38,7 @@ p {
   font-size: var(--font-size-sm);
 }
 
+// Espaço entre os botões.
 .success-actions {
   display: flex;
   flex-wrap: wrap;

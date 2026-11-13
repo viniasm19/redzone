@@ -1,13 +1,16 @@
-<!-- Página de promoções (/promocoes, sem link no menu). Usa do TypeScript: produtos, carregando, erro
-     e adicionarAoCarrinho(). Reaproveita o card <app-product-item>. -->
+<!-- Página de promoções (/promocoes, sem link no menu). Usa do TypeScript. -->
+<!-- Container da página de promoções. -->
 <div class="page">
+  <!-- Título da página. -->
   <h2 class="page-title">Promoções</h2>
   <p class="page-subtitle">Preços especiais por tempo limitado.</p>
 
+  <!-- Enquanto carrega, mostra um aviso. -->
   @if (carregando) {
     <p class="aviso">Carregando promoções...</p>
   } @else if (erro) {
     <p class="aviso erro">{{ erro }}</p>
+  <!-- Se não tem promoção, avisa. -->
   } @else if (produtos.length === 0) {
     <div class="aviso">
       <p>Nenhuma promoção no momento.</p>
@@ -15,6 +18,7 @@
     </div>
   } @else {
     <div class="products-grid">
+      <!-- Um card para cada produto em promoção. -->
       @for (prod of produtos; track prod.id) {
         <app-product-item [produto]="prod" (addToCart)="adicionarAoCarrinho($event)"></app-product-item>
       }

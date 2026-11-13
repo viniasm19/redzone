@@ -8,26 +8,23 @@ export interface CartItem {
 
 // O carrinho vive só no front (não passa pela API). Fica copiado no localStorage,
 // então recarregar a página (F5) não esvazia o carrinho.
-// Ele respeita o estoque: não deixa colocar mais unidades do que existem.
-// (A palavra final é do back-end, que confere de novo o estoque ao finalizar o pedido.)
-// @Injectable({ providedIn: 'root' }): um único carrinho para o app inteiro (todas as telas veem o mesmo).
 @Injectable({ providedIn: 'root' })
 export class CartService {
   // Nome da "gaveta" do localStorage onde o carrinho fica guardado
   private static readonly CHAVE = 'redzone.carrinho';
 
-  // signal = valor que o Angular "observa": quando muda, as telas que o usam se atualizam sozinhas.
-  // "lista" é privada (só este service altera); as telas leem "itens", a versão só de leitura.
+  // signal = valor que o Angular "observa": quando muda.
+  // "lista" é privada (só este service altera); as telas leem "itens".
   private lista = signal<CartItem[]>(CartService.lerSalvo());
   itens = this.lista.asReadonly();
 
   // Lê o carrinho guardado no navegador (roda uma vez, quando o app abre).
   private static lerSalvo(): CartItem[] {
     try {
-      // 1) pega o texto guardado e transforma em objeto (ou lista vazia, se não houver nada)
+      // 1) pega o texto guardado e transforma em objeto (ou lista vazia.
       const texto = localStorage.getItem(CartService.CHAVE);
       const dados = texto ? JSON.parse(texto) : [];
-      // 2) só aceita se for mesmo uma lista (proteção contra um valor estranho no storage)
+      // 2) só aceita se for mesmo uma lista (proteção contra um valor estranho no.
       return Array.isArray(dados) ? dados : [];
     } catch {
       return [];
@@ -45,9 +42,9 @@ export class CartService {
     });
   }
 
-  // computed = valor calculado a partir de um signal; recalcula sozinho quando o carrinho muda.
+  // computed = valor calculado a partir de um signal.
   quantidadeTotal = computed(() => this.lista().reduce((soma, i) => soma + i.quantidade, 0));
-  // Usa o preço atual (promocional, se houver). É só uma prévia: o total de verdade quem calcula é o back-end.
+  // Usa o preço atual (promocional, se houver). É só uma prévia.
   total = computed(() => this.lista().reduce((soma, i) => soma + precoAtual(i.produto) * i.quantidade, 0));
 
   // Aviso que aparece por 2,5 segundos
@@ -56,8 +53,7 @@ export class CartService {
   private timer?: ReturnType<typeof setTimeout>;
 
   // Quantas unidades deste produto já estão no carrinho
-  // Recebe: o id do produto. Devolve: a quantidade dele no carrinho (0 se não estiver lá).
-  // "?." e "??": se não achar o item, não quebra e usa 0.
+  // Recebe: o id do produto. Devolve.
   quantidadeNoCarrinho(id: number) {
     return this.lista().find(i => i.produto.id === id)?.quantidade ?? 0;
   }
@@ -125,8 +121,8 @@ export class CartService {
     this.timer = setTimeout(() => this._toast.set(null), 2500);
   }
 
-  // Soma (ou subtrai) a quantidade de um item. Se chegar a 0, o item sai do carrinho.
-  // Cria um array novo em vez de alterar o antigo: é isso que faz o signal avisar as telas.
+  // Soma (ou subtrai) a quantidade de um item. Se chegar a 0.
+  // Cria um array novo em vez de alterar o antigo.
   private alterarQuantidade(id: number, diferenca: number) {
     this.lista.update(l =>
       l

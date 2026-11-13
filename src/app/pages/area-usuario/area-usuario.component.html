@@ -1,13 +1,5 @@
-<!-- Como ler este HTML (vale para todas as telas):
-     {{ valor }}          mostra um valor do TypeScript na tela
-     [atributo]="x"       liga um atributo ao valor x do TypeScript (ex.: [disabled]="enviando")
-     (evento)="metodo()"  chama um método do TypeScript quando o evento acontece (ex.: um clique)
-     [(ngModel)]="campo"  liga um input a um campo NOS DOIS SENTIDOS: digitar muda o campo, e vice-versa
-     *ngIf / @if          só mostra o pedaço se a condição for verdadeira
-     *ngFor / @for        repete o pedaço para cada item de uma lista
-     routerLink="/x"      link interno do Angular (troca de tela sem recarregar a página) -->
-<!-- Minha Área. Usa do TypeScript: auth (nome, e-mail, isAdmin), pedidos, carregando, erro,
-     textoStatus(), textoForma e sair(). -->
+<!-- Como ler este HTML (vale para todas as telas): -->
+<!-- Minha Área. Usa do TypeScript: auth (nome, e-mail, isAdmin), pedidos. -->
 <div class="page">
 <div class="coluna-media area-container">
   <h2 class="page-title">Minha Área</h2>
@@ -37,7 +29,7 @@
   <section class="card area-card pedidos">
     <h3 class="secao-titulo">Meus Pedidos</h3>
 
-    <!-- Quatro situações possíveis: carregando, deu erro, nenhum pedido ou a lista de pedidos -->
+    <!-- Quatro situações possíveis: carregando, deu erro. -->
     @if (carregando) {
       <p class="vazio">Carregando pedidos...</p>
     } @else if (erro) {
@@ -45,7 +37,7 @@
     } @else if (pedidos.length === 0) {
       <p class="vazio">Nenhum pedido ainda</p>
     } @else {
-      <!-- Um bloco para cada pedido. "track pedido.id" ajuda o Angular a não redesenhar tudo à toa -->
+      <!-- Um bloco para cada pedido. -->
       @for (pedido of pedidos; track pedido.id) {
         <article class="pedido">
           <header class="pedido-topo">

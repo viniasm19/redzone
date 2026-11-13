@@ -13,9 +13,8 @@ import { ESTOQUE_MINIMO } from '../../services/stock.service';
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
-// Tela de detalhe de um produto (/product/:id). Mostra imagem, nome, descrição, preço e estoque.
-// O HTML espera daqui: produto (null enquanto carrega: a tela só aparece quando ele chega),
-// estoqueMinimo, emPromocao e os métodos adicionarAoCarrinho e voltar.
+// Tela de detalhe de um produto (/product/:id). Mostra imagem, nome, descrição.
+// O HTML espera daqui: produto (null enquanto carrega.
 export class ProductDetailComponent implements OnInit {
 
   produto: Produto | null = null; // o produto da tela (null = ainda não chegou ou não existe)
@@ -34,7 +33,7 @@ export class ProductDetailComponent implements OnInit {
     // 1) lê o :id do endereço (/product/7 -> "7") e transforma em número
     const id = Number(this.route.snapshot.paramMap.get('id'));
     // 2) busca o produto na API e guarda quando chegar
-    // GET /produtos/{id}: se o produto não existir (404), a tela fica vazia, como antes
+    // GET /produtos/{id}: se o produto não existir (404), a tela fica vazia.
     this.productService.getProduto(id).subscribe({
       next: produto => (this.produto = produto),
       error: () => (this.produto = null)
@@ -43,7 +42,7 @@ export class ProductDetailComponent implements OnInit {
 
   // Botão "Adicionar ao Carrinho"
   adicionarAoCarrinho() {
-    // Só vai para o carrinho se ainda havia unidade para colocar (senão o toast avisa e fica aqui)
+    // Só vai para o carrinho se ainda havia unidade para colocar.
     if (this.produto && this.cartService.podeAdicionar(this.produto)) {
       this.cartService.adicionarAoCarrinho(this.produto);
       this.router.navigate(['/cart']);

@@ -12,9 +12,8 @@ import { emPromocao, precoAtual } from '../../models/produto.model';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
-// Tela do carrinho (/cart). O HTML espera daqui: itens, total e quantidadeTotal (para mostrar),
+// Tela do carrinho (/cart). O HTML espera daqui: itens.
 // precoAtual e emPromocao (para o preço de cada item) e os métodos dos botões
-// (remover, aumentar, diminuir, limpar e finalizarCompra).
 export class CartComponent {
   // inject(): pede ao Angular os services prontos
   private cartService = inject(CartService);
@@ -26,11 +25,11 @@ export class CartComponent {
   total = this.cartService.total;
   quantidadeTotal = this.cartService.quantidadeTotal;
 
-  // Funções do model, expostas para o HTML (o template só enxerga o que está na classe)
+  // Funções do model.
   precoAtual = precoAtual;
   emPromocao = emPromocao;
 
-  // Os 4 métodos abaixo só repassam o clique para o CartService, que é quem muda o carrinho.
+  // Os 4 métodos abaixo só repassam o clique para o CartService.
   remover(id: number) {
     this.cartService.removerDoCarrinho(id);
   }
@@ -48,16 +47,13 @@ export class CartComponent {
   }
 
   // Fluxo de compra:
-  //   logado     -> Checkout (/order-confirm) -> Home | Área do Usuário
-  //   não logado -> Login -> (volta sozinho para o) Checkout -> Home | Área do Usuário
-  // O returnUrl diz ao login para onde voltar depois de entrar (ou de se cadastrar).
-  // O authGuard continua protegendo /order-confirm caso alguém digite o endereço direto.
+  // logado     -> Checkout (/order-confirm) -> Home | Área do Usuário
   finalizarCompra() {
     // 1) logado: vai direto ao checkout
     if (this.auth.isAuthenticated()) {
       this.router.navigate(['/order-confirm']);
     } else {
-      // 2) não logado: vai ao login com ?returnUrl=/order-confirm (o login traz de volta ao checkout)
+      // 2) não logado: vai ao login com ?returnUrl=/order-confirm (o login traz de.
       this.router.navigate(['/login'], { queryParams: { returnUrl: '/order-confirm' } });
     }
   }

@@ -23,11 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-// Pedidos em /pedidos. O front só manda "quem comprou" e "quais produtos / quantidades";
+// Pedidos em /pedidos.
 // preços e total são lidos e calculados aqui, a partir do banco.
-// @RestController: esta classe recebe requisições HTTP e devolve respostas em JSON.
-//   (É um @Controller + @ResponseBody: o que os métodos retornam vira JSON automaticamente.)
-// @RequestMapping("..."): o começo do endereço de todas as rotas desta classe.
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
@@ -37,7 +34,7 @@ public class PedidoController {
     private final ProdutoRepository produtoRepository;
     private final EstoqueService estoqueService;
 
-    // Injeção de dependência: o Spring entrega os 3 repositories e o EstoqueService prontos.
+    // Injeção de dependência.
     public PedidoController(PedidoRepository pedidoRepository,
                             UsuarioRepository usuarioRepository,
                             ProdutoRepository produtoRepository,
@@ -49,12 +46,10 @@ public class PedidoController {
     }
 
     // POST /pedidos -> 201, 400 (dados inválidos), 404 (usuário/produto não existe)
-    //                  ou 409 (algum produto não tem estoque suficiente)
-    // @Transactional: ou o pedido, TODOS os itens e TODAS as baixas de estoque são salvos, ou nada é salvo.
-    // Ex.: se o 1º item tem estoque e o 2º não, a baixa do 1º é desfeita (rollback).
+    // ou 409 (algum produto não tem estoque suficiente)
     @PostMapping
     @Transactional
-    // Recebe: o PedidoRequest (usuarioId + itens com produtoId e quantidade), já validado pelo @Valid.
+    // Recebe: o PedidoRequest (usuarioId + itens com produtoId e quantidade).
     // Devolve: o pedido salvo (PedidoResponse), com preços e total calculados aqui.
     public ResponseEntity<?> criar(@Valid @RequestBody PedidoRequest request) {
         // 1) confere se o usuário existe
@@ -63,11 +58,11 @@ public class PedidoController {
             return naoEncontrado("Usuário não encontrado.");
         }
 
-        // 2) cria o pedido em memória (ainda não está no banco): de quem é, quando foi feito e o status
+        // 2) cria o pedido em memória (ainda não está no banco): de quem é.
         Pedido pedido = new Pedido();
         pedido.setUsuario(usuario.get());
         pedido.setData(LocalDateTime.now());
-        // Todo pedido nasce esperando o pagamento. Quem muda para APROVADO é o POST /pagamentos.
+        // Todo pedido nasce esperando o pagamento.
         pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
 
         // 3) para cada item que o front mandou...
@@ -82,32 +77,31 @@ public class PedidoController {
             ItemPedido item = new ItemPedido();
             item.setProduto(produto.get());
             item.setQuantidade(itemRequest.quantidade());
-            // Preço vem do banco, não do front. Se o produto está em promoção, cobra o preço promocional.
+            // Preço vem do banco, não do front. Se o produto está em promoção.
             item.setPrecoUnitario(produto.get().getPrecoAtual());
             // 3c) coloca o item dentro do pedido
             pedido.adicionarItem(item);
 
-            // 3d) Dá baixa no estoque. Se faltar unidade, lança EstoqueInsuficienteException -> 409
+            // 3d) Dá baixa no estoque. Se faltar unidade.
             estoqueService.saida(produto.get(), itemRequest.quantidade(), TipoMovimentacao.VENDA,
                     "Venda para " + usuario.get().getNome());
         }
 
-        // 4) soma os subtotais dos itens: o total é sempre calculado aqui, nunca vem do front
+        // 4) soma os subtotais dos itens: o total é sempre calculado aqui.
         pedido.calcularTotal();
 
         // save() no pedido salva também os itens (cascade = ALL)
-        // 5) grava o pedido (e os itens, por causa do cascade) e responde 201 com o pedido convertido em DTO
+        // 5) grava o pedido (e os itens.
         Pedido salvo = pedidoRepository.save(pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(PedidoResponse.de(salvo));
     }
 
-    // GET /pedidos/usuario/{usuarioId} -> pedidos do usuário (mais recentes primeiro), ou 404
-    // @Transactional(readOnly = true): só leitura. Mantém a conexão aberta enquanto os itens de cada pedido
-    // são carregados (o Hibernate busca a lista de itens só quando alguém a usa).
+    // GET /pedidos/usuario/{usuarioId} -> pedidos do usuário.
+    // @Transactional(readOnly = true): só leitura.
     @GetMapping("/usuario/{usuarioId}")
     @Transactional(readOnly = true)
     public ResponseEntity<?> listarPorUsuario(@PathVariable Long usuarioId) {
-        // 1) usuário inexistente: 404 (e não uma lista vazia, para o front saber que o id está errado)
+        // 1) usuário inexistente: 404 (e não uma lista vazia.
         if (!usuarioRepository.existsById(usuarioId)) {
             return naoEncontrado("Usuário não encontrado.");
         }
@@ -132,8 +126,8 @@ public class PedidoController {
                 .orElseGet(() -> naoEncontrado("Pedido não encontrado."));
     }
 
-    // Monta a resposta 404 com {"mensagem": "..."}; usada em vários métodos desta classe.
-    // Map.of("chave", "valor") cria um objeto simples que vira {"mensagem": "..."} no JSON.
+    // Monta a resposta 404 com {"mensagem": "..."}.
+    // Map.of("chave", "valor") cria um objeto simples que vira {"mensagem".
     private ResponseEntity<Map<String, String>> naoEncontrado(String mensagem) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensagem", mensagem));
     }

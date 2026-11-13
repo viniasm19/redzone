@@ -11,8 +11,8 @@ import { CartService } from './services/cart.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-// Componente raiz: cabeçalho fixo + a tela da rota atual + rodapé + aviso (toast) do carrinho.
-// O HTML (app.component.html) espera daqui: o cartService, para ler o aviso (toast) do carrinho.
+// Componente raiz: cabeçalho fixo + a tela da rota atual + rodapé + aviso.
+// O HTML (app.component.html) espera daqui: o cartService.
 export class AppComponent {
   title = 'redzone';               // nome do app (sobrou do projeto inicial do Angular; o HTML não usa)
   cartService = inject(CartService); // inject() pede ao Angular o CartService (o mesmo objeto para o app todo)

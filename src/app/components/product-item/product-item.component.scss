@@ -2,7 +2,7 @@
   display: block;
 }
 
-// Card do produto: escuro, cantos arredondados. No hover ele "sobe" um pouco, ganha sombra
+// Card do produto: escuro, cantos arredondados. No hover ele "sobe" um pouco.
 // e uma borda vermelha suave (o "brilho" da marca).
 .product-card {
   height: 100%;
@@ -116,8 +116,7 @@ h3 {
 .estoque-zero { color: var(--color-text-muted); }
 
 // ---------- Botão ----------
-// Fica no pé do card (margin-top: auto): todos os botões da grade alinham na mesma altura.
-// Começa discreto (escuro, com borda) e fica vermelho no hover.
+// Fica no pé do card (margin-top: auto).
 .btn-comprar {
   margin-top: auto;
   width: 100%;

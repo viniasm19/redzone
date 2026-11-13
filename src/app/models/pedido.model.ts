@@ -1,11 +1,11 @@
 // Pedido como a API (Spring Boot) devolve.
 
 // Os mesmos valores do enum StatusPedido do back-end.
-// Um "union type": a variável só pode ter um destes textos, o TypeScript reclama de qualquer outro.
+// Um "union type": a variável só pode ter um destes textos.
 export type StatusPedido = 'AGUARDANDO_PAGAMENTO' | 'APROVADO' | 'EM_SEPARACAO' | 'ENVIADO' | 'ENTREGUE';
 
 // Texto que aparece na tela para cada status.
-// Record<StatusPedido, string> obriga a ter UMA tradução para CADA status (se faltar um, não compila).
+// Record<StatusPedido.
 export const STATUS_PEDIDO_TEXTO: Record<StatusPedido, string> = {
   AGUARDANDO_PAGAMENTO: 'Aguardando pagamento',
   APROVADO: 'Aprovado',
@@ -22,6 +22,7 @@ export const FORMA_PAGAMENTO_TEXTO: Record<FormaPagamento, string> = {
   PIX: 'Pix'
 };
 
+// Um item dentro do pedido.
 export interface ItemPedido {
   produtoId: number;
   nome: string;
@@ -31,6 +32,7 @@ export interface ItemPedido {
   subtotal: number;
 }
 
+// Um pedido completo, como vem da API.
 export interface Pedido {
   id: number;
   usuarioId: number;

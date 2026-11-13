@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// Testes dos detalhes do produto (marca, garantia, especificações e preço promocional).
+// Testes dos detalhes do produto (marca, garantia.
 // Banco em memória próprio e recriado a cada teste, como no EstoqueTest.
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,6 +36,7 @@ class ProdutoTest {
     @Autowired
     ProdutoRepository produtoRepository;
 
+    // Busca um produto pelo nome no banco de teste.
     private Produto produto(String nome) {
         return produtoRepository.findAll().stream()
                 .filter(p -> p.getNome().equals(nome))
@@ -46,6 +47,7 @@ class ProdutoTest {
     // ---------- Etapa 1: produtos mais detalhados ----------
 
     @Test
+    // Produto com detalhes devolve marca, garantia e especificações.
     void produtoComDetalhesDevolveOsCamposNovos() throws Exception {
         Produto placa = produto("Placa de Vídeo RTX 4060 8GB"); // data.sql: tem marca, garantia e especificações
 
@@ -57,6 +59,7 @@ class ProdutoTest {
     }
 
     @Test
+    // Produto sem detalhes continua funcionando.
     void produtoSemDetalhesContinuaFuncionando() throws Exception {
         Produto headset = produto("Headset Gamer"); // data.sql: sem nenhum campo novo
 
@@ -70,6 +73,7 @@ class ProdutoTest {
     }
 
     @Test
+    // Cadastro aceita os campos novos.
     void cadastroAceitaOsCamposNovos() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,6 +90,7 @@ class ProdutoTest {
     }
 
     @Test
+    // Cadastro sem os campos novos também funciona.
     void cadastroSemOsCamposNovosContinuaFuncionando() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -96,6 +101,7 @@ class ProdutoTest {
     }
 
     @Test
+    // Preço promocional zero ou negativo dá 400.
     void precoPromocionalZeroOuNegativoResponde400() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -105,6 +111,7 @@ class ProdutoTest {
     }
 
     @Test
+    // Promoção mais cara que o preço normal dá 400.
     void precoPromocionalMaiorQueOPrecoResponde400() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,6 +122,7 @@ class ProdutoTest {
     // ---------- Etapa 2: promoções ----------
 
     @Test
+    // O filtro de promoção traz só produtos em promoção.
     void filtroDePromocaoDevolveSoProdutosComPrecoPromocional() throws Exception {
         long emPromocao = produtoRepository.findAll().stream().filter(p -> p.getPrecoPromocional() != null).count();
 
@@ -128,6 +136,7 @@ class ProdutoTest {
     }
 
     @Test
+    // Sem o filtro, a lista vem completa.
     void semOFiltroAListaContinuaCompleta() throws Exception {
         int total = (int) produtoRepository.count();
 
@@ -141,6 +150,7 @@ class ProdutoTest {
     }
 
     @Test
+    // Pedido de produto em promoção cobra o preço promocional.
     void pedidoDeProdutoEmPromocaoCobraOPrecoPromocionalDoBanco() throws Exception {
         Produto microfone = produto("Microfone Condensador USB"); // preço 259.9, promocional 219.9
 

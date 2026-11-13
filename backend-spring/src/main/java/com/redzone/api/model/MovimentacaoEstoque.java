@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 
 // @Entity: vira a tabela "movimentacoes_estoque". É o HISTÓRICO do estoque:
 // toda vez que a quantidade de um produto muda, uma linha nova é gravada aqui.
-// Assim dá para responder "por que esse produto tem 3 unidades?" olhando as movimentações.
 @Entity
 @Table(name = "movimentacoes_estoque")
 public class MovimentacaoEstoque {
@@ -65,13 +64,13 @@ public class MovimentacaoEstoque {
         this.tipo = tipo;
         this.quantidade = quantidade;
         this.observacao = observacao;
-        // 2) guarda quanto o produto ficou no estoque (por isso o produto já deve vir atualizado)
+        // 2) guarda quanto o produto ficou no estoque (por isso o produto já deve vir.
         this.estoqueApos = produto.getEstoque();
         // 3) marca a data e a hora de agora
         this.data = LocalDateTime.now();
     }
 
-    // ---------- Getters (só leitura: uma movimentação não muda depois de gravada) ----------
+    // ---------- Getters (só leitura.
 
     public Long getId() {
         return id;

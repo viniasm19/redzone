@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-// O que o front ENVIA no POST /pedidos. Só ids e quantidades: preço e total o back-end calcula.
-// (record = classe enxuta, só com dados, que já vem com construtor e getters prontos)
+// O que o front ENVIA no POST /pedidos. Só ids e quantidades.
+// (record = classe enxuta, só com dados.
 public record PedidoRequest(
         @NotNull(message = "Informe o usuário.")
         Long usuarioId,
@@ -19,7 +19,7 @@ public record PedidoRequest(
         @Valid
         List<ItemRequest> itens
 ) {
-    // Um item do pedido: qual produto e quantas unidades. Record dentro de record, porque só é usado aqui.
+    // Um item do pedido: qual produto e quantas unidades. Record dentro de record.
     // @Min(1): não dá para comprar zero (nem um número negativo de) unidades.
     public record ItemRequest(
             @NotNull(message = "Informe o produto.")

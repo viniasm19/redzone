@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 
-// Como o banco agora é um arquivo, ele já "lembra" dos dados. Se rodássemos o data.sql a cada início,
-// os usuários e produtos de exemplo seriam inseridos de novo (e o e-mail repetido quebraria a API).
-// Por isso: o data.sql só roda na PRIMEIRA execução, quando o banco ainda está vazio.
-// @Component: o Spring cria um objeto desta classe sozinho, ao subir a aplicação.
+// Como o banco agora é um arquivo, ele já "lembra" dos dados.
+// os usuários e produtos de exemplo seriam inseridos de novo.
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -20,8 +18,8 @@ public class DataLoader implements CommandLineRunner {
     private final UsuarioRepository usuarioRepository;
     private final ProdutoRepository produtoRepository;
 
-    // Construtor: o Spring entrega aqui a conexão com o banco (DataSource) e os repositories.
-    // Isso se chama INJEÇÃO DE DEPENDÊNCIA: a classe não cria o que usa, ela recebe pronto.
+    // Construtor: o Spring entrega aqui a conexão com o banco (DataSource) e os.
+    // Isso se chama INJEÇÃO DE DEPENDÊNCIA: a classe não cria o que usa.
     public DataLoader(DataSource dataSource,
                       UsuarioRepository usuarioRepository,
                       ProdutoRepository produtoRepository) {
@@ -30,11 +28,11 @@ public class DataLoader implements CommandLineRunner {
         this.produtoRepository = produtoRepository;
     }
 
-    // CommandLineRunner: o Spring executa este método uma vez, logo depois que a aplicação sobe
+    // CommandLineRunner: o Spring executa este método uma vez.
     // (e depois que o Hibernate já criou as tabelas).
     @Override
     public void run(String... args) {
-        // 1) confere se o banco já tem usuários ou produtos (count = quantas linhas existem)
+        // 1) confere se o banco já tem usuários ou produtos (count = quantas linhas.
         if (usuarioRepository.count() > 0 || produtoRepository.count() > 0) {
             return; // já tem dados: não mexe em nada
         }

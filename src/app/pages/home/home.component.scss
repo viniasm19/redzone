@@ -4,7 +4,7 @@
 }
 
 // Cartão do banner: um tom acima do fundo preto, com dois brilhos suaves:
-// vermelho no canto de cima (a marca) e ciano no canto de baixo (a cor complementar)
+// vermelho no canto de cima (a marca) e ciano no canto de baixo.
 .hero {
   position: relative;
   overflow: hidden;
@@ -28,7 +28,7 @@
   z-index: 1;
 }
 
-// Etiqueta pequena acima do título, em forma de pílula, com uma bolinha ciano na frente
+// Etiqueta pequena acima do título, em forma de pílula.
 .hero-etiqueta {
   display: inline-flex;
   align-items: center;

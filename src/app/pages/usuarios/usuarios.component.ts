@@ -19,7 +19,7 @@ export class UsuariosComponent implements OnInit {
   // Validação do e-mail digitado: texto@dominio.ext, sem espaços.
   private static readonly EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  // O HTML espera daqui: usuarios (a lista), usuarioEditando (o formulário de edição), erro
+  // O HTML espera daqui: usuarios (a lista).
   // e os métodos editar, cancelar, salvarEdicao e excluir.
   usuarios: Usuario[] = [];               // todos os usuários (sem senha)
   usuarioEditando: Usuario | null = null; // null = formulário fechado; um usuário = editando ele
@@ -41,7 +41,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   // Edita uma CÓPIA: assim, se o admin desistir, a lista não fica alterada.
-  // A API não devolve a senha, então o campo começa vazio: o admin digita a senha (nova ou a atual).
+  // A API não devolve a senha, então o campo começa vazio.
   editar(usuario: Usuario) {
     this.usuarioEditando = { ...usuario, senha: '' };
     this.erro = '';
@@ -57,7 +57,7 @@ export class UsuariosComponent implements OnInit {
     if (!this.usuarioEditando) return;
     this.erro = '';
 
-    // 2) prepara os valores: nome sem espaços nas pontas, e-mail padronizado e a senha digitada
+    // 2) prepara os valores: nome sem espaços nas pontas.
     const nome = this.usuarioEditando.nome.trim();
     const email = this.normalizarEmail(this.usuarioEditando.email);
     const senha = this.usuarioEditando.senha ?? '';
@@ -77,7 +77,7 @@ export class UsuariosComponent implements OnInit {
     }
 
     try {
-      // 4) PUT /usuarios/{id} com os dados novos; depois recarrega a lista e fecha o formulário
+      // 4) PUT /usuarios/{id} com os dados novos.
       await this.auth.atualizarUsuario({ ...this.usuarioEditando, nome, email, senha });
       await this.carregar();
       this.usuarioEditando = null;

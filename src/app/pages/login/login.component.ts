@@ -5,12 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 // @Component: transforma a classe numa TELA do Angular.
-//   selector: o nome da tag (<app-login>); templateUrl: o HTML; styleUrl: o SCSS.
-//   imports: o que o HTML usa (CommonModule = *ngIf; FormsModule = ngModel/ngForm; RouterModule = routerLink).
-//   standalone: o componente não precisa de um "módulo" em volta (jeito novo do Angular).
-//
-// O HTML espera daqui: email e senha (ligados aos campos com [(ngModel)]), erro (mensagem da API),
-// erroEmail (mensagem do campo e-mail), returnUrl (para os links) e o método entrar(f).
+// selector: o nome da tag (<app-login>); templateUrl: o HTML; styleUrl: o SCSS.
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -24,7 +19,7 @@ export class LoginComponent {
   erro = '';    // mensagem de erro que vem do login (ex.: "Email ou senha inválidos.")
 
   // O Angular entrega estes objetos prontos (injeção de dependência):
-  //   auth = login; router = trocar de tela; route = ler o endereço atual (o ?returnUrl=)
+  // auth = login; router = trocar de tela.
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -35,12 +30,12 @@ export class LoginComponent {
   private static readonly EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   // Padroniza o e-mail digitado: "  Lucas@Email.com " vira "lucas@email.com".
-  // (fica aqui, na tela onde o usuário digita; o AuthService recebe o e-mail já pronto)
+  // (fica aqui, na tela onde o usuário digita.
   private normalizarEmail(email: string): string {
     return email.trim().toLowerCase();
   }
 
-  // Mensagem de erro do campo e-mail ('' = e-mail válido). A tela usa para avisar o usuário.
+  // Mensagem de erro do campo e-mail ('' = e-mail válido).
   get erroEmail(): string {
     const email = this.normalizarEmail(this.email);
     if (!email) {
@@ -49,14 +44,14 @@ export class LoginComponent {
     return LoginComponent.EMAIL_VALIDO.test(email) ? '' : 'Digite um email válido.';
   }
 
-  // Para onde voltar depois do login (ex.: o checkout). Só aceita caminhos do próprio site:
+  // Para onde voltar depois do login (ex.: o checkout).
   // bloqueia links externos como "//site-falso.com" (redirecionamento malicioso).
   get returnUrl(): string | null {
     const url = this.route.snapshot.queryParamMap.get('returnUrl');
     return url && url.startsWith('/') && !url.startsWith('//') ? url : null;
   }
 
-  // Botão "Entrar" (ngSubmit do formulário). Recebe: o formulário, para saber se está válido.
+  // Botão "Entrar" (ngSubmit do formulário). Recebe: o formulário.
   async entrar(form: NgForm) {
     // 1) apaga o erro da tentativa anterior
     this.erro = '';
@@ -75,7 +70,7 @@ export class LoginComponent {
         email: this.email,
         senha: this.senha
       });
-      // 5) deu certo: volta para a página que pediu o login (ex.: o checkout) ou para a Home
+      // 5) deu certo: volta para a página que pediu o login (ex..
       this.router.navigateByUrl(this.returnUrl ?? '/');
     } catch (e: any) {
       // 6) deu errado: mostra a mensagem do AuthService (ou uma genérica)

@@ -8,9 +8,8 @@ import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 
-// Formulário de produto (o mesmo para cadastrar e editar). Não tem id: o id vem de editandoId.
-// O estoque só é usado no CADASTRO (estoque inicial). Na edição, quem mexe no estoque é a tela de Estoque.
-// Os detalhes (marca, garantia, especificações, preço promocional) são opcionais e começam vazios (null).
+// Formulário de produto (o mesmo para cadastrar e editar). Não tem id.
+// O estoque só é usado no CADASTRO (estoque inicial). Na edição.
 const FORM_VAZIO: Omit<Produto, 'id'> = {
   nome: '', preco: 0, imagem: '', categoria: '', estoque: 0,
   marca: null, garantia: null, especificacoes: null, precoPromocional: null
@@ -23,9 +22,8 @@ const FORM_VAZIO: Omit<Produto, 'id'> = {
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-// Vitrine de produtos + formulário do administrador. Aparece dentro da Home (e na rota /products).
-// O HTML espera daqui: produtos (os cards), isAdmin() (mostrar botões de admin), novoProduto/editandoId/erro
-// (o formulário), categorias (o select) e os métodos dos botões.
+// Vitrine de produtos + formulário do administrador.
+// O HTML espera daqui: produtos (os cards), isAdmin() (mostrar botões de admin).
 export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
@@ -56,7 +54,7 @@ export class ProductListComponent implements OnInit {
     return this.auth.isAdmin();
   }
 
-  // GET /produtos e, quando a resposta chegar (subscribe), guarda tudo e aplica o filtro da categoria
+  // GET /produtos e, quando a resposta chegar (subscribe).
   loadProdutos() {
     this.productService.getProdutos().subscribe(dados => {
       this.todos = dados;
@@ -70,7 +68,7 @@ export class ProductListComponent implements OnInit {
       this.categoria === 'Todos' ? this.todos : this.todos.filter(p => p.categoria === this.categoria);
   }
 
-  // Ajuda o *ngFor a reaproveitar os cards (pelo id) em vez de redesenhar todos quando a lista muda
+  // Ajuda o *ngFor a reaproveitar os cards (pelo id) em vez de redesenhar todos.
   trackById(_: number, item: Produto) {
     return item.id;
   }
@@ -81,7 +79,7 @@ export class ProductListComponent implements OnInit {
     this.erro = '';
     const p = this.novoProduto;
 
-    // 2) confere os campos obrigatórios (a API confere de novo, mas assim o admin vê o erro na hora)
+    // 2) confere os campos obrigatórios (a API confere de novo.
     if (!p.nome.trim() || !(p.preco > 0) || !p.categoria) {
       this.erro = 'Preencha nome, preço (maior que zero) e categoria.';
       return;
@@ -102,7 +100,7 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    // Texto só com espaços vira null: assim a tela de detalhe não mostra um título vazio
+    // Texto só com espaços vira null.
     const dados: Omit<Produto, 'id'> = {
       ...p,
       marca: this.textoOuNull(p.marca),
@@ -116,7 +114,7 @@ export class ProductListComponent implements OnInit {
       ? this.productService.updateProduto({ ...dados, id: this.editandoId })
       : this.productService.addProduto(dados);
 
-    // 4) envia; quando der certo (next), recarrega a lista e limpa o formulário; se der errado (error), avisa
+    // 4) envia; quando der certo (next), recarrega a lista e limpa o formulário.
     requisicao.subscribe({
       next: () => {
         this.loadProdutos(); // recarrega a lista com o que ficou salvo no banco
@@ -126,7 +124,7 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  // Recebe: um texto (ou nada). Devolve: o texto sem espaços nas pontas, ou null se ficar vazio.
+  // Recebe: um texto (ou nada). Devolve: o texto sem espaços nas pontas.
   private textoOuNull(texto?: string | null): string | null {
     const limpo = (texto ?? '').trim();
     return limpo ? limpo : null;
@@ -156,7 +154,7 @@ export class ProductListComponent implements OnInit {
     this.erro = '';
   }
 
-  // O card avisou (evento addToCart) que o botão "Adicionar" foi clicado: repassa ao CartService
+  // O card avisou (evento addToCart) que o botão "Adicionar" foi clicado.
   adicionarAoCarrinho(produto: Produto) {
     this.cartService.adicionarAoCarrinho(produto);
   }
