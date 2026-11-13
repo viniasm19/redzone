@@ -23,15 +23,22 @@ interface FormLinha {
   styleUrl: './estoque.component.scss'
 })
 export class EstoqueComponent implements OnInit {
+  // Serviço de produtos.
   private productService = inject(ProductService);
+  // Serviço de estoque (entrada, saída, histórico).
   private stockService = inject(StockService);
 
+  // Limite de 'estoque baixo' usado na tela.
   estoqueMinimo = ESTOQUE_MINIMO;
 
+  // Todos os produtos carregados.
   produtos: Produto[] = [];
+  // Histórico de movimentações mostrado embaixo.
   movimentacoes: Movimentacao[] = [];
 
+  // Texto digitado no campo de busca.
   busca = '';
+  // Marca se o filtro 'só estoque baixo' está ligado.
   somenteBaixo = false;
 
   // Um formulário por produto. Record<número, FormLinha> = "objeto que usa o id do produto como chave".
@@ -40,14 +47,19 @@ export class EstoqueComponent implements OnInit {
   // Histórico: null = de todos os produtos; número = só daquele produto
   historicoDe: Produto | null = null;
 
+  // Mensagem de sucesso.
   mensagem = '';
+  // Mensagem de erro.
   erro = '';
+  // true enquanto a tela carrega.
   carregando = true;
 
+  // Ao abrir a tela, carrega os dados.
   ngOnInit() {
     this.carregar();
   }
 
+  // Busca produtos e histórico da API.
   async carregar() {
     this.carregando = true;
     try {
@@ -63,20 +75,24 @@ export class EstoqueComponent implements OnInit {
     }
   }
 
+  // Busca o histórico (de todos ou de um produto).
   async carregarHistorico() {
     this.movimentacoes = await this.stockService.movimentacoes(this.historicoDe?.id);
   }
 
   // ---------- Números do topo ----------
 
+  // Soma de todas as unidades do estoque.
   get totalUnidades() {
     return this.produtos.reduce((soma, p) => soma + p.estoque, 0);
   }
 
+  // Quantos produtos estão com estoque baixo.
   get qtdBaixo() {
     return this.produtos.filter(p => p.estoque > 0 && p.estoque <= ESTOQUE_MINIMO).length;
   }
 
+  // Quantos produtos estão zerados.
   get qtdEsgotados() {
     return this.produtos.filter(p => p.estoque === 0).length;
   }
@@ -88,6 +104,7 @@ export class EstoqueComponent implements OnInit {
 
   // ---------- Lista filtrada ----------
 
+  // Produtos depois da busca e do filtro.
   get produtosFiltrados() {
     const termo = this.busca.trim().toLowerCase();
     return this.produtos
@@ -96,6 +113,7 @@ export class EstoqueComponent implements OnInit {
       .sort((a, b) => a.estoque - b.estoque); // os que mais precisam de reposição aparecem primeiro
   }
 
+  // Diz se o produto está zerado, baixo ou ok.
   status(p: Produto): 'zero' | 'baixo' | 'ok' {
     if (p.estoque === 0) return 'zero';
     if (p.estoque <= ESTOQUE_MINIMO) return 'baixo';
@@ -104,6 +122,7 @@ export class EstoqueComponent implements OnInit {
 
   // ---------- Entrada e saída ----------
 
+  // Registra entrada ou saída de um produto.
   async movimentar(produto: Produto, tipo: 'ENTRADA' | 'SAIDA') {
     this.mensagem = '';
     this.erro = '';
@@ -134,15 +153,18 @@ export class EstoqueComponent implements OnInit {
     }
   }
 
+  // Mostra o histórico de um produto (ou de todos).
   async verHistorico(produto: Produto | null) {
     this.historicoDe = produto;
     await this.carregarHistorico();
   }
 
+  // Nome bonito de cada tipo de movimentação.
   rotuloTipo(tipo: TipoMovimentacao) {
     return { ENTRADA: '➕ Entrada', SAIDA: '➖ Saída', VENDA: '🛒 Venda' }[tipo];
   }
 
+  // Ajuda o Angular a reaproveitar as linhas da lista.
   trackById(_: number, item: { id: number }) {
     return item.id;
   }

@@ -22,6 +22,7 @@ export const FORMA_PAGAMENTO_TEXTO: Record<FormaPagamento, string> = {
   PIX: 'Pix'
 };
 
+// Um item dentro do pedido.
 export interface ItemPedido {
   produtoId: number;
   nome: string;
@@ -31,6 +32,7 @@ export interface ItemPedido {
   subtotal: number;
 }
 
+// Um pedido completo, como vem da API.
 export interface Pedido {
   id: number;
   usuarioId: number;

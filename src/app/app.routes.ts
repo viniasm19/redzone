@@ -23,17 +23,30 @@ import { adminGuard } from './guards/admin.guard';
 // O endereço vazio ('') é a tela inicial. pathMatch: 'full' = só quando o endereço é EXATAMENTE vazio.
 // /products e /promocoes continuam existindo, mas não têm mais link no menu (os produtos ficam na Home).
 export const routes: Routes = [
+  // Tela inicial.
   { path: '', pathMatch: 'full', component: HomeComponent },
+  // Tela de login.
   { path: 'login', component: LoginComponent },
+  // Tela de cadastro.
   { path: 'cadastro', component: RegisterComponent },
+  // Administração de usuários (só admin).
   { path: 'usuarios', component: UsuariosComponent, canActivate: [adminGuard] },
+  // Controle de estoque (só admin).
   { path: 'estoque', component: EstoqueComponent, canActivate: [adminGuard] },
+  // Lista de produtos (sem link no menu).
   { path: 'products', component: ProductListComponent },
+  // Página de promoções (sem link no menu).
   { path: 'promocoes', component: PromocoesComponent },
+  // Carrinho.
   { path: 'cart', component: CartComponent },
+  // Detalhe do produto. O :id é o número do produto.
   { path: 'product/:id', component: ProductDetailComponent },
+  // Checkout (precisa estar logado).
   { path: 'order-confirm', component: OrderConfirmComponent, canActivate: [authGuard] },
+  // Tela de pedido confirmado (precisa estar logado).
   { path: 'order-success', component: OrderSuccessComponent, canActivate: [authGuard] },
+  // Minha Área (precisa estar logado).
   { path: 'area-usuario', component: AreaUsuarioComponent, canActivate: [authGuard] },
+  // Tela de redefinir senha.
   { path: 'forgot-password', component: ForgotPasswordComponent }
 ];

@@ -11,6 +11,7 @@ export const ESTOQUE_MINIMO = 5;
 @Injectable({ providedIn: 'root' })
 export class StockService {
   private http = inject(HttpClient);
+  // Endereço base de /estoque.
   private url = `${API_URL}/estoque`;
 
   entrada(produtoId: number, quantidade: number, observacao?: string) {

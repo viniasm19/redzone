@@ -8,6 +8,7 @@ import { FormaPagamento, Pedido } from '../models/pedido.model';
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
   private http = inject(HttpClient);
+  // Endereço de /pagamentos.
   private url = `${API_URL}/pagamentos`;
 
   // Manda SÓ o id do pedido e a forma de pagamento.

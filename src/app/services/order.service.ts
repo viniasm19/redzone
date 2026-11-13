@@ -11,6 +11,7 @@ import { CartItem } from './cart.service';
 @Injectable({ providedIn: 'root' })
 export class OrderService {
   private http = inject(HttpClient);
+  // Endereço de /pedidos.
   private url = `${API_URL}/pedidos`;
 
   // Manda só ids e quantidades: o preço e o total quem calcula é o back-end.

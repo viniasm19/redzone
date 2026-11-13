@@ -42,6 +42,7 @@ class PagamentoTest {
     @Autowired
     JdbcTemplate jdbc;
 
+    // Cria um pedido para depois pagar.
     private Long criarPedido() throws Exception {
         Produto headset = produtoRepository.findAll().stream()
                 .filter(p -> p.getNome().equals("Headset Gamer"))
@@ -59,11 +60,13 @@ class PagamentoTest {
         return Long.valueOf(JsonPath.read(resposta, "$.id").toString());
     }
 
+    // Monta o JSON do pagamento.
     private String pagamento(Long pedidoId, String forma) {
         return "{\"pedidoId\": " + pedidoId + ", \"formaPagamento\": \"" + forma + "\"}";
     }
 
     @Test
+    // Pagar com Pix aprova o pedido.
     void pagamentoComPixAprovaOPedido() throws Exception {
         Long id = criarPedido();
 
@@ -82,6 +85,7 @@ class PagamentoTest {
     }
 
     @Test
+    // Pagar com cartão aprova e não guarda dados do cartão.
     void pagamentoComCartaoAprovaENaoGuardaDadosDoCartao() throws Exception {
         Long id = criarPedido();
 
@@ -105,6 +109,7 @@ class PagamentoTest {
     }
 
     @Test
+    // Pagar o mesmo pedido de novo dá 409.
     void pagarDuasVezesResponde409() throws Exception {
         Long id = criarPedido();
 
@@ -119,12 +124,14 @@ class PagamentoTest {
     }
 
     @Test
+    // Pagar pedido que não existe dá 404.
     void pedidoInexistenteResponde404() throws Exception {
         mvc.perform(post("/pagamentos").contentType(MediaType.APPLICATION_JSON).content(pagamento(9999L, "PIX")))
                 .andExpect(status().isNotFound());
     }
 
     @Test
+    // Forma de pagamento faltando ou inválida dá 400.
     void semFormaDePagamentoOuComFormaInvalidaResponde400() throws Exception {
         Long id = criarPedido();
 

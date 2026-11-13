@@ -21,14 +21,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 // Testes de integração: sobem a API com banco em memória (data.sql carregado pelo DataLoader).
 @SpringBootTest
+// Permite chamar as rotas sem subir um servidor de verdade.
 @AutoConfigureMockMvc
 class RedzoneApiTest {
 
+    // Ferramenta que simula as chamadas HTTP.
     @Autowired MockMvc mvc;
     @Autowired UsuarioRepository usuarios;
     @Autowired ProdutoRepository produtos;
 
     @Test
+    // Login certo devolve 200 e sem senha.
     void loginComSenhaCorretaDevolve200SemSenha() throws Exception {
         mvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"lucas@email.com\",\"senha\":\"lucas123\"}"))
@@ -38,6 +41,7 @@ class RedzoneApiTest {
     }
 
     @Test
+    // Senha errada devolve 401.
     void loginComSenhaErradaDevolve401() throws Exception {
         mvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"lucas@email.com\",\"senha\":\"errada\"}"))
@@ -45,6 +49,7 @@ class RedzoneApiTest {
     }
 
     @Test
+    // E-mail repetido (mesmo com maiúsculas) devolve 409.
     void cadastroComEmailRepetidoDevolve409MesmoComMaiusculas() throws Exception {
         mvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nome\":\"Outro\",\"email\":\"LUCAS@email.com\",\"senha\":\"abcd\"}"))
@@ -52,6 +57,7 @@ class RedzoneApiTest {
     }
 
     @Test
+    // A lista de usuários não traz a senha.
     void listaDeUsuariosNaoExpoeSenha() throws Exception {
         mvc.perform(get("/usuarios"))
                 .andExpect(status().isOk())
@@ -59,6 +65,7 @@ class RedzoneApiTest {
     }
 
     @Test
+    // Buscar por e-mail não diferencia maiúsculas.
     void buscaPorEmailIgnoraMaiusculas() throws Exception {
         mvc.perform(get("/usuarios/email/LUCAS@email.com"))
                 .andExpect(status().isOk())
@@ -66,6 +73,7 @@ class RedzoneApiTest {
     }
 
     @Test
+    // O preço e o total vêm do banco, não do front.
     void pedidoUsaPrecoDoBancoETotalCalculadoNoBackend() throws Exception {
         Usuario u = usuarios.findByEmail("lucas@email.com").orElseThrow();
         Produto p = produtos.findAll().get(0);
@@ -82,6 +90,7 @@ class RedzoneApiTest {
     }
 
     @Test
+    // Pedido sem itens devolve 400.
     void pedidoSemItensDevolve400() throws Exception {
         mvc.perform(post("/pedidos").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"usuarioId\":1,\"itens\":[]}"))
