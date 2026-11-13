@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-// Testes de integração: sobem a API com banco em memória (data.sql carregado pelo DataLoader).
+// Testes de integração.
 @SpringBootTest
 // Permite chamar as rotas sem subir um servidor de verdade.
 @AutoConfigureMockMvc

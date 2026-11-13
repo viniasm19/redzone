@@ -6,7 +6,7 @@ export interface Usuario {
   senha?: string; // só é ENVIADO (cadastro, troca de senha); a API nunca devolve a senha
 }
 
-// O que a API devolve no login (POST /login): sem a senha, que nunca volta para o navegador.
+// O que a API devolve no login (POST /login): sem a senha.
 export interface UsuarioLogado {
   id: number;
   nome: string;

@@ -179,7 +179,7 @@
   .cart-summary { position: static; }
 }
 
-// No celular, a linha do item quebra: foto + nome em cima, quantidade e subtotal embaixo
+// No celular, a linha do item quebra: foto + nome em cima.
 @media (max-width: 600px) {
   .cart-items-list { padding: 0 var(--space-4); }
 

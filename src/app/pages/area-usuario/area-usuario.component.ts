@@ -12,11 +12,11 @@ import { FORMA_PAGAMENTO_TEXTO, Pedido, STATUS_PEDIDO_TEXTO, StatusPedido } from
   templateUrl: './area-usuario.component.html',
   styleUrl: './area-usuario.component.scss'
 })
-// Tela "Minha Área" (/area-usuario). O HTML espera daqui: auth (nome, e-mail e se é admin),
-// pedidos/carregando/erro (histórico), textoStatus e textoForma (traduções) e o método sair().
+// Tela "Minha Área" (/area-usuario). O HTML espera daqui: auth (nome.
+// pedidos/carregando/erro (histórico).
 export class AreaUsuarioComponent implements OnInit {
 
-  // Histórico de pedidos do usuário logado (do mais novo para o mais antigo, a API já ordena)
+  // Histórico de pedidos do usuário logado (do mais novo para o mais antigo.
   pedidos: Pedido[] = [];
   carregando = true;
   erro = '';
@@ -48,7 +48,7 @@ export class AreaUsuarioComponent implements OnInit {
     }
   }
 
-  // Recebe: o status da API (ex.: 'EM_SEPARACAO'). Devolve: o texto da tela ("Em separação").
+  // Recebe: o status da API (ex.: 'EM_SEPARACAO'). Devolve.
   textoStatus(status: StatusPedido) {
     return STATUS_PEDIDO_TEXTO[status] ?? status;
   }

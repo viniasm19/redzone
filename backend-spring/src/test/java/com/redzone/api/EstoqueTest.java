@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // (some quando o teste acaba), para não mexer no banco em arquivo (pasta data/).
 @SpringBootTest
 @AutoConfigureMockMvc
-// create-drop: as tabelas são recriadas (e o data.sql recarregado) a cada teste, então um teste não
+// create-drop: as tabelas são recriadas (e o data.sql recarregado) a cada teste.
 // enxerga o que o outro alterou.
 @TestPropertySource(properties = {
         "spring.datasource.url=jdbc:h2:mem:teste",

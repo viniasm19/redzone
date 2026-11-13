@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { API_URL } from '../config/api';
 import { Movimentacao } from '../models/movimentacao.model';
 
-// Igual ao ESTOQUE_MINIMO do back-end (EstoqueController): até aqui é "estoque baixo"
+// Igual ao ESTOQUE_MINIMO do back-end (EstoqueController).
 export const ESTOQUE_MINIMO = 5;
 
 // Conversa com a rota /estoque da API.

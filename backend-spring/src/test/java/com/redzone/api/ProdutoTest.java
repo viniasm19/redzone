@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// Testes dos detalhes do produto (marca, garantia, especificações e preço promocional).
+// Testes dos detalhes do produto (marca, garantia.
 // Banco em memória próprio e recriado a cada teste, como no EstoqueTest.
 @SpringBootTest
 @AutoConfigureMockMvc

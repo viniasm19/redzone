@@ -11,9 +11,7 @@ import { precoAtual } from '../../models/produto.model';
 import { FormaPagamento, Pedido } from '../../models/pedido.model';
 
 // Os 3 passos desta tela:
-//   revisao   -> a pessoa confere os itens e confirma: o pedido é CRIADO (status AGUARDANDO_PAGAMENTO)
-//   pagamento -> escolhe cartão ou Pix e paga (POST /pagamentos, fictício: sempre aprova)
-//   aprovado  -> mostra "Pagamento aprovado" e vai sozinho para /order-success
+// revisao   -> a pessoa confere os itens e confirma.
 type Etapa = 'revisao' | 'pagamento' | 'aprovado';
 
 @Component({
@@ -23,11 +21,8 @@ type Etapa = 'revisao' | 'pagamento' | 'aprovado';
   templateUrl: './order-confirm.component.html',
   styleUrl: './order-confirm.component.scss'
 })
-// O HTML espera daqui: etapa (qual passo mostrar), itens/total (revisão), pedido (pagamento),
-// formaPagamento e cartao (ligados aos campos), os erros de cada campo do cartão, codigoPix,
-// enviando/erro/tentouPagar/pixCopiado (estado da tela) e os métodos confirmar, pagar,
-// copiarCodigoPix e voltar.
-// implements OnInit, OnDestroy: a classe tem ngOnInit (roda ao abrir a tela) e ngOnDestroy (ao sair).
+// O HTML espera daqui: etapa (qual passo mostrar), itens/total (revisão).
+// formaPagamento e cartao (ligados aos campos), os erros de cada campo do cartão.
 export class OrderConfirmComponent implements OnInit, OnDestroy {
   private cartService = inject(CartService);
   private authService = inject(AuthService);
@@ -35,7 +30,7 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
   private paymentService = inject(PaymentService);
   private router = inject(Router);
 
-  // "Foto" do carrinho ao entrar na tela: continua na tela mesmo depois de limpar o carrinho
+  // "Foto" do carrinho ao entrar na tela.
   itens = this.cartService.itens();
   total = this.cartService.total();
 
@@ -51,13 +46,13 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
   formaPagamento: FormaPagamento = 'PIX';
 
   // Dados do cartão: só existem AQUI, na memória da tela, para validar o formato.
-  // Nunca são enviados para a API nem guardados no navegador (localStorage/sessionStorage).
+  // Nunca são enviados para a API nem guardados no navegador.
   cartao = { numero: '', validade: '', cvv: '' };
 
   tentouPagar = false; // só mostra os erros do cartão depois do primeiro clique em "Pagar"
   pixCopiado = false;
 
-  // Guarda o "relógio" do redirecionamento, para poder cancelá-lo se a pessoa sair antes
+  // Guarda o "relógio" do redirecionamento.
   private timer?: ReturnType<typeof setTimeout>;
 
   // Roda quando a tela abre
@@ -72,7 +67,7 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
     clearTimeout(this.timer);
   }
 
-  // Passo 1: cria o pedido (AGUARDANDO_PAGAMENTO) e passa para a escolha do pagamento
+  // Passo 1: cria o pedido (AGUARDANDO_PAGAMENTO) e passa para a escolha do.
   async confirmar() {
     // 1) pega quem está logado; sem usuário (ou se já está enviando), não faz nada
     const usuario = this.authService.usuarioLogado();
@@ -88,12 +83,12 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
       // 3) cria o pedido na API (POST /pedidos) com os itens da "foto" do carrinho
       this.pedido = await this.orderService.criarPedido(usuario.id, this.itens); // salva o pedido no banco
       // O pedido já existe (e o estoque já foi reservado): o carrinho pode ser limpo.
-      // Se o pagamento falhar, a pessoa tenta de novo aqui mesmo, sem criar outro pedido.
+      // Se o pagamento falhar, a pessoa tenta de novo aqui mesmo.
       this.cartService.limparCarrinho();
       // 4) mostra o passo 2 (escolha do pagamento)
       this.etapa = 'pagamento';
     } catch (e) {
-      // 409 = algum produto acabou enquanto a pessoa comprava. O back-end diz qual na "mensagem".
+      // 409 = algum produto acabou enquanto a pessoa comprava.
       if (e instanceof HttpErrorResponse && e.status === 409 && e.error?.mensagem) {
         this.erro = `${e.error.mensagem} Volte ao carrinho e ajuste a quantidade.`;
       } else {
@@ -105,10 +100,10 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
     }
   }
 
-  // ---------- Validação do cartão (só o FORMATO; não existe cartão de verdade aqui) ----------
+  // ---------- Validação do cartão (só o FORMATO.
 
-  // "get" = propriedade calculada: o HTML lê erroNumero como um campo, mas o valor é recalculado
-  // a cada vez, a partir do que está digitado. Devolve '' (sem erro) ou a mensagem do erro.
+  // "get" = propriedade calculada: o HTML lê erroNumero como um campo.
+  // a cada vez, a partir do que está digitado.
 
   // Número: de 13 a 19 dígitos (espaços são ignorados)
   get erroNumero(): string {
@@ -118,7 +113,7 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
 
   // Validade: MM/AA e não vencida
   get erroValidade(): string {
-    // 1) confere o formato MM/AA com uma expressão regular (mês de 01 a 12, barra, 2 dígitos)
+    // 1) confere o formato MM/AA com uma expressão regular (mês de 01 a 12, barra.
     const partes = /^(0[1-9]|1[0-2])\/(\d{2})$/.exec(this.cartao.validade.trim());
     if (!partes) {
       return 'Use o formato MM/AA (ex.: 08/29).';
@@ -127,7 +122,7 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
     const mes = Number(partes[1]);
     const ano = 2000 + Number(partes[2]);
     // 3) compara com hoje
-    // new Date(ano, mes, 1) = primeiro dia do mês SEGUINTE: o cartão vale até o fim do mês da validade
+    // new Date(ano, mes, 1) = primeiro dia do mês SEGUINTE.
     return new Date(ano, mes, 1) > new Date() ? '' : 'Este cartão está vencido.';
   }
 
@@ -153,11 +148,11 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
       await navigator.clipboard.writeText(this.codigoPix);
       this.pixCopiado = true;
     } catch {
-      // sem permissão para a área de transferência: a pessoa pode selecionar e copiar o texto
+      // sem permissão para a área de transferência.
     }
   }
 
-  // Passo 2: "paga" (POST /pagamentos). Só vão o id do pedido e a forma de pagamento.
+  // Passo 2: "paga" (POST /pagamentos).
   async pagar() {
     // 1) a partir de agora, os erros dos campos do cartão aparecem na tela
     this.tentouPagar = true;

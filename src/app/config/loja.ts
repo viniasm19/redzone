@@ -1,7 +1,4 @@
 // Dados da loja usados no rodapé. Ficam num lugar só: para mudar, mude aqui.
-//
-// ⚠️ TODOS os valores abaixo são FICTÍCIOS (trabalho acadêmico).
-// TROCAR PELOS DADOS REAIS antes de publicar o site.
 export const LOJA = {
   nome: 'RedZone', // TROCAR PELOS DADOS REAIS
 

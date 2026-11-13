@@ -41,7 +41,7 @@ export class EstoqueComponent implements OnInit {
   // Marca se o filtro 'só estoque baixo' está ligado.
   somenteBaixo = false;
 
-  // Um formulário por produto. Record<número, FormLinha> = "objeto que usa o id do produto como chave".
+  // Um formulário por produto. Record<número.
   forms: Record<number, FormLinha> = {};
 
   // Histórico: null = de todos os produtos; número = só daquele produto

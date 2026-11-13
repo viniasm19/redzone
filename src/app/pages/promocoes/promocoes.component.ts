@@ -6,8 +6,7 @@ import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 
 // Página de promoções (rota /promocoes).
-// Não existe rota nova no back: é o mesmo GET /produtos, com o filtro ?promocao=true.
-// Os cards são o mesmo product-item da vitrine: ele já sabe mostrar o preço antigo riscado.
+// Não existe rota nova no back: é o mesmo GET /produtos.
 @Component({
   selector: 'app-promocoes',
   standalone: true,
@@ -19,7 +18,7 @@ export class PromocoesComponent implements OnInit {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
 
-  // O HTML espera daqui: produtos, carregando e erro (o que mostrar) e o método adicionarAoCarrinho.
+  // O HTML espera daqui: produtos.
   produtos: Produto[] = [];  // produtos em promoção
   carregando = true;         // true até a resposta da API chegar
   erro = '';                 // aviso se a API falhar

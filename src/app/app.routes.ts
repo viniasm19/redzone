@@ -17,11 +17,6 @@ import { adminGuard } from './guards/admin.guard';
 
 // Mapa de rotas: endereço da barra do navegador -> tela.
 // canActivate = "porteiro" da rota:
-//   authGuard  -> só quem está logado (checkout, pedido, área do usuário)
-//   adminGuard -> só o administrador (lista de usuários e estoque)
-// Cada linha: { path: 'endereço', component: TelaQueAparece, canActivate: [porteiro] }.
-// O endereço vazio ('') é a tela inicial. pathMatch: 'full' = só quando o endereço é EXATAMENTE vazio.
-// /products e /promocoes continuam existindo, mas não têm mais link no menu (os produtos ficam na Home).
 export const routes: Routes = [
   // Tela inicial.
   { path: '', pathMatch: 'full', component: HomeComponent },

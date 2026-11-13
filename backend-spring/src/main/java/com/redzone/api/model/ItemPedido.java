@@ -9,11 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-// =====================================================================
 // ItemPedido: uma linha do pedido ("2x Headset Gamer a R$ 199,90").
-// =====================================================================
-// @Entity: vira a tabela "itens_pedido". Cada linha é um produto (com quantidade) dentro de um pedido.
-// Existe separado do Pedido porque um pedido pode ter VÁRIOS produtos.
+// @Entity: vira a tabela "itens_pedido".
 @Entity
 @Table(name = "itens_pedido")
 public class ItemPedido {
@@ -23,7 +20,7 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @ManyToOne + @JoinColumn: a coluna pedido_id aponta para a linha do pedido (chave estrangeira).
+    // @ManyToOne + @JoinColumn.
     // Muitos itens -> um pedido (coluna pedido_id)
     @ManyToOne(optional = false)
     @JoinColumn(name = "pedido_id", nullable = false)
@@ -38,7 +35,7 @@ public class ItemPedido {
     @Column(nullable = false)
     private Integer quantidade;
 
-    // Preço do produto NO MOMENTO da compra. Se o produto mudar de preço depois, o pedido antigo não muda.
+    // Preço do produto NO MOMENTO da compra. Se o produto mudar de preço depois.
     @Column(name = "preco_unitario", nullable = false)
     private Double precoUnitario;
 

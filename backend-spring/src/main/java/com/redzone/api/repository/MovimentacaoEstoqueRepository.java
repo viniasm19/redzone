@@ -9,7 +9,7 @@ import java.util.List;
 public interface MovimentacaoEstoqueRepository extends JpaRepository<MovimentacaoEstoque, Long> {
 
     // O Spring Data lê o NOME do método e monta o SQL sozinho:
-    // "find...By ProdutoId ... OrderBy Data Desc" = movimentações de um produto, mais recentes primeiro.
+    // "find...By ProdutoId ... OrderBy Data Desc" = movimentações de um produto.
     List<MovimentacaoEstoque> findByProdutoIdOrderByDataDescIdDesc(Long produtoId);
 
     // Todas as movimentações, mais recentes primeiro

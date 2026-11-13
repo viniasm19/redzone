@@ -18,9 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 // Controle de estoque em /estoque (usado pela tela de Estoque do administrador).
-// @RestController: esta classe recebe requisições HTTP e devolve respostas em JSON.
-//   (É um @Controller + @ResponseBody: o que os métodos retornam vira JSON automaticamente.)
-// @RequestMapping("..."): o começo do endereço de todas as rotas desta classe.
+// @RestController: esta classe recebe requisições HTTP e devolve respostas em.
 @RestController
 @RequestMapping("/estoque")
 public class EstoqueController {
@@ -32,7 +30,7 @@ public class EstoqueController {
     private final MovimentacaoEstoqueRepository movimentacaoRepository;
     private final EstoqueService estoqueService;
 
-    // Injeção de dependência: o Spring entrega os repositories e o EstoqueService prontos.
+    // Injeção de dependência.
     public EstoqueController(ProdutoRepository produtoRepository,
                              MovimentacaoEstoqueRepository movimentacaoRepository,
                              EstoqueService estoqueService) {
@@ -53,7 +51,7 @@ public class EstoqueController {
     @Transactional(readOnly = true)
     public List<MovimentacaoResponse> movimentacoes(@RequestParam(required = false) Long produtoId) {
         // 1) sem produtoId: o histórico de todos; com produtoId: só daquele produto.
-        //    "var" deixa o Java descobrir o tipo sozinho (aqui, uma List<MovimentacaoEstoque>).
+        // "var" deixa o Java descobrir o tipo sozinho (aqui.
         var lista = produtoId == null
                 ? movimentacaoRepository.findAllByOrderByDataDescIdDesc()
                 : movimentacaoRepository.findByProdutoIdOrderByDataDescIdDesc(produtoId);
@@ -71,12 +69,12 @@ public class EstoqueController {
             return naoEncontrado();
         }
 
-        // 2) quem soma e registra no histórico é o EstoqueService; depois, 201 com a movimentação
+        // 2) quem soma e registra no histórico é o EstoqueService; depois.
         var mov = estoqueService.entrada(produto.get(), request.quantidade(), request.observacao());
         return ResponseEntity.status(HttpStatus.CREATED).body(MovimentacaoResponse.de(mov));
     }
 
-    // POST /estoque/{produtoId}/saida -> 201, 400, 404 ou 409 (não há unidades suficientes)
+    // POST /estoque/{produtoId}/saida -> 201, 400.
     @PostMapping("/{produtoId}/saida")
     @Transactional
     public ResponseEntity<?> saida(@PathVariable Long produtoId, @Valid @RequestBody MovimentacaoRequest request) {
@@ -86,7 +84,7 @@ public class EstoqueController {
             return naoEncontrado();
         }
 
-        // 2) o EstoqueService confere se há unidades suficientes (senão lança exceção -> 409) e registra
+        // 2) o EstoqueService confere se há unidades suficientes (senão lança exceção ->.
         var mov = estoqueService.saida(produto.get(), request.quantidade(), TipoMovimentacao.SAIDA, request.observacao());
         return ResponseEntity.status(HttpStatus.CREATED).body(MovimentacaoResponse.de(mov));
     }

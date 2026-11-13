@@ -17,11 +17,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-// =====================================================================
 // Pedido: uma compra feita por um usuário (com um ou mais itens).
-// =====================================================================
 // @Entity: vira a tabela "pedidos". Cada linha é uma compra.
-// O pedido nasce AGUARDANDO_PAGAMENTO (PedidoController) e vira APROVADO no pagamento (PagamentoController).
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
@@ -33,14 +30,11 @@ public class Pedido {
 
     // @ManyToOne = "muitos para um": muitos pedidos podem ser de UM mesmo usuário.
     // optional = false: todo pedido TEM que ter um usuário.
-    // @JoinColumn(name = "usuario_id"): o nome da coluna que guarda o id do usuário (a "chave estrangeira",
-    // que aponta para uma linha de outra tabela).
-    // Muitos pedidos -> um usuário. Cria a coluna usuario_id (chave estrangeira) na tabela.
     @ManyToOne(optional = false)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    // Quando o pedido foi feito. A coluna se chama data_pedido porque "data" é palavra reservada em alguns bancos.
+    // Quando o pedido foi feito.
     @Column(name = "data_pedido", nullable = false)
     private LocalDateTime data;
 
@@ -48,15 +42,13 @@ public class Pedido {
     @Column(nullable = false)
     private Double total;
 
-    // @Enumerated(EnumType.STRING): diz como gravar um enum no banco (aqui, pelo nome).
-    // Em que etapa o pedido está. EnumType.STRING grava o nome ("APROVADO"), não a posição (0, 1, 2...).
-    // A coluna ACEITA nulo: pedidos feitos antes deste campo existir ficam com null no banco
-    // (o ddl-auto=update só cria a coluna, sem mexer nas linhas). Quem trata o null é o getStatus().
+    // @Enumerated(EnumType.STRING): diz como gravar um enum no banco (aqui.
+    // Em que etapa o pedido está. EnumType.STRING grava o nome ("APROVADO").
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private StatusPedido status;
 
-    // Como foi pago (CARTAO ou PIX). Nulo enquanto o pedido não foi pago, e nos pedidos antigos.
+    // Como foi pago (CARTAO ou PIX). Nulo enquanto o pedido não foi pago.
     // Nenhum dado do cartão é guardado: só a FORMA de pagamento.
     @Enumerated(EnumType.STRING)
     @Column(name = "forma_pagamento", length = 20)
@@ -64,8 +56,6 @@ public class Pedido {
 
     // @OneToMany = "um para muitos": UM pedido tem VÁRIOS itens.
     // orphanRemoval = true: se um item sair da lista, ele é apagado do banco.
-    // Um pedido -> vários itens. mappedBy = "pedido": quem guarda a chave estrangeira é o ItemPedido.
-    // cascade ALL: ao salvar o pedido, os itens são salvos junto (e apagados junto, se o pedido for apagado).
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itens = new ArrayList<>();
 
@@ -73,21 +63,21 @@ public class Pedido {
     public Pedido() {
     }
 
-    // Liga o item ao pedido dos DOIS lados (a lista do pedido e o campo "pedido" do item).
+    // Liga o item ao pedido dos DOIS lados.
     // Recebe: o item novo. Não devolve nada.
     public void adicionarItem(ItemPedido item) {
-        // 1) diz ao item a qual pedido ele pertence (é isso que preenche a coluna pedido_id)
+        // 1) diz ao item a qual pedido ele pertence (é isso que preenche a coluna.
         item.setPedido(this);
-        // 2) coloca o item na lista do pedido (é isso que faz o cascade salvar o item junto)
+        // 2) coloca o item na lista do pedido (é isso que faz o cascade salvar o item.
         itens.add(item);
     }
 
-    // Soma os subtotais dos itens. O total é sempre calculado aqui no back-end, nunca vem do front.
+    // Soma os subtotais dos itens. O total é sempre calculado aqui no back-end.
     // Não recebe nada; guarda o resultado no campo "total".
     public void calcularTotal() {
         // 1) percorre os itens (stream), pega o subtotal de cada um e soma tudo
         double soma = itens.stream().mapToDouble(ItemPedido::getSubtotal).sum();
-        // 2) arredonda para 2 casas: multiplica por 100, arredonda e divide por 100 (ex.: 439.80000001 -> 439.8)
+        // 2) arredonda para 2 casas: multiplica por 100, arredonda e divide por 100 (ex..
         this.total = Math.round(soma * 100.0) / 100.0;
     }
 

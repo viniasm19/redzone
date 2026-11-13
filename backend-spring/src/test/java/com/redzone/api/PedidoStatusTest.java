@@ -33,7 +33,7 @@ class PedidoStatusTest {
     @Autowired
     ProdutoRepository produtoRepository;
 
-    // Acesso direto ao banco, para simular um pedido antigo (feito antes da coluna status existir)
+    // Acesso direto ao banco.
     @Autowired
     JdbcTemplate jdbc;
 

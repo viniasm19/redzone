@@ -1,9 +1,7 @@
 // Estilo das telas de conta (login, cadastro e redefinir senha).
 // O cadastro e o "esqueci a senha" reaproveitam este arquivo com @use.
-// A largura, o espaçamento da página e o título vêm das classes globais
-// .page, .coluna-estreita, .card e .page-title (src/styles.scss).
 
-// Card do formulário: mais espaço interno e uma sombra mais visível, para "flutuar" no fundo cinza
+// Card do formulário: mais espaço interno e uma sombra mais visível.
 .auth-card {
   margin-top: var(--space-5);
   padding: var(--space-6);

@@ -1,5 +1,4 @@
-<!-- Cabeçalho. Usa do TypeScript: cartService (contador), usuario, isLogado(), menuAberto(),
-     alternarMenu(), fecharMenu() e sair(). Menu: logo | Carrinho ... Login/Cadastro ou Olá + Minha Área + Sair. -->
+<!-- Cabeçalho. Usa do TypeScript: cartService (contador), usuario, isLogado(). -->
 <header class="header">
   <div class="header-conteudo">
     <a class="logo" routerLink="/" (click)="fecharMenu()" aria-label="RedZone, página inicial">
@@ -14,10 +13,10 @@
     </button>
 
     <nav id="menu-principal" class="menu" [class.aberto]="menuAberto()">
-      <!-- Esquerda: só o Carrinho. Os produtos ficam na tela inicial (o logo leva até ela). -->
+      <!-- Esquerda: só o Carrinho. -->
       <div class="menu-grupo">
         <a routerLink="/cart" routerLinkActive="active" class="cart-btn" (click)="fecharMenu()">
-          <!-- Ícone de sacola desenhado em SVG (só decoração: aria-hidden esconde do leitor de tela) -->
+          <!-- Ícone de sacola desenhado em SVG (só decoração. -->
           <svg class="icone" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
             <path d="M6 7h12l-1 13H7L6 7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
             <path d="M9 7a3 3 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>

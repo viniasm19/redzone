@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// Testes do pagamento fictício (POST /pagamentos). Banco em memória próprio e recriado a cada teste.
+// Testes do pagamento fictício (POST /pagamentos).
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = {
@@ -89,7 +89,7 @@ class PagamentoTest {
     void pagamentoComCartaoAprovaENaoGuardaDadosDoCartao() throws Exception {
         Long id = criarPedido();
 
-        // Mesmo que o front mande dados de cartão, eles são descartados: o DTO não tem esses campos
+        // Mesmo que o front mande dados de cartão, eles são descartados.
         String corpo = "{\"pedidoId\": " + id + ", \"formaPagamento\": \"CARTAO\","
                 + " \"numeroCartao\": \"4111111111111111\", \"validade\": \"12/30\", \"cvv\": \"123\"}";
 

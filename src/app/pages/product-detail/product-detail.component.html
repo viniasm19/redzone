@@ -1,6 +1,4 @@
-<!-- Detalhe do produto: imagem, nome, descrição, preço e estoque.
-     Usa do TypeScript: produto, estoqueMinimo, emPromocao(), adicionarAoCarrinho() e voltar().
-     *ngIf="produto": a tela só aparece depois que o produto chega da API. -->
+<!-- Detalhe do produto: imagem, nome, descrição, preço e estoque. -->
 <div class="page detail-container" *ngIf="produto">
   <button class="btn-voltar" (click)="voltar()">← Voltar</button>
 
@@ -11,7 +9,7 @@
       <h1 class="page-title">{{ produto.nome }}</h1>
 
       <p class="descricao">{{ produto.descricao }}</p>
-      <!-- Em promoção: preço antigo riscado (<s>) e o promocional. O "!" diz: "aqui o valor existe". -->
+      <!-- Em promoção: preço antigo riscado (<s>) e o promocional. O "!" diz. -->
       @if (emPromocao(produto)) {
         <p class="precos">
           <s class="preco-antigo">R$ {{ produto.preco.toFixed(2) }}</s>

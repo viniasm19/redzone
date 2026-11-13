@@ -11,8 +11,8 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-// Tela de cadastro (/cadastro). O HTML espera daqui: nome, email, senha (ligados aos campos),
-// erro, erroEmail, returnUrl e o método cadastrar(f). Funciona igual ao LoginComponent.
+// Tela de cadastro (/cadastro). O HTML espera daqui: nome, email.
+// erro, erroEmail, returnUrl e o método cadastrar(f).
 export class RegisterComponent {
   nome = '';   // campo Nome
   email = '';  // campo Email
@@ -30,12 +30,12 @@ export class RegisterComponent {
   private static readonly EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   // Padroniza o e-mail digitado: "  Lucas@Email.com " vira "lucas@email.com".
-  // (fica aqui, na tela onde o usuário digita; o AuthService recebe o e-mail já pronto)
+  // (fica aqui, na tela onde o usuário digita.
   private normalizarEmail(email: string): string {
     return email.trim().toLowerCase();
   }
 
-  // Mensagem de erro do campo e-mail ('' = e-mail válido). A tela usa para avisar o usuário.
+  // Mensagem de erro do campo e-mail ('' = e-mail válido).
   get erroEmail(): string {
     const email = this.normalizarEmail(this.email);
     if (!email) {

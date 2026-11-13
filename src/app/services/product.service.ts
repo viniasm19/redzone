@@ -4,12 +4,7 @@ import { Produto } from '../models/produto.model';
 import { API_URL } from '../config/api';
 
 // Conversa com a rota /produtos da API (CRUD completo).
-// Service = classe que faz um trabalho para várias telas (aqui: falar com a API de produtos).
-// @Injectable({ providedIn: 'root' }): o Angular cria UM objeto deste service para o app inteiro,
-// e entrega esse mesmo objeto a quem pedir (com inject ou no construtor).
-//
-// Os métodos daqui devolvem um Observable: a resposta da API chega "depois". Quem chama usa
-// .subscribe(...) para dizer o que fazer quando ela chegar.
+// Service = classe que faz um trabalho para várias telas (aqui.
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private http = inject(HttpClient);       // o "carteiro" que faz as requisições HTTP
@@ -41,7 +36,7 @@ export class ProductService {
     return this.http.put<Produto>(`${this.url}/${produto.id}`, produto);
   }
 
-  // DELETE /produtos/{id}: apaga o produto (a API responde 409 se ele já estiver em algum pedido)
+  // DELETE /produtos/{id}.
   deleteProduto(id: number) {
     return this.http.delete(`${this.url}/${id}`);
   }

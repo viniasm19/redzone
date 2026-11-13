@@ -21,7 +21,7 @@ export function emPromocao(produto: Produto): boolean {
 }
 
 // Quanto o produto custa agora: o promocional, se houver, senão o normal.
-// É a mesma conta que o back-end faz ao fechar o pedido (lá, com o preço do banco).
+// É a mesma conta que o back-end faz ao fechar o pedido (lá.
 export function precoAtual(produto: Produto): number {
   return emPromocao(produto) ? (produto.precoPromocional as number) : produto.preco;
 }

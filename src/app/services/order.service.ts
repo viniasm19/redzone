@@ -6,8 +6,7 @@ import { Pedido } from '../models/pedido.model';
 import { CartItem } from './cart.service';
 
 // Conversa com a rota /pedidos da API.
-// firstValueFrom(...) transforma a resposta da API numa Promise: assim quem chama pode usar
-// "await orderService.criarPedido(...)" e esperar a resposta na própria linha.
+// firstValueFrom(...) transforma a resposta da API numa Promise.
 @Injectable({ providedIn: 'root' })
 export class OrderService {
   private http = inject(HttpClient);
@@ -15,9 +14,9 @@ export class OrderService {
   private url = `${API_URL}/pedidos`;
 
   // Manda só ids e quantidades: o preço e o total quem calcula é o back-end.
-  // Recebe: o id de quem compra e os itens do carrinho. Devolve: o pedido salvo (com o total oficial).
+  // Recebe: o id de quem compra e os itens do carrinho. Devolve.
   criarPedido(usuarioId: number, itens: CartItem[]) {
-    // 1) monta o corpo do POST: para cada item do carrinho, só o id do produto e a quantidade
+    // 1) monta o corpo do POST: para cada item do carrinho.
     const corpo = {
       usuarioId,
       itens: itens.map(i => ({ produtoId: i.produto.id, quantidade: i.quantidade }))
@@ -26,7 +25,7 @@ export class OrderService {
     return firstValueFrom(this.http.post<Pedido>(this.url, corpo));
   }
 
-  // GET /pedidos/usuario/{id}: os pedidos de um usuário, do mais novo para o mais antigo (Minha Área)
+  // GET /pedidos/usuario/{id}: os pedidos de um usuário.
   listarPorUsuario(usuarioId: number) {
     return firstValueFrom(this.http.get<Pedido[]>(`${this.url}/usuario/${usuarioId}`));
   }

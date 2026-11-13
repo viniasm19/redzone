@@ -1,4 +1,4 @@
-// Uma linha do histórico de estoque, como a API (GET /estoque/movimentacoes) devolve.
+// Uma linha do histórico de estoque.
 export type TipoMovimentacao = 'ENTRADA' | 'SAIDA' | 'VENDA';
 
 // Uma linha do histórico de estoque.

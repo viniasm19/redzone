@@ -1,6 +1,4 @@
-<!-- Card de um produto. Usa do TypeScript: produto, estoqueMinimo, emPromocao e adicionar().
-     Clicar no card abre o detalhe ([routerLink]). No botão, $event.stopPropagation() impede que o
-     clique "suba" até o card: assim, adicionar ao carrinho não abre o detalhe junto. -->
+<!-- Card de um produto. Usa do TypeScript: produto, estoqueMinimo. -->
 <div class="product-card" [class.esgotado]="produto.estoque === 0" [class.promocao]="emPromocao"
      [routerLink]="['/product', produto.id]">
 

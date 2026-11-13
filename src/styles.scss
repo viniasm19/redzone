@@ -1,18 +1,8 @@
-// =====================================================================
 // Estilos globais do RedZone
-// =====================================================================
-// 1) VARIÁVEIS (tokens): cores, espaçamentos, fontes, bordas, sombras e larguras ficam aqui, num lugar só.
-//    As telas usam var(--space-4), var(--color-primary)... em vez de "16px" ou "#e11d2e".
-//    Para mudar o visual do site inteiro, basta mudar o valor aqui.
-// 2) BASE: o que vale para a página toda (fonte, fundo, box-sizing).
-// 3) PEÇAS COMPARTILHADAS: botões, campos, cards e o layout das páginas.
-//
-// Visual: moderno, simples e ESCURO. Fundo quase preto, cards um tom acima, cantos arredondados,
-// a fonte Inter, o vermelho da marca como destaque e um pouco de ciano como cor complementar.
-// =====================================================================
+// 1) VARIÁVEIS (tokens): cores, espaçamentos, fontes, bordas.
 
 :root {
-  // ---------- Espaçamento (escala: cada passo é um pouco maior que o anterior) ----------
+  // ---------- Espaçamento (escala.
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -41,9 +31,7 @@
   --color-on-primary: #ffffff;    // texto em cima de um botão vermelho
 
   // ---------- Cor complementar: CIANO ----------
-  // O ciano fica do lado OPOSTO ao vermelho no círculo das cores, por isso os dois combinam.
-  // Aparece pouco, só em detalhes: "Em estoque", status Aprovado, categoria escolhida,
-  // links no hover, contorno de foco do teclado e um brilho no banner.
+  // O ciano fica do lado OPOSTO ao vermelho no círculo das cores.
   --color-accent: #22d3ee;
   --color-accent-soft: rgba(34, 211, 238, 0.12);
 
@@ -56,8 +44,7 @@
   --color-danger-soft: rgba(255, 46, 67, 0.12);
 
   // ---------- Tipografia ----------
-  // 'Inter Variable' vem do pacote @fontsource-variable/inter (instalado no projeto e listado no angular.json).
-  // Se ela não carregar, o navegador usa a fonte do sistema.
+  // 'Inter Variable' vem do pacote @fontsource-variable/inter.
   color-scheme: dark; // avisa o navegador: barras de rolagem, calendário etc. também no modo escuro
   --font-family: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --font-size: 15px;      // corpo do texto
@@ -90,7 +77,7 @@
   --header-height: 68px;
 
   // ---------- Nomes antigos ----------
-  // Apelidos para as variáveis que já existiam, para nada que ainda as use ficar sem cor.
+  // Apelidos para as variáveis que já existiam.
   --bg-principal: var(--color-bg);
   --bg-card: var(--color-surface);
   --texto-principal: var(--color-text);
@@ -151,7 +138,7 @@ h1, h2, h3, h4 {
   letter-spacing: var(--letter-title);
 }
 
-// Os campos de formulário não herdam a fonte do body sozinhos: aqui eles passam a herdar
+// Os campos de formulário não herdam a fonte do body sozinhos.
 button,
 input,
 select,
@@ -251,7 +238,7 @@ textarea {
 
 // ---------- Layout compartilhado pelas páginas ----------
 
-// Container de TODA página: mesma largura máxima, centralizado e com o mesmo espaçamento.
+// Container de TODA página: mesma largura máxima.
 .page {
   width: 100%;
   max-width: var(--content-max);

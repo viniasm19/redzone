@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { LOJA } from '../../config/loja';
 
-// Rodapé que aparece em todas as telas (fica no app.component.html, depois do router-outlet).
-// Mostra só o essencial: nome da loja, endereço, telefone e e-mail, lidos do config/loja.ts.
+// Rodapé que aparece em todas as telas (fica no app.component.html.
+// Mostra só o essencial: nome da loja, endereço, telefone e e-mail.
 @Component({
   selector: 'app-footer',
   standalone: true,
