@@ -1,16 +1,16 @@
-<!-- Detalhe do produto: imagem, nome, descrição, preço e estoque. -->
+<!-- Tela do produto (só aparece depois de carregar). -->
 <div class="page detail-container" *ngIf="produto">
   <button class="btn-voltar" (click)="voltar()">← Voltar</button>
 
   <div class="detail-card">
     <img [src]="produto.imagem" [alt]="produto.nome" />
+    <!-- Nome, descrição, preço e estoque. -->
     <div class="detail-info">
       <span class="categoria">{{ produto.categoria }}</span>
       <h1 class="page-title">{{ produto.nome }}</h1>
 
       <p class="descricao">{{ produto.descricao }}</p>
-      <!-- Em promoção: preço antigo riscado (<s>) e o promocional. O "!" diz. -->
-      @if (emPromocao(produto)) {
+            @if (emPromocao(produto)) {
         <p class="precos">
           <s class="preco-antigo">R$ {{ produto.preco.toFixed(2) }}</s>
           <span class="preco">R$ {{ produto.precoPromocional!.toFixed(2) }}</span>
@@ -20,8 +20,7 @@
         <p class="preco">R$ {{ produto.preco }}</p>
       }
 
-      <!-- Aviso de estoque: esgotado, poucas unidades ou disponível -->
-      @if (produto.estoque === 0) {
+            @if (produto.estoque === 0) {
         <p class="estoque estoque-zero">Produto esgotado</p>
       } @else if (produto.estoque <= estoqueMinimo) {
         <p class="estoque estoque-baixo">Corra! Só restam {{ produto.estoque }} unidade(s).</p>

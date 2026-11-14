@@ -1,17 +1,15 @@
-<!-- Como ler este HTML (vale para todas as telas): -->
-<!-- Tela do carrinho. Usa do TypeScript: itens(), total(), quantidadeTotal(). -->
 <div class="page cart-container">
   <h2 class="page-title">Seu Carrinho</h2>
 
-  <!-- Carrinho vazio -->
-  <div *ngIf="itens().length === 0" class="carrinho-vazio">
+    <!-- Mensagem de carrinho vazio. -->
+    <div *ngIf="itens().length === 0" class="carrinho-vazio">
     <p>Seu carrinho está vazio... Que tal adicionar alguns itens?</p>
     <button routerLink="/" class="btn-voltar btn-principal">Ver Produtos</button>
   </div>
 
-  <!-- Carrinho com itens: a lista à esquerda e o resumo à direita -->
-  <div *ngIf="itens().length > 0" class="cart-content">
+    <div *ngIf="itens().length > 0" class="cart-content">
 
+    <!-- Lista de itens do carrinho. -->
     <div class="cart-items-list">
       <div class="cart-item-row" *ngFor="let item of itens()">
 
@@ -35,8 +33,7 @@
 
           <strong>{{ item.quantidade }}</strong>
 
-          <!-- O "+" fica desligado quando já tem no carrinho tudo o que existe no estoque -->
-          <button class="btn-qtd" (click)="aumentar(item.produto.id)"
+                    <button class="btn-qtd" (click)="aumentar(item.produto.id)"
                   [disabled]="item.quantidade >= item.produto.estoque"
                   title="Adicionar mais um" [attr.aria-label]="'Adicionar mais um ' + item.produto.nome">+</button>
         </div>
@@ -55,6 +52,7 @@
       </div>
     </div>
 
+    <!-- Resumo e botões de finalizar. -->
     <div class="cart-summary">
       <h3>Resumo do Pedido</h3>
 

@@ -1,11 +1,8 @@
-// Pedido como a API (Spring Boot) devolve.
 
-// Os mesmos valores do enum StatusPedido do back-end.
-// Um "union type": a variável só pode ter um destes textos.
+// Etapas de um pedido (igual ao back).
 export type StatusPedido = 'AGUARDANDO_PAGAMENTO' | 'APROVADO' | 'EM_SEPARACAO' | 'ENVIADO' | 'ENTREGUE';
 
-// Texto que aparece na tela para cada status.
-// Record<StatusPedido.
+// Texto mostrado para cada status.
 export const STATUS_PEDIDO_TEXTO: Record<StatusPedido, string> = {
   AGUARDANDO_PAGAMENTO: 'Aguardando pagamento',
   APROVADO: 'Aprovado',
@@ -14,7 +11,7 @@ export const STATUS_PEDIDO_TEXTO: Record<StatusPedido, string> = {
   ENTREGUE: 'Entregue'
 };
 
-// Os mesmos valores do enum FormaPagamento do back-end
+// Formas de pagamento.
 export type FormaPagamento = 'CARTAO' | 'PIX';
 
 export const FORMA_PAGAMENTO_TEXTO: Record<FormaPagamento, string> = {
@@ -22,23 +19,22 @@ export const FORMA_PAGAMENTO_TEXTO: Record<FormaPagamento, string> = {
   PIX: 'Pix'
 };
 
-// Um item dentro do pedido.
 export interface ItemPedido {
   produtoId: number;
   nome: string;
   imagem: string;
   quantidade: number;
-  precoUnitario: number; // preço no momento da compra
+  precoUnitario: number;
   subtotal: number;
 }
 
-// Um pedido completo, como vem da API.
+// Um pedido, como vem da API.
 export interface Pedido {
   id: number;
   usuarioId: number;
-  data: string; // ISO, ex.: 2026-11-08T23:51:00.123
+  data: string;
   total: number;
-  status: StatusPedido; // pedidos antigos, sem status no banco, chegam como APROVADO
-  formaPagamento: FormaPagamento | null; // null enquanto o pedido não foi pago (e nos pedidos antigos)
+  status: StatusPedido;
+  formaPagamento: FormaPagamento | null;
   itens: ItemPedido[];
 }

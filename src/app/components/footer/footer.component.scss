@@ -1,4 +1,3 @@
-// Rodapé: faixa branca com uma linha fina em cima
 .rodape {
   border-top: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -7,7 +6,6 @@
   font-size: 14px;
 }
 
-// Mesma largura e respiro do header e das páginas: tudo alinha na mesma coluna
 .rodape-conteudo {
   max-width: var(--content-max);
   margin: 0 auto;
@@ -28,7 +26,6 @@
   span { color: var(--color-primary); }
 }
 
-// <address> vem em itálico por padrão no navegador: aqui volta ao normal
 .contato {
   display: flex;
   gap: var(--space-2) var(--space-5);
@@ -44,7 +41,6 @@ a {
   &:hover { color: var(--color-text-strong); }
 }
 
-// Linha final com o direito autoral.
 .copyright {
   max-width: var(--content-max);
   margin: var(--space-5) auto 0;

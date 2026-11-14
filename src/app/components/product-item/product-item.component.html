@@ -1,9 +1,9 @@
-<!-- Card de um produto. Usa do TypeScript: produto, estoqueMinimo. -->
+<!-- Card de um produto (clique abre o detalhe). -->
 <div class="product-card" [class.esgotado]="produto.estoque === 0" [class.promocao]="emPromocao"
      [routerLink]="['/product', produto.id]">
 
-  <!-- Moldura da foto: o selo de promoção fica por cima, no canto -->
-  <div class="foto">
+    <!-- Foto e selo de promoção. -->
+    <div class="foto">
     <img [src]="produto.imagem || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070'"
          [alt]="produto.nome" loading="lazy" />
     @if (emPromocao) {
@@ -11,12 +11,12 @@
     }
   </div>
 
+  <!-- Nome, preço e estoque. -->
   <div class="info">
     <p class="categoria">{{ produto.categoria }}</p>
     <h3>{{ produto.nome }}</h3>
 
-    <!-- Em promoção: preço promocional em destaque + preço antigo riscado -->
-    @if (emPromocao) {
+        @if (emPromocao) {
       <p class="precos">
         <span class="preco preco-promocional">R$ {{ produto.precoPromocional!.toFixed(2) }}</span>
         <s class="preco-antigo">R$ {{ produto.preco.toFixed(2) }}</s>
@@ -25,8 +25,7 @@
       <p class="preco">R$ {{ produto.preco }}</p>
     }
 
-    <!-- Etiqueta de estoque: esgotado, poucas unidades ou disponível -->
-    @if (produto.estoque === 0) {
+        @if (produto.estoque === 0) {
       <p class="estoque estoque-zero">Esgotado</p>
     } @else if (produto.estoque <= estoqueMinimo) {
       <p class="estoque estoque-baixo">Últimas {{ produto.estoque }} unidade(s)!</p>
@@ -34,6 +33,7 @@
       <p class="estoque estoque-ok">Em estoque</p>
     }
 
+    <!-- Botão de adicionar ao carrinho. -->
     <button class="btn-comprar" [disabled]="produto.estoque === 0"
             (click)="adicionar(); $event.stopPropagation()">
       {{ produto.estoque === 0 ? 'Indisponível' : 'Adicionar ao Carrinho' }}

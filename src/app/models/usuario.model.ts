@@ -1,12 +1,11 @@
-// Usuário como a API (Spring Boot) devolve e como o front envia.
 export interface Usuario {
-  id?: number; // vazio ao cadastrar: quem gera o id é o banco de dados
+  id?: number;
   nome: string;
   email: string;
-  senha?: string; // só é ENVIADO (cadastro, troca de senha); a API nunca devolve a senha
+  senha?: string;
 }
 
-// O que a API devolve no login (POST /login): sem a senha.
+// Quem está logado (sem senha).
 export interface UsuarioLogado {
   id: number;
   nome: string;

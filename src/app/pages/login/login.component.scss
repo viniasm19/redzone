@@ -1,7 +1,4 @@
-// Estilo das telas de conta (login, cadastro e redefinir senha).
-// O cadastro e o "esqueci a senha" reaproveitam este arquivo com @use.
 
-// Card do formulário: mais espaço interno e uma sombra mais visível.
 .auth-card {
   margin-top: var(--space-5);
   padding: var(--space-6);
@@ -33,7 +30,6 @@ input {
   outline: none;
   transition: border-color var(--transition), box-shadow var(--transition);
 
-  // Campo em foco: borda vermelha + um "halo" clarinho em volta
   &:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px var(--color-primary-soft);

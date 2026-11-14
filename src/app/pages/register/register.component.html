@@ -1,16 +1,13 @@
-<!-- Tela de cadastro. Usa do TypeScript: nome, email, senha, erro, erroEmail. -->
 <div class="page">
-  <!-- Cartão do formulário de cadastro. -->
-  <div class="coluna-estreita card auth-card">
+    <div class="coluna-estreita card auth-card">
     <h2 class="page-title">Cadastro</h2>
     <p class="page-subtitle">Crie sua conta para acessar o carrinho e finalizar.</p>
 
-    <!-- Formulário de cadastro. -->
-    <form #f="ngForm" (ngSubmit)="cadastrar(f)" novalidate>
+        <!-- Formulário de cadastro. -->
+        <form #f="ngForm" (ngSubmit)="cadastrar(f)" novalidate>
       <label>
         Nome
-        <!-- Campo do nome. -->
-        <input name="nome" type="text" [(ngModel)]="nome" #nomeCtrl="ngModel" required />
+                <input name="nome" type="text" [(ngModel)]="nome" #nomeCtrl="ngModel" required />
         <small class="field-error" *ngIf="nomeCtrl.invalid && (nomeCtrl.touched || f.submitted)">
           Informe seu nome.
         </small>
@@ -27,21 +24,18 @@
 
       <label>
         Senha
-        <!-- Campo da senha (mínimo 4 letras). -->
-        <input name="senha" type="password" [(ngModel)]="senha" #senhaCtrl="ngModel" required minlength="4" />
+                <input name="senha" type="password" [(ngModel)]="senha" #senhaCtrl="ngModel" required minlength="4" />
         <small class="field-error" *ngIf="senhaCtrl.invalid && (senhaCtrl.touched || f.submitted)">
           A senha deve ter pelo menos 4 caracteres.
         </small>
       </label>
 
-      <!-- Mostra o erro, se houver. -->
-      <div class="error" *ngIf="erro">{{ erro }}</div>
+            <div class="error" *ngIf="erro">{{ erro }}</div>
 
       <button type="submit" class="btn">Criar conta</button>
     </form>
 
-    <!-- Links para o login e a Home. -->
-    <div class="links">
+        <div class="links">
       <a routerLink="/login" [queryParams]="returnUrl ? { returnUrl: returnUrl } : {}">Já tenho conta</a>
       <span class="dot">•</span>
       <a routerLink="/">Voltar</a>

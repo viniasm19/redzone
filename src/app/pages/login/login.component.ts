@@ -4,8 +4,6 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
-// @Component: transforma a classe numa TELA do Angular.
-// selector: o nome da tag (<app-login>); templateUrl: o HTML; styleUrl: o SCSS.
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -13,29 +11,24 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
+// Tela de login.
 export class LoginComponent {
-  email = '';   // o que a pessoa digita no campo e-mail ([(ngModel)] mantém os dois sempre iguais)
-  senha = '';   // o que a pessoa digita no campo senha
-  erro = '';    // mensagem de erro que vem do login (ex.: "Email ou senha inválidos.")
+  email = '';
+  senha = '';
+  erro = '';
 
-  // O Angular entrega estes objetos prontos (injeção de dependência):
-  // auth = login; router = trocar de tela.
   constructor(
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
-  // Validação do e-mail digitado: texto@dominio.ext, sem espaços.
   private static readonly EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  // Padroniza o e-mail digitado: "  Lucas@Email.com " vira "lucas@email.com".
-  // (fica aqui, na tela onde o usuário digita.
   private normalizarEmail(email: string): string {
     return email.trim().toLowerCase();
   }
 
-  // Mensagem de erro do campo e-mail ('' = e-mail válido).
   get erroEmail(): string {
     const email = this.normalizarEmail(this.email);
     if (!email) {
@@ -44,36 +37,28 @@ export class LoginComponent {
     return LoginComponent.EMAIL_VALIDO.test(email) ? '' : 'Digite um email válido.';
   }
 
-  // Para onde voltar depois do login (ex.: o checkout).
-  // bloqueia links externos como "//site-falso.com" (redirecionamento malicioso).
   get returnUrl(): string | null {
     const url = this.route.snapshot.queryParamMap.get('returnUrl');
     return url && url.startsWith('/') && !url.startsWith('//') ? url : null;
   }
 
-  // Botão "Entrar" (ngSubmit do formulário). Recebe: o formulário.
+  // Faz o login e volta para onde estava.
   async entrar(form: NgForm) {
-    // 1) apaga o erro da tentativa anterior
     this.erro = '';
 
-    // 2) campos inválidos: não chama a API (os avisos aparecem embaixo de cada campo)
     if (form.invalid || this.erroEmail) {
       return;
     }
 
-    // 3) padroniza o e-mail ("  Lucas@Email.com " -> "lucas@email.com")
     this.email = this.normalizarEmail(this.email);
 
     try {
-      // 4) pede o login ao AuthService (que chama POST /login)
       await this.auth.login({
         email: this.email,
         senha: this.senha
       });
-      // 5) deu certo: volta para a página que pediu o login (ex..
       this.router.navigateByUrl(this.returnUrl ?? '/');
     } catch (e: any) {
-      // 6) deu errado: mostra a mensagem do AuthService (ou uma genérica)
       this.erro = e?.message ?? 'Falha ao entrar.';
     }
   }

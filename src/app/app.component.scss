@@ -1,4 +1,3 @@
-// Aviso rápido (toast) do carrinho: pílula escura com borda ciano.
 .toast {
   position: fixed;
   bottom: var(--space-5);
@@ -16,8 +15,6 @@
   z-index: 9999;
 }
 
-// :host = a própria tag <app-root>.
-// e a página (main) estica para ocupar o que sobrar: assim, numa página curta.
 :host {
   display: flex;
   flex-direction: column;

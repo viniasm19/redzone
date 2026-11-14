@@ -1,9 +1,9 @@
-<!-- Tela de login. Usa do TypeScript: email, senha, erro, erroEmail. -->
 <div class="page">
   <div class="coluna-estreita card auth-card">
     <h2 class="page-title">Login</h2>
     <p class="page-subtitle">Acesse para finalizar sua compra.</p>
 
+    <!-- Formulário de login. -->
     <form #f="ngForm" (ngSubmit)="entrar(f)" novalidate>
       <label>
         Email
@@ -27,8 +27,8 @@
       <button type="submit" class="btn">Entrar</button>
     </form>
 
-    <!-- Os links levam o returnUrl junto. -->
-    <div class="links">
+        <!-- Links: criar conta, esqueci a senha, voltar. -->
+        <div class="links">
       <a routerLink="/cadastro" [queryParams]="returnUrl ? { returnUrl: returnUrl } : {}">Criar conta</a>
       <span class="dot">•</span>
       <a routerLink="/forgot-password" [queryParams]="returnUrl ? { returnUrl: returnUrl } : {}">Esqueceu a senha?</a>

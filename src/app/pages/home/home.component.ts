@@ -10,18 +10,17 @@ import { ProductListComponent } from '../../components/product-list/product-list
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-// Tela inicial ('/'). Mostra a apresentação.
-// O HTML espera daqui: categorias (os botões).
+// Tela inicial: banner, categorias e produtos.
 export class HomeComponent {
-  categorias = ['Todos', 'Áudio', 'Móveis', 'Hardware', 'Acessórios']; // botões da barra lateral
-  categoriaSelecionada = 'Todos';                                        // a categoria escolhida agora
+  categorias = ['Todos', 'Áudio', 'Móveis', 'Hardware', 'Acessórios'];
+  categoriaSelecionada = 'Todos';
 
-  // Clique numa categoria: guarda a escolha.
+  // Escolhe a categoria do filtro.
   selecionarCategoria(c: string) {
     this.categoriaSelecionada = c;
   }
 
-  // Botão "Ver Produtos" do topo.
+  // Rola até a vitrine.
   irParaProdutos() {
     document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' });
   }

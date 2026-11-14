@@ -2,8 +2,6 @@
   display: block;
 }
 
-// Card do produto: escuro, cantos arredondados. No hover ele "sobe" um pouco.
-// e uma borda vermelha suave (o "brilho" da marca).
 .product-card {
   height: 100%;
   display: flex;
@@ -20,17 +18,15 @@
     box-shadow: var(--shadow-md), 0 0 0 1px rgba(255, 46, 67, 0.35);
     border-color: transparent;
 
-    img { transform: scale(1.04); } // zoom suave na foto
+    img { transform: scale(1.04); }
   }
 
-  // Esgotado: a foto fica mais clara
   &.esgotado img { opacity: 0.45; }
 }
 
-// ---------- Foto ----------
 .foto {
   position: relative;
-  aspect-ratio: 4 / 3; // todas as fotos com o mesmo formato, mesmo que as imagens sejam diferentes
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--color-surface-2);
 
@@ -43,7 +39,6 @@
   }
 }
 
-// Selo de promoção: pílula vermelha no canto da foto
 .selo-promocao {
   position: absolute;
   top: var(--space-3);
@@ -57,7 +52,6 @@
   box-shadow: var(--shadow-sm);
 }
 
-// ---------- Textos ----------
 .info {
   flex: 1;
   display: flex;
@@ -106,7 +100,6 @@ h3 {
   font-size: var(--font-size-sm);
 }
 
-// Etiqueta de estoque: texto pequeno
 .estoque {
   margin: var(--space-1) 0 var(--space-4) !important;
   font-size: var(--font-size-sm);
@@ -115,8 +108,6 @@ h3 {
 .estoque-baixo { color: var(--color-warning); }
 .estoque-zero { color: var(--color-text-muted); }
 
-// ---------- Botão ----------
-// Fica no pé do card (margin-top: auto).
 .btn-comprar {
   margin-top: auto;
   width: 100%;
@@ -144,7 +135,6 @@ h3 {
   }
 }
 
-// No celular (2 cards por linha) os textos diminuem um pouco
 @media (max-width: 520px) {
   .info { padding: var(--space-3); }
   h3 { font-size: 14px; }
@@ -152,6 +142,6 @@ h3 {
   .btn-comprar {
     padding: 0 var(--space-1);
     font-size: 12px;
-    white-space: nowrap; // o texto cabe numa linha só, sem quebrar
+    white-space: nowrap;
   }
 }

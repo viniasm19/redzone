@@ -8,8 +8,6 @@ import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 
-// Formulário de produto (o mesmo para cadastrar e editar). Não tem id.
-// O estoque só é usado no CADASTRO (estoque inicial). Na edição.
 const FORM_VAZIO: Omit<Produto, 'id'> = {
   nome: '', preco: 0, imagem: '', categoria: '', estoque: 0,
   marca: null, garantia: null, especificacoes: null, precoPromocional: null
@@ -22,39 +20,34 @@ const FORM_VAZIO: Omit<Produto, 'id'> = {
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-// Vitrine de produtos + formulário do administrador.
-// O HTML espera daqui: produtos (os cards), isAdmin() (mostrar botões de admin).
+// Vitrine e formulário de produto (admin).
 export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
   private auth = inject(AuthService);
 
-  todos: Produto[] = [];    // tudo que veio da API
-  produtos: Produto[] = []; // o que aparece na tela (filtrado pela categoria)
+  todos: Produto[] = [];
+  produtos: Produto[] = [];
   categoria = 'Todos';
   categorias = ['Áudio', 'Móveis', 'Hardware', 'Acessórios'];
 
   novoProduto: Omit<Produto, 'id'> = { ...FORM_VAZIO };
-  editandoId: number | null = null; // null = cadastrando; número = editando esse produto
+  editandoId: number | null = null;
   erro = '';
 
-  // A Home manda a categoria escolhida na barra lateral
   @Input() set categoriaSelecionada(cat: string) {
     this.categoria = cat || 'Todos';
     this.filtrar();
   }
 
-  // Roda quando a vitrine aparece: busca os produtos na API
   ngOnInit() {
     this.loadProdutos();
   }
 
-  // Só o administrador vê os botões de editar, excluir e o formulário
   isAdmin() {
     return this.auth.isAdmin();
   }
 
-  // GET /produtos e, quando a resposta chegar (subscribe).
   loadProdutos() {
     this.productService.getProdutos().subscribe(dados => {
       this.todos = dados;
@@ -62,24 +55,20 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  // "Todos": mostra a lista inteira; senão, só os produtos da categoria escolhida
   private filtrar() {
     this.produtos =
       this.categoria === 'Todos' ? this.todos : this.todos.filter(p => p.categoria === this.categoria);
   }
 
-  // Ajuda o *ngFor a reaproveitar os cards (pelo id) em vez de redesenhar todos.
   trackById(_: number, item: Produto) {
     return item.id;
   }
 
-  // Botão do formulário: editando -> PUT (atualiza); senão -> POST (cria)
+  // Cadastra ou edita produto (admin).
   addProduto() {
-    // 1) apaga o erro anterior; "p" é só um apelido curto para o formulário
     this.erro = '';
     const p = this.novoProduto;
 
-    // 2) confere os campos obrigatórios (a API confere de novo.
     if (!p.nome.trim() || !(p.preco > 0) || !p.categoria) {
       this.erro = 'Preencha nome, preço (maior que zero) e categoria.';
       return;
@@ -90,7 +79,6 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    // Campo de número vazio chega como null (ou ''), e isso significa "sem promoção"
     const promocional = p.precoPromocional === null || p.precoPromocional === undefined || String(p.precoPromocional) === ''
       ? null
       : Number(p.precoPromocional);
@@ -100,7 +88,6 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    // Texto só com espaços vira null.
     const dados: Omit<Produto, 'id'> = {
       ...p,
       marca: this.textoOuNull(p.marca),
@@ -109,52 +96,44 @@ export class ProductListComponent implements OnInit {
       precoPromocional: promocional
     };
 
-    // 3) escolhe a chamada: PUT se está editando, POST se é um produto novo
     const requisicao = this.editandoId
       ? this.productService.updateProduto({ ...dados, id: this.editandoId })
       : this.productService.addProduto(dados);
 
-    // 4) envia; quando der certo (next), recarrega a lista e limpa o formulário.
     requisicao.subscribe({
       next: () => {
-        this.loadProdutos(); // recarrega a lista com o que ficou salvo no banco
+        this.loadProdutos();
         this.resetForm();
       },
       error: () => (this.erro = 'Não foi possível salvar o produto. Confira os dados e tente de novo.')
     });
   }
 
-  // Recebe: um texto (ou nada). Devolve: o texto sem espaços nas pontas.
   private textoOuNull(texto?: string | null): string | null {
     const limpo = (texto ?? '').trim();
     return limpo ? limpo : null;
   }
 
-  // Botão "Excluir" (admin): DELETE /produtos/{id} e recarrega a lista
   deleteProduto(id: number) {
     this.erro = '';
     this.productService.deleteProduto(id).subscribe({
       next: () => this.loadProdutos(),
-      // 409 = produto que já está em algum pedido não pode ser excluído
       error: () => (this.erro = 'Não foi possível excluir: o produto já faz parte de algum pedido.')
     });
   }
 
-  // Botão "Editar" (admin): copia o produto para o formulário
   editarProduto(produto: Produto) {
-    const { id, ...dados } = produto; // separa o id do resto dos campos
+    const { id, ...dados } = produto;
     this.novoProduto = dados;
     this.editandoId = id;
   }
 
-  // Limpa o formulário e sai do modo de edição
   resetForm() {
     this.novoProduto = { ...FORM_VAZIO };
     this.editandoId = null;
     this.erro = '';
   }
 
-  // O card avisou (evento addToCart) que o botão "Adicionar" foi clicado.
   adicionarAoCarrinho(produto: Produto) {
     this.cartService.adicionarAoCarrinho(produto);
   }

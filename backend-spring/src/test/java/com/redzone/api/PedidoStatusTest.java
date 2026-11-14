@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// Testes do status do pedido. Banco em memória próprio e recriado a cada teste.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = {
@@ -33,11 +32,9 @@ class PedidoStatusTest {
     @Autowired
     ProdutoRepository produtoRepository;
 
-    // Acesso direto ao banco.
     @Autowired
     JdbcTemplate jdbc;
 
-    // Pega o id do Headset para usar nos pedidos de teste.
     private Long headsetId() {
         return produtoRepository.findAll().stream()
                 .filter(p -> p.getNome().equals("Headset Gamer"))
@@ -46,7 +43,6 @@ class PedidoStatusTest {
                 .orElseThrow();
     }
 
-    // Cria um pedido pela API e devolve o id dele.
     private Long criarPedido(Long usuarioId) throws Exception {
         String resposta = mvc.perform(post("/pedidos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -59,7 +55,6 @@ class PedidoStatusTest {
     }
 
     @Test
-    // Pedido novo começa como AGUARDANDO_PAGAMENTO.
     void pedidoNovoNasceAguardandoPagamento() throws Exception {
         mvc.perform(post("/pedidos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,7 +64,6 @@ class PedidoStatusTest {
     }
 
     @Test
-    // A lista do usuário traz o status.
     void listaDePedidosDoUsuarioDevolveOStatus() throws Exception {
         criarPedido(2L);
 
@@ -81,10 +75,9 @@ class PedidoStatusTest {
     }
 
     @Test
-    // Pedido sem status antigo aparece como APROVADO.
     void pedidoAntigoSemStatusApareceComoAprovado() throws Exception {
         Long id = criarPedido(2L);
-        jdbc.update("UPDATE pedidos SET status = NULL WHERE id = ?", id); // como um pedido de antes da mudança
+        jdbc.update("UPDATE pedidos SET status = NULL WHERE id = ?", id);
 
         mvc.perform(get("/pedidos/" + id))
                 .andExpect(status().isOk())
