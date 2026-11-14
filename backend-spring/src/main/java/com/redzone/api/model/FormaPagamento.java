@@ -1,6 +1,6 @@
 package com.redzone.api.model;
 
-// Como o cliente pagou. Gravado no banco pelo nome (EnumType.STRING).
+// Formas de pagamento aceitas.
 public enum FormaPagamento {
     CARTAO,
     PIX

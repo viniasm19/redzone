@@ -1,16 +1,15 @@
-<!-- Checkout em 3 passos. -->
 <div class="page">
   <div class="coluna-media card confirm-card">
 
-    <!-- Indicador dos passos -->
-    <ol class="passos">
+        <!-- Os 3 passos do checkout. -->
+        <ol class="passos">
       <li [class.ativo]="etapa === 'revisao'" [class.feito]="etapa !== 'revisao'">1. Revisão</li>
       <li [class.ativo]="etapa === 'pagamento'" [class.feito]="etapa === 'aprovado'">2. Pagamento</li>
       <li [class.ativo]="etapa === 'aprovado'">3. Confirmação</li>
     </ol>
 
-    <!-- ========== PASSO 1: REVISÃO ========== -->
-    <ng-container *ngIf="etapa === 'revisao'">
+        <!-- Passo 1: revisão do pedido. -->
+        <ng-container *ngIf="etapa === 'revisao'">
       <h2 class="page-title">Resumo do Pedido</h2>
 
       <div class="confirm-items">
@@ -35,8 +34,8 @@
       </div>
     </ng-container>
 
-    <!-- ========== PASSO 2: PAGAMENTO ========== -->
-    <ng-container *ngIf="etapa === 'pagamento' && pedido">
+        <!-- Passo 2: escolha e envio do pagamento. -->
+        <ng-container *ngIf="etapa === 'pagamento' && pedido">
       <h2 class="page-title">Pagamento</h2>
 
       <p class="aviso-mock">
@@ -59,8 +58,8 @@
         </label>
       </fieldset>
 
-      <!-- Cartão: só validação de formato. Estes campos NÃO são enviados para a API. -->
-      <div class="cartao" *ngIf="formaPagamento === 'CARTAO'">
+            <!-- Campos do cartão (só validação de formato). -->
+            <div class="cartao" *ngIf="formaPagamento === 'CARTAO'">
         <label>
           Número do cartão
           <input class="campo" name="numero" inputmode="numeric" autocomplete="off" maxlength="23"
@@ -85,8 +84,8 @@
         </div>
       </div>
 
-      <!-- Pix: código e QR code FICTÍCIOS -->
-      <div class="pix" *ngIf="formaPagamento === 'PIX'">
+            <!-- QR code e código Pix fictícios. -->
+            <div class="pix" *ngIf="formaPagamento === 'PIX'">
         <img src="/img/pix-qrcode-ficticio.svg" alt="QR code fictício do Pix" width="200" height="228" />
         <div class="pix-codigo">
           <span>Pix copia e cola (fictício)</span>
@@ -106,8 +105,8 @@
       </div>
     </ng-container>
 
-    <!-- ========== PASSO 3: APROVADO ========== -->
-    <div class="aprovado" *ngIf="etapa === 'aprovado'">
+        <!-- Passo 3: pagamento aprovado. -->
+        <div class="aprovado" *ngIf="etapa === 'aprovado'">
       <div class="aprovado-icone">✓</div>
       <h2 class="page-title">Pagamento aprovado</h2>
       <p>Redirecionando...</p>

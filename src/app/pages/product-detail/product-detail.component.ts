@@ -13,13 +13,12 @@ import { ESTOQUE_MINIMO } from '../../services/stock.service';
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
-// Tela de detalhe de um produto (/product/:id). Mostra imagem, nome, descrição.
-// O HTML espera daqui: produto (null enquanto carrega.
+// Tela de um produto.
 export class ProductDetailComponent implements OnInit {
 
-  produto: Produto | null = null; // o produto da tela (null = ainda não chegou ou não existe)
-  estoqueMinimo = ESTOQUE_MINIMO; // até quantas unidades mostrar "Corra! Só restam X"
-  emPromocao = emPromocao;        // função do model, exposta para o HTML
+  produto: Produto | null = null;
+  estoqueMinimo = ESTOQUE_MINIMO;
+  emPromocao = emPromocao;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,31 +27,25 @@ export class ProductDetailComponent implements OnInit {
     private router: Router
   ) {}
 
-  // Roda quando a tela abre
   ngOnInit() {
-    // 1) lê o :id do endereço (/product/7 -> "7") e transforma em número
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    // 2) busca o produto na API e guarda quando chegar
-    // GET /produtos/{id}: se o produto não existir (404), a tela fica vazia.
     this.productService.getProduto(id).subscribe({
       next: produto => (this.produto = produto),
       error: () => (this.produto = null)
     });
   }
 
-  // Botão "Adicionar ao Carrinho"
+  // Põe no carrinho e vai para ele.
   adicionarAoCarrinho() {
-    // Só vai para o carrinho se ainda havia unidade para colocar.
     if (this.produto && this.cartService.podeAdicionar(this.produto)) {
       this.cartService.adicionarAoCarrinho(this.produto);
       this.router.navigate(['/cart']);
     } else if (this.produto) {
-      this.cartService.adicionarAoCarrinho(this.produto); // mostra o aviso de estoque
+      this.cartService.adicionarAoCarrinho(this.produto);
     }
   }
 
-  // Botão "← Voltar"
   voltar() {
-    this.router.navigate(['/']); // os produtos ficam na tela inicial
+    this.router.navigate(['/']);
   }
 }

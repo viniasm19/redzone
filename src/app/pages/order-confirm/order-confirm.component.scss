@@ -1,4 +1,3 @@
-// Largura (.coluna-media).
 .confirm-card {
   display: flex;
   flex-direction: column;
@@ -10,8 +9,6 @@
   .page-title { margin: 0; }
 }
 
-// ---------- Passos ----------
-// Só texto: o passo atual em negrito e sublinhado pela cor de destaque
 .passos {
   list-style: none;
   margin: 0;
@@ -38,7 +35,6 @@
   }
 }
 
-// ---------- Revisão ----------
 .confirm-items {
   display: flex;
   flex-direction: column;
@@ -89,7 +85,6 @@
   color: var(--color-danger);
 }
 
-// ---------- Pagamento ----------
 .aviso-mock {
   margin: 0;
   padding: var(--space-3) var(--space-4);
@@ -130,14 +125,12 @@
 
   &:hover { border-color: var(--color-text-muted); }
 
-  // opção escolhida: borda vermelha e fundo clarinho
   &.selecionada {
     border-color: var(--color-primary);
     background: var(--color-primary-soft);
     box-shadow: 0 0 0 1px var(--color-primary);
   }
 
-  // a bolinha do rádio na cor da marca
   input { accent-color: var(--color-primary); }
 }
 
@@ -155,7 +148,6 @@
     font-weight: 500;
   }
 
-  // os campos usam a classe global .campo (styles.scss)
 }
 
 .cartao-linha {
@@ -179,7 +171,7 @@
     padding: var(--space-2);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    background: #ffffff; // o QR code precisa de fundo branco para ser lido
+    background: #ffffff;
   }
 }
 
@@ -206,7 +198,6 @@
 
 .btn-copiar { align-self: flex-start; }
 
-// ---------- Aprovado ----------
 .aprovado {
   display: flex;
   flex-direction: column;

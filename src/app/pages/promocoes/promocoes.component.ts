@@ -5,8 +5,6 @@ import { Produto } from '../../models/produto.model';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 
-// Página de promoções (rota /promocoes).
-// Não existe rota nova no back: é o mesmo GET /produtos.
 @Component({
   selector: 'app-promocoes',
   standalone: true,
@@ -14,16 +12,15 @@ import { CartService } from '../../services/cart.service';
   templateUrl: './promocoes.component.html',
   styleUrl: './promocoes.component.scss'
 })
+// Página de promoções.
 export class PromocoesComponent implements OnInit {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
 
-  // O HTML espera daqui: produtos.
-  produtos: Produto[] = [];  // produtos em promoção
-  carregando = true;         // true até a resposta da API chegar
-  erro = '';                 // aviso se a API falhar
+  produtos: Produto[] = [];
+  carregando = true;
+  erro = '';
 
-  // Roda quando a tela abre: GET /produtos?promocao=true
   ngOnInit() {
     this.productService.getPromocoes().subscribe({
       next: dados => {
@@ -37,7 +34,6 @@ export class PromocoesComponent implements OnInit {
     });
   }
 
-  // O card avisou que o botão "Adicionar" foi clicado
   adicionarAoCarrinho(produto: Produto) {
     this.cartService.adicionarAoCarrinho(produto);
   }

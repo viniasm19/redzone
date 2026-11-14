@@ -1,6 +1,4 @@
-// Largura, respiro e título: classes globais .page e .page-title
 
-// Carrinho vazio: um card centralizado com o convite para comprar
 .carrinho-vazio {
   padding: var(--space-7) var(--space-5);
   border: 1px dashed var(--color-border-strong);
@@ -20,7 +18,6 @@
   align-items: start;
 }
 
-// Lista de itens dentro de um card branco, com linhas separadas
 .cart-items-list {
   display: flex;
   flex-direction: column;
@@ -69,7 +66,6 @@
     s { margin-right: var(--space-1); }
   }
 
-  // Seletor de quantidade: os botões − e + juntos numa "pílula"
   .item-qtd {
     display: flex;
     align-items: center;
@@ -99,7 +95,6 @@
 
     &:hover:not(:disabled) { background: var(--color-surface-2); }
 
-    // chegou no limite do estoque
     &:disabled {
       color: var(--color-border-strong);
       cursor: not-allowed;
@@ -129,7 +124,6 @@
   }
 }
 
-// Resumo do pedido: card que "gruda" no topo ao rolar a página (sticky)
 .cart-summary {
   position: sticky;
   top: calc(var(--header-height) + var(--space-4));
@@ -169,7 +163,6 @@
 
 .btn-finalizar { min-height: 50px; }
 
-// Aviso "máximo disponível" quando o item chegou no limite do estoque
 .disponivel {
   color: var(--color-warning) !important;
 }
@@ -179,7 +172,6 @@
   .cart-summary { position: static; }
 }
 
-// No celular, a linha do item quebra: foto + nome em cima.
 @media (max-width: 600px) {
   .cart-items-list { padding: 0 var(--space-4); }
 

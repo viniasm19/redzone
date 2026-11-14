@@ -1,10 +1,7 @@
-// ---------- Banner do topo ----------
 .hero-wrap {
-  padding-bottom: 0; // o espaço até a vitrine fica por conta da seção de baixo
+  padding-bottom: 0;
 }
 
-// Cartão do banner: um tom acima do fundo preto, com dois brilhos suaves:
-// vermelho no canto de cima (a marca) e ciano no canto de baixo.
 .hero {
   position: relative;
   overflow: hidden;
@@ -28,7 +25,6 @@
   z-index: 1;
 }
 
-// Etiqueta pequena acima do título, em forma de pílula.
 .hero-etiqueta {
   display: inline-flex;
   align-items: center;
@@ -76,7 +72,6 @@
   flex-wrap: wrap;
 }
 
-// Botão "fantasma" sobre o fundo escuro
 .btn-hero-secundario {
   display: inline-flex;
   align-items: center;
@@ -100,15 +95,13 @@
   object-fit: cover;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  transform: rotate(-3deg); // inclinadinha, para dar movimento
+  transform: rotate(-3deg);
 }
 
-// ---------- Vitrine ----------
 .layout {
   padding-top: var(--space-6);
 }
 
-// Título "Produtos" à esquerda e as pílulas de categoria à direita
 .vitrine-topo {
   display: flex;
   align-items: center;
@@ -143,7 +136,6 @@
   &:hover { border-color: var(--color-text-muted); color: var(--color-text-strong); }
 }
 
-// Categoria escolhida: pílula com o ciano (a cor complementar)
 .cat-btn.active {
   background: var(--color-accent-soft);
   border-color: var(--color-accent);
@@ -151,10 +143,9 @@
 }
 
 .content {
-  min-width: 0; // deixa a grade de produtos encolher sem estourar a largura
+  min-width: 0;
 }
 
-// ---------- Telas menores ----------
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -162,7 +153,7 @@
     min-height: 0;
   }
 
-  .hero-imagem { display: none; } // no celular a foto ocuparia espaço demais
+  .hero-imagem { display: none; }
 
   .hero h1 { font-size: 44px; }
 }
@@ -175,7 +166,6 @@
 
   .hero h1 { font-size: 38px; }
 
-  // Pílulas em uma linha só, que rola para o lado com o dedo
   .cat-list {
     flex-wrap: nowrap;
     overflow-x: auto;

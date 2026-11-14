@@ -5,7 +5,7 @@ import com.redzone.api.model.TipoMovimentacao;
 
 import java.time.LocalDateTime;
 
-// O que a API DEVOLVE de cada movimentação.
+// Movimentação que volta para o front.
 public record MovimentacaoResponse(
         Long id,
         Long produtoId,
@@ -16,7 +16,6 @@ public record MovimentacaoResponse(
         LocalDateTime data,
         String observacao
 ) {
-    // Recebe: a movimentação do banco. Devolve.
     public static MovimentacaoResponse de(MovimentacaoEstoque m) {
         return new MovimentacaoResponse(
                 m.getId(),

@@ -17,45 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.Optional;
 
-// Pagamento FICTÍCIO (mock) em /pagamentos: não fala com banco.
-// Ele sempre aprova e só muda o pedido de AGUARDANDO_PAGAMENTO para APROVADO.
+// Pagamento fictício: POST /pagamentos.
 @RestController
 @RequestMapping("/pagamentos")
 public class PagamentoController {
 
     private final PedidoRepository pedidoRepository;
 
-    // Injeção de dependência: o Spring entrega o repository de pedidos pronto.
     public PagamentoController(PedidoRepository pedidoRepository) {
         this.pedidoRepository = pedidoRepository;
     }
 
-    // POST /pagamentos -> 200 com o pedido atualizado
-    // 400 (faltou pedidoId ou formaPagamento, ou forma inválida)
     @PostMapping
     @Transactional
-    // Recebe: o PagamentoRequest (pedidoId + formaPagamento), já validado pelo @Valid.
-    // Devolve: o pedido atualizado (status APROVADO e a forma de pagamento).
+    // Aprova o pedido (sempre aprova) e guarda a forma.
     public ResponseEntity<?> pagar(@Valid @RequestBody PagamentoRequest request) {
-        // 1) procura o pedido; se não existe, 404
         Optional<Pedido> encontrado = pedidoRepository.findById(request.pedidoId());
         if (encontrado.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensagem", "Pedido não encontrado."));
         }
 
-        // 2) só paga quem está esperando pagamento.
         Pedido pedido = encontrado.get();
         if (pedido.getStatus() != StatusPedido.AGUARDANDO_PAGAMENTO) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("mensagem", "Este pedido já foi pago."));
         }
 
-        // 3) Mock: aprova sempre. Num sistema real.
         pedido.setFormaPagamento(request.formaPagamento());
         pedido.setStatus(StatusPedido.APROVADO);
 
-        // 4) salva e responde 200 com o pedido convertido em DTO.
-        // @Transactional: tudo aqui é uma operação só no banco.
         return ResponseEntity.ok(PedidoResponse.de(pedidoRepository.save(pedido)));
     }
 }

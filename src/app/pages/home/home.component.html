@@ -1,6 +1,4 @@
-<!-- Como ler este HTML (vale para todas as telas): -->
-<!-- Tela inicial: apresentação, barra de categorias e a vitrine de produtos. -->
-<!-- Banner do topo: um cartão escuro com o nome da loja, uma frase e os dois botões -->
+<!-- Banner do topo. -->
 <section class="page hero-wrap">
   <div class="hero">
     <div class="hero-content">
@@ -9,8 +7,7 @@
 
       <p>Domine o jogo com equipamentos que combinam performance e estilo.</p>
       <div class="hero-actions">
-        <!-- Os produtos estão logo abaixo, nesta mesma tela: o botão só rola até eles -->
-        <button type="button" class="btn-principal" (click)="irParaProdutos()">
+                <button type="button" class="btn-principal" (click)="irParaProdutos()">
           Ver Produtos
         </button>
         <a routerLink="/cart" class="btn-hero-secundario">
@@ -19,19 +16,18 @@
       </div>
     </div>
 
-    <!-- Foto decorativa (alt vazio: o leitor de tela pula. -->
-    <img class="hero-imagem" src="/img/produtos/headset.jpg" alt="" />
+        <img class="hero-imagem" src="/img/produtos/headset.jpg" alt="" />
   </div>
 </section>
 
-<!-- Vitrine: as categorias viram "pílulas" logo acima dos produtos -->
+<!-- Vitrine: categorias e produtos. -->
 <section class="page layout" id="produtos">
   <div class="vitrine-topo">
     <h2 class="page-title">Produtos</h2>
+    <!-- Botões de categoria. -->
     <ul class="cat-list" aria-label="Categorias">
       <li *ngFor="let c of categorias">
-        <!-- [class.active]: a pílula da categoria escolhida fica escura -->
-        <button type="button" class="cat-btn" [class.active]="c === categoriaSelecionada"
+                <button type="button" class="cat-btn" [class.active]="c === categoriaSelecionada"
           (click)="selecionarCategoria(c)">
           {{ c }}
         </button>
@@ -40,7 +36,7 @@
   </div>
 
   <div class="content">
-    <!-- A vitrine recebe a categoria escolhida e filtra os produtos sozinha -->
-    <app-product-list [categoriaSelecionada]="categoriaSelecionada"></app-product-list>
+        <!-- Lista de produtos (filtrada pela categoria). -->
+        <app-product-list [categoriaSelecionada]="categoriaSelecionada"></app-product-list>
   </div>
 </section>

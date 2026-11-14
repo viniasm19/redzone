@@ -1,12 +1,8 @@
-<!-- Administração de usuários (/usuarios, só o admin). Usa do TypeScript: usuarios. -->
-<!-- Container da administração de usuários. -->
 <div class="page usuarios-container">
 
-  <!-- Título da tela. -->
-  <h1 class="page-title">Usuários</h1>
+    <h1 class="page-title">Usuários</h1>
 
-  <!-- Erro da lista (quando não está editando). -->
-  <p class="erro" *ngIf="erro && !usuarioEditando">{{ erro }}</p>
+    <p class="erro" *ngIf="erro && !usuarioEditando">{{ erro }}</p>
 
   <div
     class="usuario-card"
@@ -39,7 +35,6 @@
 
 </div>
 
-<!-- FORM EDITAR -->
 
 <div
   class="page coluna-estreita editar-box"

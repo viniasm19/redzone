@@ -1,7 +1,6 @@
 package com.redzone.api.service;
 
-// Exceção "nossa": é lançada quando alguém tenta tirar do estoque mais do que.
-// Estende RuntimeException para que o @Transactional desfaça tudo (rollback).
+// Erro quando falta estoque (vira 409).
 public class EstoqueInsuficienteException extends RuntimeException {
 
     public EstoqueInsuficienteException(String mensagem) {

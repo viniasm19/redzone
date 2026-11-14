@@ -18,8 +18,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// Testes dos detalhes do produto (marca, garantia.
-// Banco em memória próprio e recriado a cada teste, como no EstoqueTest.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = {
@@ -36,7 +34,6 @@ class ProdutoTest {
     @Autowired
     ProdutoRepository produtoRepository;
 
-    // Busca um produto pelo nome no banco de teste.
     private Produto produto(String nome) {
         return produtoRepository.findAll().stream()
                 .filter(p -> p.getNome().equals(nome))
@@ -44,12 +41,10 @@ class ProdutoTest {
                 .orElseThrow();
     }
 
-    // ---------- Etapa 1: produtos mais detalhados ----------
 
     @Test
-    // Produto com detalhes devolve marca, garantia e especificações.
     void produtoComDetalhesDevolveOsCamposNovos() throws Exception {
-        Produto placa = produto("Placa de Vídeo RTX 4060 8GB"); // data.sql: tem marca, garantia e especificações
+        Produto placa = produto("Placa de Vídeo RTX 4060 8GB");
 
         mvc.perform(get("/produtos/" + placa.getId()))
                 .andExpect(status().isOk())
@@ -59,9 +54,8 @@ class ProdutoTest {
     }
 
     @Test
-    // Produto sem detalhes continua funcionando.
     void produtoSemDetalhesContinuaFuncionando() throws Exception {
-        Produto headset = produto("Headset Gamer"); // data.sql: sem nenhum campo novo
+        Produto headset = produto("Headset Gamer");
 
         mvc.perform(get("/produtos/" + headset.getId()))
                 .andExpect(status().isOk())
@@ -73,7 +67,6 @@ class ProdutoTest {
     }
 
     @Test
-    // Cadastro aceita os campos novos.
     void cadastroAceitaOsCamposNovos() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -85,12 +78,10 @@ class ProdutoTest {
                 .andExpect(jsonPath("$.garantia").value("6 meses"))
                 .andExpect(jsonPath("$.especificacoes").value("Resolução: 1080p"))
                 .andExpect(jsonPath("$.precoPromocional").value(149.9))
-                // o método de validação (@AssertTrue) não pode vazar como campo no JSON
                 .andExpect(jsonPath("$.precoPromocionalValido").doesNotExist());
     }
 
     @Test
-    // Cadastro sem os campos novos também funciona.
     void cadastroSemOsCamposNovosContinuaFuncionando() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -101,7 +92,6 @@ class ProdutoTest {
     }
 
     @Test
-    // Preço promocional zero ou negativo dá 400.
     void precoPromocionalZeroOuNegativoResponde400() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,7 +101,6 @@ class ProdutoTest {
     }
 
     @Test
-    // Promoção mais cara que o preço normal dá 400.
     void precoPromocionalMaiorQueOPrecoResponde400() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -119,24 +108,20 @@ class ProdutoTest {
                 .andExpect(status().isBadRequest());
     }
 
-    // ---------- Etapa 2: promoções ----------
 
     @Test
-    // O filtro de promoção traz só produtos em promoção.
     void filtroDePromocaoDevolveSoProdutosComPrecoPromocional() throws Exception {
         long emPromocao = produtoRepository.findAll().stream().filter(p -> p.getPrecoPromocional() != null).count();
 
         mvc.perform(get("/produtos").param("promocao", "true"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value((int) emPromocao))
-                // todos os itens da resposta têm precoPromocional
                 .andExpect(jsonPath("$[?(@.precoPromocional == null)]").isEmpty())
                 .andExpect(jsonPath("$[*].nome", hasItem("Microfone Condensador USB")))
                 .andExpect(jsonPath("$[*].nome", not(hasItem("Headset Gamer"))));
     }
 
     @Test
-    // Sem o filtro, a lista vem completa.
     void semOFiltroAListaContinuaCompleta() throws Exception {
         int total = (int) produtoRepository.count();
 
@@ -150,11 +135,9 @@ class ProdutoTest {
     }
 
     @Test
-    // Pedido de produto em promoção cobra o preço promocional.
     void pedidoDeProdutoEmPromocaoCobraOPrecoPromocionalDoBanco() throws Exception {
-        Produto microfone = produto("Microfone Condensador USB"); // preço 259.9, promocional 219.9
+        Produto microfone = produto("Microfone Condensador USB");
 
-        // o front tenta mandar um preço falso: deve ser ignorado
         mvc.perform(post("/pedidos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"usuarioId\": 2, \"itens\": [{\"produtoId\": " + microfone.getId()

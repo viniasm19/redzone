@@ -1,2 +1,2 @@
-// URL do back-end. Fica num lugar só: para trocar de servidor, mude aqui.
+// Endereço da API. Troque aqui se mudar a porta.
 export const API_URL = 'http://localhost:8080';

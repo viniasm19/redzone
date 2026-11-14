@@ -15,12 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// Testes do sistema de estoque. Sobe a API de verdade, mas com um banco EM MEMÓRIA
-// (some quando o teste acaba), para não mexer no banco em arquivo (pasta data/).
 @SpringBootTest
 @AutoConfigureMockMvc
-// create-drop: as tabelas são recriadas (e o data.sql recarregado) a cada teste.
-// enxerga o que o outro alterou.
 @TestPropertySource(properties = {
         "spring.datasource.url=jdbc:h2:mem:teste",
         "spring.jpa.hibernate.ddl-auto=create-drop",
@@ -35,7 +31,6 @@ class EstoqueTest {
     @Autowired
     ProdutoRepository produtoRepository;
 
-    // Busca um produto pelo nome no banco de teste.
     private Produto produto(String nome) {
         return produtoRepository.findAll().stream()
                 .filter(p -> p.getNome().equals(nome))
@@ -44,9 +39,8 @@ class EstoqueTest {
     }
 
     @Test
-    // Entrada e saída mudam o estoque e geram histórico.
     void entradaESaidaAlteramOEstoqueEGravamHistorico() throws Exception {
-        Produto headset = produto("Headset Gamer"); // data.sql: 15 unidades
+        Produto headset = produto("Headset Gamer");
 
         mvc.perform(post("/estoque/" + headset.getId() + "/entrada")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -67,9 +61,8 @@ class EstoqueTest {
     }
 
     @Test
-    // Saída maior que o estoque dá 409 e não mexe em nada.
     void saidaMaiorQueOEstoqueResponde409() throws Exception {
-        Produto microfone = produto("Microfone Condensador USB"); // 8 unidades
+        Produto microfone = produto("Microfone Condensador USB");
 
         mvc.perform(post("/estoque/" + microfone.getId() + "/saida")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,9 +73,8 @@ class EstoqueTest {
     }
 
     @Test
-    // Pedido dá baixa no estoque.
     void pedidoDaBaixaNoEstoque() throws Exception {
-        Produto headset = produto("Headset Gamer"); // 15
+        Produto headset = produto("Headset Gamer");
 
         mvc.perform(post("/pedidos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -93,10 +85,9 @@ class EstoqueTest {
     }
 
     @Test
-    // Pedido sem estoque não salva nada e dá 409.
     void pedidoSemEstoqueNaoSalvaNadaEResponde409() throws Exception {
-        Produto headset = produto("Headset Gamer");        // 15
-        Produto mesa = produto("Mesa Gamer com LED");      // 0 (esgotada)
+        Produto headset = produto("Headset Gamer");
+        Produto mesa = produto("Mesa Gamer com LED");
 
         mvc.perform(post("/pedidos")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -106,12 +97,10 @@ class EstoqueTest {
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.mensagem").exists());
 
-        // Rollback: a baixa do headset (1º item) foi desfeita
         assertThat(produto("Headset Gamer").getEstoque()).isEqualTo(15);
     }
 
     @Test
-    // Editar um produto não muda o estoque.
     void editarProdutoNaoMexeNoEstoque() throws Exception {
         Produto headset = produto("Headset Gamer");
 
