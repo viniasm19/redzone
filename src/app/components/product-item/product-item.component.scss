@@ -39,19 +39,6 @@
   }
 }
 
-.selo-promocao {
-  position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
-  padding: 2px var(--space-3);
-  border-radius: var(--radius-pill);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  font-size: 12px;
-  font-weight: 600;
-  box-shadow: var(--shadow-sm);
-}
-
 .info {
   flex: 1;
   display: flex;
@@ -78,26 +65,11 @@ h3 {
   line-height: 1.35;
 }
 
-.precos {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.preco,
-.preco-promocional {
+.preco {
   color: var(--color-text-strong);
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.01em;
-}
-
-.preco-promocional { color: var(--color-primary); }
-
-.preco-antigo {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
 }
 
 .estoque {
@@ -138,7 +110,7 @@ h3 {
 @media (max-width: 520px) {
   .info { padding: var(--space-3); }
   h3 { font-size: 14px; }
-  .preco, .preco-promocional { font-size: 16px; }
+  .preco { font-size: 16px; }
   .btn-comprar {
     padding: 0 var(--space-1);
     font-size: 12px;

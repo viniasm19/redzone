@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -66,7 +65,7 @@ public class PedidoController {
             ItemPedido item = new ItemPedido();
             item.setProduto(produto.get());
             item.setQuantidade(itemRequest.quantidade());
-            item.setPrecoUnitario(produto.get().getPrecoAtual());
+            item.setPrecoUnitario(produto.get().getPreco());
             pedido.adicionarItem(item);
 
             estoqueService.saida(produto.get(), itemRequest.quantidade(), TipoMovimentacao.VENDA,
@@ -77,30 +76,6 @@ public class PedidoController {
 
         Pedido salvo = pedidoRepository.save(pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(PedidoResponse.de(salvo));
-    }
-
-    // Pedidos de um usuário (Minha Área).
-    @GetMapping("/usuario/{usuarioId}")
-    @Transactional(readOnly = true)
-    public ResponseEntity<?> listarPorUsuario(@PathVariable Long usuarioId) {
-        if (!usuarioRepository.existsById(usuarioId)) {
-            return naoEncontrado("Usuário não encontrado.");
-        }
-
-        List<PedidoResponse> pedidos = pedidoRepository.findByUsuarioIdOrderByDataDesc(usuarioId)
-                .stream()
-                .map(PedidoResponse::de)
-                .toList();
-        return ResponseEntity.ok(pedidos);
-    }
-
-    // Um pedido pelo id.
-    @GetMapping("/{id}")
-    @Transactional(readOnly = true)
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
-        return pedidoRepository.findById(id)
-                .<ResponseEntity<?>>map(p -> ResponseEntity.ok(PedidoResponse.de(p)))
-                .orElseGet(() -> naoEncontrado("Pedido não encontrado."));
     }
 
     private ResponseEntity<Map<String, String>> naoEncontrado(String mensagem) {

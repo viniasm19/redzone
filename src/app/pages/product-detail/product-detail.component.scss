@@ -103,30 +103,6 @@
   .estoque-ok { color: var(--color-success); }
   .estoque-baixo { color: var(--color-warning); }
   .estoque-zero { color: var(--color-text-muted); }
-
-  .precos {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    flex-wrap: wrap;
-    margin: 0;
-
-    .preco { color: var(--color-primary); }
-  }
-}
-
-.preco-antigo {
-  color: var(--color-text-muted);
-  font-size: 18px;
-}
-
-.selo-promocao {
-  padding: 2px var(--space-3);
-  border-radius: var(--radius-pill);
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-  font-size: 12px;
-  font-weight: 600;
 }
 
 @media (max-width: 768px) {

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
-import { Produto, emPromocao } from '../../models/produto.model';
+import { Produto } from '../../models/produto.model';
 import { ESTOQUE_MINIMO } from '../../services/stock.service';
 
 @Component({
@@ -18,7 +18,6 @@ export class ProductDetailComponent implements OnInit {
 
   produto: Produto | null = null;
   estoqueMinimo = ESTOQUE_MINIMO;
-  emPromocao = emPromocao;
 
   constructor(
     private route: ActivatedRoute,

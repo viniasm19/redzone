@@ -18,9 +18,4 @@ export class OrderService {
     };
     return firstValueFrom(this.http.post<Pedido>(this.url, corpo));
   }
-
-  // GET /pedidos/usuario/{id}: pedidos do usuário.
-  listarPorUsuario(usuarioId: number) {
-    return firstValueFrom(this.http.get<Pedido[]>(`${this.url}/usuario/${usuarioId}`));
-  }
 }

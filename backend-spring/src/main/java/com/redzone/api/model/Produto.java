@@ -6,14 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 
 // Tabela produtos: itens da loja.
 @Entity
@@ -50,38 +47,7 @@ public class Produto {
     private Integer estoque = 0;
 
 
-    // Campos opcionais (podem ser nulos).
-    @Size(max = 100, message = "A marca pode ter no máximo 100 caracteres.")
-    @Column(length = 100)
-    private String marca;
-
-    @Size(max = 100, message = "A garantia pode ter no máximo 100 caracteres.")
-    @Column(length = 100)
-    private String garantia;
-
-    @Size(max = 2000, message = "As especificações podem ter no máximo 2000 caracteres.")
-    @Column(length = 2000)
-    private String especificacoes;
-
-    // Preço promocional: nulo = sem promoção.
-    @Positive(message = "O preço promocional deve ser maior que zero.")
-    @Column(name = "preco_promocional")
-    private Double precoPromocional;
-
     public Produto() {
-    }
-
-    @JsonIgnore
-    @AssertTrue(message = "O preço promocional deve ser menor que o preço normal.")
-    // Promoção tem que ser menor que o preço normal.
-    public boolean isPrecoPromocionalValido() {
-        return precoPromocional == null || preco == null || precoPromocional < preco;
-    }
-
-    @JsonIgnore
-    // Preço que vale agora (promocional ou normal).
-    public Double getPrecoAtual() {
-        return precoPromocional != null ? precoPromocional : preco;
     }
 
 
@@ -141,35 +107,4 @@ public class Produto {
         this.estoque = estoque;
     }
 
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public String getGarantia() {
-        return garantia;
-    }
-
-    public void setGarantia(String garantia) {
-        this.garantia = garantia;
-    }
-
-    public String getEspecificacoes() {
-        return especificacoes;
-    }
-
-    public void setEspecificacoes(String especificacoes) {
-        this.especificacoes = especificacoes;
-    }
-
-    public Double getPrecoPromocional() {
-        return precoPromocional;
-    }
-
-    public void setPrecoPromocional(Double precoPromocional) {
-        this.precoPromocional = precoPromocional;
-    }
 }

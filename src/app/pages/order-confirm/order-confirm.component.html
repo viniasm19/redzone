@@ -17,7 +17,7 @@
           <img [src]="item.produto.imagem" [alt]="item.produto.nome">
           <span class="item-nome">{{ item.produto.nome }}</span>
           <span class="item-qtd">x{{ item.quantidade }}</span>
-          <span class="item-preco">R$ {{ (precoAtual(item.produto) * item.quantidade).toFixed(2) }}</span>
+          <span class="item-preco">R$ {{ (item.produto.preco * item.quantidade).toFixed(2) }}</span>
         </div>
       </div>
 
@@ -30,7 +30,7 @@
 
       <div class="confirm-actions">
         <button class="btn-voltar btn-secundario" (click)="voltar()">← Voltar</button>
-        <button class="btn-confirmar btn-principal" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : 'Confirmar Pedido' }}</button>
+        <button class="btn-principal" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : 'Confirmar Pedido' }}</button>
       </div>
     </ng-container>
 
@@ -99,7 +99,7 @@
       <p class="erro-pedido" *ngIf="erro">{{ erro }}</p>
 
       <div class="confirm-actions">
-        <button class="btn-confirmar btn-principal" (click)="pagar()" [disabled]="enviando">
+        <button class="btn-principal" (click)="pagar()" [disabled]="enviando">
           {{ enviando ? 'Processando...' : (formaPagamento === 'PIX' ? 'Já paguei com Pix' : 'Pagar com cartão') }}
         </button>
       </div>

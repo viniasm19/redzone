@@ -1,4 +1,4 @@
-<div class="page estoque-container">
+<div class="page">
 
   <h1 class="page-title">Controle de Estoque</h1>
 
@@ -70,8 +70,8 @@
                    [(ngModel)]="forms[p.id].quantidade" [attr.aria-label]="'Quantidade de ' + p.nome">
             <input type="text" placeholder="Observação (opcional)" maxlength="255"
                    [(ngModel)]="forms[p.id].observacao" [attr.aria-label]="'Observação para ' + p.nome">
-            <button class="btn-entrada" (click)="movimentar(p, 'ENTRADA')">Entrada</button>
-            <button class="btn-saida" (click)="movimentar(p, 'SAIDA')" [disabled]="p.estoque === 0">Saída</button>
+            <button (click)="movimentar(p, 'ENTRADA')">Entrada</button>
+            <button (click)="movimentar(p, 'SAIDA')" [disabled]="p.estoque === 0">Saída</button>
           </td>
           <td>
             <button class="btn-link" (click)="verHistorico(p)">Histórico</button>
@@ -95,7 +95,7 @@
 
         <ul *ngIf="movimentacoes.length > 0">
       <li *ngFor="let m of movimentacoes; trackBy: trackById" [ngClass]="m.tipo.toLowerCase()">
-        <span class="tipo">{{ rotuloTipo(m.tipo) }}</span>
+        <span>{{ rotuloTipo(m.tipo) }}</span>
         <span class="qtd">{{ m.tipo === 'ENTRADA' ? '+' : '−' }}{{ m.quantidade }}</span>
         <span class="nome" *ngIf="!historicoDe">{{ m.produtoNome }}</span>
         <span class="apos">ficou {{ m.estoqueApos }}</span>

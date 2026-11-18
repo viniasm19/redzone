@@ -1,14 +1,11 @@
 <!-- Card de um produto (clique abre o detalhe). -->
-<div class="product-card" [class.esgotado]="produto.estoque === 0" [class.promocao]="emPromocao"
+<div class="product-card" [class.esgotado]="produto.estoque === 0"
      [routerLink]="['/product', produto.id]">
 
-    <!-- Foto e selo de promoção. -->
+    <!-- Foto do produto. -->
     <div class="foto">
     <img [src]="produto.imagem || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070'"
          [alt]="produto.nome" loading="lazy" />
-    @if (emPromocao) {
-      <span class="selo-promocao">Promoção</span>
-    }
   </div>
 
   <!-- Nome, preço e estoque. -->
@@ -16,14 +13,7 @@
     <p class="categoria">{{ produto.categoria }}</p>
     <h3>{{ produto.nome }}</h3>
 
-        @if (emPromocao) {
-      <p class="precos">
-        <span class="preco preco-promocional">R$ {{ produto.precoPromocional!.toFixed(2) }}</span>
-        <s class="preco-antigo">R$ {{ produto.preco.toFixed(2) }}</s>
-      </p>
-    } @else {
-      <p class="preco">R$ {{ produto.preco }}</p>
-    }
+    <p class="preco">R$ {{ produto.preco }}</p>
 
         @if (produto.estoque === 0) {
       <p class="estoque estoque-zero">Esgotado</p>

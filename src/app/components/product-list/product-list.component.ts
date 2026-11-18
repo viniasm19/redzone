@@ -9,8 +9,7 @@ import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 
 const FORM_VAZIO: Omit<Produto, 'id'> = {
-  nome: '', preco: 0, imagem: '', categoria: '', estoque: 0,
-  marca: null, garantia: null, especificacoes: null, precoPromocional: null
+  nome: '', preco: 0, imagem: '', categoria: '', estoque: 0
 };
 
 @Component({
@@ -79,26 +78,9 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    const promocional = p.precoPromocional === null || p.precoPromocional === undefined || String(p.precoPromocional) === ''
-      ? null
-      : Number(p.precoPromocional);
-
-    if (promocional !== null && !(promocional > 0 && promocional < p.preco)) {
-      this.erro = 'O preço promocional deve ser maior que zero e menor que o preço normal (ou deixe vazio).';
-      return;
-    }
-
-    const dados: Omit<Produto, 'id'> = {
-      ...p,
-      marca: this.textoOuNull(p.marca),
-      garantia: this.textoOuNull(p.garantia),
-      especificacoes: this.textoOuNull(p.especificacoes),
-      precoPromocional: promocional
-    };
-
     const requisicao = this.editandoId
-      ? this.productService.updateProduto({ ...dados, id: this.editandoId })
-      : this.productService.addProduto(dados);
+      ? this.productService.updateProduto({ ...p, id: this.editandoId })
+      : this.productService.addProduto(p);
 
     requisicao.subscribe({
       next: () => {
@@ -107,11 +89,6 @@ export class ProductListComponent implements OnInit {
       },
       error: () => (this.erro = 'Não foi possível salvar o produto. Confira os dados e tente de novo.')
     });
-  }
-
-  private textoOuNull(texto?: string | null): string | null {
-    const limpo = (texto ?? '').trim();
-    return limpo ? limpo : null;
   }
 
   deleteProduto(id: number) {

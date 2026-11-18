@@ -1,5 +1,5 @@
 <!-- Tela do produto (só aparece depois de carregar). -->
-<div class="page detail-container" *ngIf="produto">
+<div class="page" *ngIf="produto">
   <button class="btn-voltar" (click)="voltar()">← Voltar</button>
 
   <div class="detail-card">
@@ -10,15 +10,7 @@
       <h1 class="page-title">{{ produto.nome }}</h1>
 
       <p class="descricao">{{ produto.descricao }}</p>
-            @if (emPromocao(produto)) {
-        <p class="precos">
-          <s class="preco-antigo">R$ {{ produto.preco.toFixed(2) }}</s>
-          <span class="preco">R$ {{ produto.precoPromocional!.toFixed(2) }}</span>
-          <span class="selo-promocao">Promoção</span>
-        </p>
-      } @else {
-        <p class="preco">R$ {{ produto.preco }}</p>
-      }
+      <p class="preco">R$ {{ produto.preco }}</p>
 
             @if (produto.estoque === 0) {
         <p class="estoque estoque-zero">Produto esgotado</p>

@@ -13,11 +13,6 @@ export class ProductService {
     return this.http.get<Produto[]>(this.url);
   }
 
-  // GET /produtos?promocao=true.
-  getPromocoes() {
-    return this.http.get<Produto[]>(this.url, { params: { promocao: true } });
-  }
-
   // GET /produtos/{id}: um produto.
   getProduto(id: number) {
     return this.http.get<Produto>(`${this.url}/${id}`);

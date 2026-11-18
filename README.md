@@ -53,15 +53,13 @@ O projeto foi pensado a partir de cinco personas:
 - Checkout protegido: quem não está logado é levado ao login e volta ao checkout depois de entrar
 - **Pagamento fictício** no checkout: Pix (código e QR code de mentira) ou cartão (só validação de formato de número, validade e CVV). Os dados do cartão **nunca saem do navegador**: a API recebe só o id do pedido e a forma de pagamento
 - Tela de pedido confirmado, com atalhos para a Home e para a Área do Usuário
-- Área do Usuário com o **histórico de pedidos**: data, itens, total e status (Aguardando pagamento, Aprovado, Em separação, Enviado, Entregue). Pedidos antigos, sem status, aparecem como Aprovado
+- Área do Usuário: mostra nome e e-mail e tem botões para continuar comprando e sair
 - Área administrativa: o administrador cadastra, edita e exclui produtos
 - **Sistema de estoque**: cada produto tem uma quantidade em estoque
   - A vitrine mostra "Em estoque", "Últimas X unidades" ou "Esgotado" (e bloqueia a compra quando zera)
   - O carrinho não deixa colocar mais unidades do que existem
   - Ao finalizar o pedido, o back-end confere o estoque de novo e dá baixa. Se faltar algum item, nada é salvo e a API responde `409`
   - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
-- **Promoções** (`/promocoes`, sem link no menu): produtos com preço promocional, com o preço antigo riscado. O pedido cobra o preço promocional (lido do banco)
-- Campos opcionais de produto (marca, garantia, especificações) guardados no banco e aceitos pela API. Eles **não aparecem** na tela de detalhe, que mostra só imagem, nome, descrição, preço e estoque
 - **Rodapé** em todas as telas com o nome da loja, endereço, telefone e e-mail. Os dados ficam em `src/app/config/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
 - Interface responsiva e componentes reutilizáveis
 
@@ -83,7 +81,7 @@ redzone/
 │   └── app/
 │       ├── components/   (header, footer, product-item, product-list)
 │       ├── pages/        (home, login, register, forgot-password, product-detail,
-│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart, promocoes)
+│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart)
 │       ├── services/     (auth, cart, product, order, payment, stock)
 │       ├── guards/       (auth.guard)
 │       ├── models/
@@ -163,7 +161,6 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 | Método | Rota | Uso |
 |---|---|---|
 | GET | `/produtos` | Listar produtos |
-| GET | `/produtos?promocao=true` | Só os produtos em promoção (com `precoPromocional`) |
 | POST / PUT / DELETE | `/produtos` e `/produtos/{id}` | Cadastrar, editar e excluir (administrador) |
 | POST | `/login` | Login: o back-end confere e-mail e senha (200 com id, nome e e-mail; 401 se inválidos) |
 | GET | `/usuarios` | Listar usuários (tela de administração) |
@@ -172,12 +169,10 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 | PUT | `/usuarios/{id}` | Atualizar usuário, incluindo a nova senha |
 | DELETE | `/usuarios/{id}` | Excluir usuário |
 | POST | `/pedidos` | Salvar o pedido (envia `usuarioId` e itens com `produtoId` e `quantidade`) |
-| GET | `/pedidos/usuario/{usuarioId}` | Listar os pedidos de um usuário |
 | POST | `/pagamentos` | Pagamento fictício: envia só `pedidoId` e `formaPagamento` (`CARTAO` ou `PIX`); sempre aprova e o pedido vira `APROVADO` |
 | POST | `/estoque/{produtoId}/entrada` | Somar unidades ao estoque (`quantidade`, `observacao`) |
 | POST | `/estoque/{produtoId}/saida` | Tirar unidades (perda/ajuste); `409` se não houver o suficiente |
 | GET | `/estoque/movimentacoes?produtoId=` | Histórico de movimentações (de todos ou de um produto) |
-| GET | `/estoque/baixo` | Produtos com estoque baixo ou zerado |
 
 Requisitos no back-end Spring Boot:
 
@@ -196,7 +191,7 @@ O `data.sql` carrega ainda os usuários mariana, rafael, sofia e tiago (`@email.
 
 Apenas o administrador vê os botões de **Editar**, **Excluir**, o formulário de **Cadastrar Produto** e o botão **Estoque** (na Minha Área), que leva à tela de estoque.
 
-> Quem já tinha a pasta `backend-spring/data/` de antes: as colunas novas (`marca`, `garantia`, `especificacoes`, `preco_promocional`, e nos pedidos `status` e `forma_pagamento`) são criadas sozinhas e ficam vazias nos registros antigos, sem apagar nada. Os exemplos do `data.sql` só aparecem num banco novo.
+> Quem já tinha a pasta `backend-spring/data/` de antes: as colunas novas (nos pedidos `status` e `forma_pagamento`) são criadas sozinhas e ficam vazias nos registros antigos, sem apagar nada. Os exemplos do `data.sql` só aparecem num banco novo.
 
 > A coluna `estoque` é criada sozinha, mas com **0** em todos os produtos (o `data.sql` não roda de novo). Dê entrada pela tela de Estoque, ou apague a pasta `data` para recarregar os dados de exemplo.
 

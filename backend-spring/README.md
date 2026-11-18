@@ -44,14 +44,11 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 | DELETE | `/produtos/{id}` | Exclui produto | 204, 404 |
 | POST | `/login` | Confere e-mail e senha (devolve id, nome e e-mail, sem a senha) | 200, 400, **401** |
 | GET | `/usuarios` | Lista os usuários | 200 |
-| GET | `/usuarios/{id}` | Busca um usuário | 200, 404 |
 | GET | `/usuarios/email/{email}` | `findByEmail` (usado no reset de senha) | 200, 404 |
 | POST | `/usuarios` | Cadastra usuário | 201, 400, **409** (e-mail repetido) |
 | PUT | `/usuarios/{id}` | Atualiza usuário (inclui a nova senha) | 200, 400, 404, **409** |
 | DELETE | `/usuarios/{id}` | Exclui usuário | 204, 404 |
 | POST | `/pedidos` | Salva um pedido com seus itens (preço e total calculados no back-end; produto em promoção cobra o `precoPromocional`) | 201, 400, 404, 409 |
-| GET | `/pedidos/usuario/{usuarioId}` | Lista os pedidos do usuário (com `status`) | 200, 404 |
-| GET | `/pedidos/{id}` | Busca um pedido | 200, 404 |
 | POST | `/pagamentos` | Pagamento fictício (`pedidoId`, `formaPagamento`: `CARTAO`/`PIX`). Sempre aprova: status vira `APROVADO` | 200, 400, 404, **409** (já pago) |
 
 ## Regras

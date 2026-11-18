@@ -2,6 +2,8 @@ package com.redzone.api;
 
 import com.jayway.jsonpath.JsonPath;
 import com.redzone.api.model.Produto;
+import com.redzone.api.model.StatusPedido;
+import com.redzone.api.repository.PedidoRepository;
 import com.redzone.api.repository.ProdutoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -31,6 +34,9 @@ class PedidoStatusTest {
 
     @Autowired
     ProdutoRepository produtoRepository;
+
+    @Autowired
+    PedidoRepository pedidoRepository;
 
     @Autowired
     JdbcTemplate jdbc;
@@ -64,26 +70,10 @@ class PedidoStatusTest {
     }
 
     @Test
-    void listaDePedidosDoUsuarioDevolveOStatus() throws Exception {
-        criarPedido(2L);
-
-        mvc.perform(get("/pedidos/usuario/2"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].status").value("AGUARDANDO_PAGAMENTO"))
-                .andExpect(jsonPath("$[0].itens[0].nome").value("Headset Gamer"));
-    }
-
-    @Test
     void pedidoAntigoSemStatusApareceComoAprovado() throws Exception {
         Long id = criarPedido(2L);
         jdbc.update("UPDATE pedidos SET status = NULL WHERE id = ?", id);
 
-        mvc.perform(get("/pedidos/" + id))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("APROVADO"));
-
-        mvc.perform(get("/pedidos/usuario/2"))
-                .andExpect(jsonPath("$[0].status").value("APROVADO"));
+        assertThat(pedidoRepository.findById(id).orElseThrow().getStatus()).isEqualTo(StatusPedido.APROVADO);
     }
 }
