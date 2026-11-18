@@ -6,33 +6,33 @@ Mapa rápido: o que cada parte faz e onde ela está.
 
 | Onde | O que tem |
 |---|---|
-| `src/app/pages/` | Uma pasta por tela (home, carrinho, login, checkout...) |
-| `src/app/components/` | Peças reutilizáveis: cabeçalho, rodapé, card de produto, vitrine |
-| `src/app/services/` | Falam com a API (produtos, pedidos, pagamento, estoque, login) e guardam o carrinho |
-| `src/app/models/` | Os formatos dos dados (produto, pedido, usuário) |
-| `src/app/guards/` | Porteiros: login obrigatório e tela só de admin |
-| `src/app/config/` | URL da API (`api.ts`) e dados da loja (`loja.ts`) |
+| `src/app/paginas/` | Uma pasta por tela (inicio, carrinho, login, confirmar-pedido...) |
+| `src/app/componentes/` | Peças reutilizáveis: cabeçalho, rodapé, card de produto, vitrine |
+| `src/app/servicos/` | Falam com a API (produtos, pedidos, pagamento, estoque, login) e guardam o carrinho |
+| `src/app/modelos/` | Os formatos dos dados (produto, pedido, usuário) |
+| `src/app/guardas/` | Porteiros: login obrigatório e tela só de admin |
+| `src/app/configuracao/` | URL da API (`api.ts`) e dados da loja (`loja.ts`) |
 | `src/app/app.routes.ts` | Mapa de endereços: `/cart` -> tela do carrinho |
 | `src/styles.scss` | Cores, espaços e estilos comuns a todas as telas |
-| `backend-spring/.../controller/` | Recebe as chamadas HTTP (as rotas da API) |
-| `backend-spring/.../service/` | Regras de negócio do estoque |
-| `backend-spring/.../model/` | Tabelas do banco (Produto, Pedido, Usuario...) |
+| `backend-spring/.../controlador/` | Recebe as chamadas HTTP (as rotas da API) |
+| `backend-spring/.../servico/` | Regras de negócio do estoque |
+| `backend-spring/.../modelo/` | Tabelas do banco (Produto, Pedido, Usuario...) |
 | `backend-spring/.../dto/` | Formatos das requisições e respostas |
-| `backend-spring/.../repository/` | Consultas ao banco (feitas pelo Spring) |
-| `backend-spring/.../config/` | Liberação do CORS e carga inicial do banco |
+| `backend-spring/.../repositorio/` | Consultas ao banco (feitas pelo Spring) |
+| `backend-spring/.../configuracao/` | Liberação do CORS e carga inicial do banco |
 | `backend-spring/src/main/resources/data.sql` | Dados de exemplo (usuários e produtos) |
 | `backend-spring/src/test/` | Testes automáticos da API |
 
 ## Rotas da API
 
-| Rota | Controller | Para que serve |
+| Rota | Controlador | Para que serve |
 |---|---|---|
-| `/login` | AuthController | Confere e-mail e senha |
-| `/usuarios` | UsuarioController | Cadastro, edição, exclusão e busca |
-| `/produtos` | ProdutoController | Lista, cadastro e edição de produtos |
-| `/pedidos` | PedidoController | Cria o pedido (calcula o total e dá baixa no estoque) |
-| `/pagamentos` | PagamentoController | Aprova o pedido (pagamento fictício) |
-| `/estoque` | EstoqueController | Entrada, saída e histórico do estoque |
+| `/login` | LoginControlador | Confere e-mail e senha |
+| `/usuarios` | UsuarioControlador | Cadastro, edição, exclusão e busca |
+| `/produtos` | ProdutoControlador | Lista, cadastro e edição de produtos |
+| `/pedidos` | PedidoControlador | Cria o pedido (calcula o total e dá baixa no estoque) |
+| `/pagamentos` | PagamentoControlador | Aprova o pedido (pagamento fictício) |
+| `/estoque` | EstoqueControlador | Entrada, saída e histórico do estoque |
 
 ## Fluxo de compra
 

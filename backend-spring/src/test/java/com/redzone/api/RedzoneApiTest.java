@@ -1,9 +1,9 @@
 package com.redzone.api;
 
-import com.redzone.api.model.Produto;
-import com.redzone.api.model.Usuario;
-import com.redzone.api.repository.ProdutoRepository;
-import com.redzone.api.repository.UsuarioRepository;
+import com.redzone.api.modelo.Produto;
+import com.redzone.api.modelo.Usuario;
+import com.redzone.api.repositorio.ProdutoRepositorio;
+import com.redzone.api.repositorio.UsuarioRepositorio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,8 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RedzoneApiTest {
 
     @Autowired MockMvc mvc;
-    @Autowired UsuarioRepository usuarios;
-    @Autowired ProdutoRepository produtos;
+    @Autowired UsuarioRepositorio usuarios;
+    @Autowired ProdutoRepositorio produtos;
 
     @Test
     void loginComSenhaCorretaDevolve200SemSenha() throws Exception {

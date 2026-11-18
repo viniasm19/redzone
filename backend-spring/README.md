@@ -25,7 +25,7 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 ## Banco de dados (H2)
 
 - Em arquivo: os dados ficam na pasta `backend-spring/data/` e **continuam existindo** quando a API é reiniciada (cadastros e pedidos não somem).
-- Na primeira execução o banco está vazio e a classe `DataLoader` carrega o `src/main/resources/data.sql` (6 usuários e 12 produtos, 3 por categoria). Nas próximas execuções ela não faz nada.
+- Na primeira execução o banco está vazio e a classe `CarregadorDeDados` carrega o `src/main/resources/data.sql` (6 usuários e 12 produtos, 3 por categoria). Nas próximas execuções ela não faz nada.
 - O caminho `./data` é relativo à pasta de onde a API é iniciada: rode `mvn spring-boot:run` de dentro de `backend-spring`.
 - Para voltar ao estado inicial: pare a API e apague a pasta `data`.
 - Console do H2: `http://localhost:8080/h2-console`
@@ -58,7 +58,7 @@ A API sobe em `http://localhost:8080`. Teste no navegador: `http://localhost:808
 - O `id` é sempre gerado pelo banco: mesmo que o front envie um, ele é ignorado no cadastro.
 - Todo pedido nasce com `status = AGUARDANDO_PAGAMENTO`. Pedidos antigos (coluna `status` nula) são devolvidos como `APROVADO`.
 - O pagamento é um mock: o `PagamentoRequest` não tem campos de cartão, então número, validade e CVV nunca são recebidos nem gravados. Só a forma de pagamento fica no pedido.
-- CORS liberado para `http://localhost:4200` (`config/CorsConfig`).
+- CORS liberado para `http://localhost:4200` (`configuracao/ConfiguracaoCors`).
 
 ## Estrutura
 
@@ -68,10 +68,12 @@ backend-spring/
 └── src/main/
     ├── java/com/redzone/api/
     │   ├── RedzoneApplication.java
-    │   ├── config/CorsConfig.java
-    │   ├── controller/   (Usuario, Produto, Pedido, Pagamento, Estoque, Auth, ApiExceptionHandler)
-    │   ├── model/        (Usuario, Produto, Pedido, ItemPedido, StatusPedido, FormaPagamento, ...)
-    │   └── repository/   (UsuarioRepository, ProdutoRepository)
+    │   ├── configuracao/ (ConfiguracaoCors, CarregadorDeDados)
+    │   ├── controlador/  (Usuario, Produto, Pedido, Pagamento, Estoque, Login, TratadorDeErros)
+    │   ├── dto/          (requisições e respostas da API)
+    │   ├── modelo/       (Usuario, Produto, Pedido, ItemPedido, StatusPedido, FormaPagamento, ...)
+    │   ├── repositorio/  (Usuario, Produto, Pedido, MovimentacaoEstoque)
+    │   └── servico/      (EstoqueServico, EstoqueInsuficienteExcecao)
     └── resources/
         ├── application.properties
         └── data.sql
