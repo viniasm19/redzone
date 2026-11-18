@@ -1,10 +1,10 @@
 package com.redzone.api;
 
 import com.jayway.jsonpath.JsonPath;
-import com.redzone.api.model.Produto;
-import com.redzone.api.model.StatusPedido;
-import com.redzone.api.repository.PedidoRepository;
-import com.redzone.api.repository.ProdutoRepository;
+import com.redzone.api.modelo.Produto;
+import com.redzone.api.modelo.StatusPedido;
+import com.redzone.api.repositorio.PedidoRepositorio;
+import com.redzone.api.repositorio.ProdutoRepositorio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,16 +33,16 @@ class PedidoStatusTest {
     MockMvc mvc;
 
     @Autowired
-    ProdutoRepository produtoRepository;
+    ProdutoRepositorio produtoRepositorio;
 
     @Autowired
-    PedidoRepository pedidoRepository;
+    PedidoRepositorio pedidoRepositorio;
 
     @Autowired
     JdbcTemplate jdbc;
 
     private Long headsetId() {
-        return produtoRepository.findAll().stream()
+        return produtoRepositorio.findAll().stream()
                 .filter(p -> p.getNome().equals("Headset Gamer"))
                 .map(Produto::getId)
                 .findFirst()
@@ -74,6 +74,6 @@ class PedidoStatusTest {
         Long id = criarPedido(2L);
         jdbc.update("UPDATE pedidos SET status = NULL WHERE id = ?", id);
 
-        assertThat(pedidoRepository.findById(id).orElseThrow().getStatus()).isEqualTo(StatusPedido.APROVADO);
+        assertThat(pedidoRepositorio.findById(id).orElseThrow().getStatus()).isEqualTo(StatusPedido.APROVADO);
     }
 }

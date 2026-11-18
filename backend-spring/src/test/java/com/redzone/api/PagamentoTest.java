@@ -1,12 +1,12 @@
 package com.redzone.api;
 
 import com.jayway.jsonpath.JsonPath;
-import com.redzone.api.model.FormaPagamento;
-import com.redzone.api.model.Pedido;
-import com.redzone.api.model.Produto;
-import com.redzone.api.model.StatusPedido;
-import com.redzone.api.repository.PedidoRepository;
-import com.redzone.api.repository.ProdutoRepository;
+import com.redzone.api.modelo.FormaPagamento;
+import com.redzone.api.modelo.Pedido;
+import com.redzone.api.modelo.Produto;
+import com.redzone.api.modelo.StatusPedido;
+import com.redzone.api.repositorio.PedidoRepositorio;
+import com.redzone.api.repositorio.ProdutoRepositorio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -40,16 +40,16 @@ class PagamentoTest {
     MockMvc mvc;
 
     @Autowired
-    ProdutoRepository produtoRepository;
+    ProdutoRepositorio produtoRepositorio;
 
     @Autowired
-    PedidoRepository pedidoRepository;
+    PedidoRepositorio pedidoRepositorio;
 
     @Autowired
     JdbcTemplate jdbc;
 
     private Long criarPedido() throws Exception {
-        Produto headset = produtoRepository.findAll().stream()
+        Produto headset = produtoRepositorio.findAll().stream()
                 .filter(p -> p.getNome().equals("Headset Gamer"))
                 .findFirst()
                 .orElseThrow();
@@ -67,7 +67,7 @@ class PagamentoTest {
 
     // Busca o pedido direto no banco, para conferir o que ficou gravado.
     private Pedido pedido(Long id) {
-        return pedidoRepository.findById(id).orElseThrow();
+        return pedidoRepositorio.findById(id).orElseThrow();
     }
 
     private String pagamento(Long pedidoId, String forma) {

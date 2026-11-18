@@ -1,7 +1,7 @@
 package com.redzone.api;
 
-import com.redzone.api.model.Produto;
-import com.redzone.api.repository.ProdutoRepository;
+import com.redzone.api.modelo.Produto;
+import com.redzone.api.repositorio.ProdutoRepositorio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,10 +28,10 @@ class ProdutoTest {
     MockMvc mvc;
 
     @Autowired
-    ProdutoRepository produtoRepository;
+    ProdutoRepositorio produtoRepositorio;
 
     private Produto produto(String nome) {
-        return produtoRepository.findAll().stream()
+        return produtoRepositorio.findAll().stream()
                 .filter(p -> p.getNome().equals(nome))
                 .findFirst()
                 .orElseThrow();

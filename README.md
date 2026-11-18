@@ -60,7 +60,7 @@ O projeto foi pensado a partir de cinco personas:
   - O carrinho não deixa colocar mais unidades do que existem
   - Ao finalizar o pedido, o back-end confere o estoque de novo e dá baixa. Se faltar algum item, nada é salvo e a API responde `409`
   - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
-- **Rodapé** em todas as telas com o nome da loja, endereço, telefone e e-mail. Os dados ficam em `src/app/config/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
+- **Rodapé** em todas as telas com o nome da loja, endereço, telefone e e-mail. Os dados ficam em `src/app/configuracao/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
 - Interface responsiva e componentes reutilizáveis
 
 ### 🔄 Fluxo de compra
@@ -79,13 +79,13 @@ Checkout: cria o pedido (Aguardando pagamento) → escolhe Pix ou cartão → PO
 redzone/
 ├── src/
 │   └── app/
-│       ├── components/   (header, footer, product-item, product-list)
-│       ├── pages/        (home, login, register, forgot-password, product-detail,
-│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart)
-│       ├── services/     (auth, cart, product, order, payment, stock)
-│       ├── guards/       (auth.guard)
-│       ├── models/
-│       └── config/       (api.ts — URL base da API; loja.ts — dados do rodapé)
+│       ├── componentes/  (cabecalho, rodape, item-produto, lista-produtos)
+│       ├── paginas/      (inicio, login, cadastro, esqueci-senha, detalhe-produto,
+│       │                  confirmar-pedido, pedido-confirmado, area-usuario, usuarios, estoque, carrinho)
+│       ├── servicos/     (autenticacao, carrinho, produto, pedido, pagamento, estoque)
+│       ├── guardas/      (autenticacao.guard, admin.guard)
+│       ├── modelos/
+│       └── configuracao/ (api.ts — URL base da API; loja.ts — dados do rodapé)
 ├── public/
 ├── backend-spring/       (API REST em Spring Boot + banco H2)
 ├── angular.json
@@ -152,9 +152,9 @@ mvn spring-boot:run
 
 Ou, pela IDE, abra a pasta `backend-spring` e execute a classe `RedzoneApplication`.
 
-> O banco H2 é gravado em arquivo (`backend-spring/data/`): usuários e pedidos continuam existindo depois de reiniciar a API. Os dados de exemplo (`data.sql`) são carregados só na primeira execução. Para voltar ao estado inicial, pare a API e apague a pasta `data`. Mais detalhes em `backend-spring/README.md`.
+> O banco H2 é gravado em arquivo (`backend-spring/data/`): usuários e pedidos continuam existindo depois de reiniciar a API. Os dados de exemplo (`data.sql`) são carregados só na primeira execução. Para voltar ao estado inicial, pare a API e apague a pasta `data`.
 
-A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:8080`).
+A URL da API fica em um só lugar: `src/app/configuracao/api.ts` (`http://localhost:8080`).
 
 ### 🔌 Endpoints esperados pelo front-end
 

@@ -1,5 +1,5 @@
 <!-- Cabeçalho (fixo no topo). -->
-<app-header></app-header>
+<app-cabecalho></app-cabecalho>
 
 <!-- Área onde fica a tela da rota atual. -->
 <main>
@@ -7,9 +7,9 @@
 </main>
 
 <!-- Rodapé (em todas as telas). -->
-<app-footer></app-footer>
+<app-rodape></app-rodape>
 
 <!-- Aviso rápido do carrinho. -->
-<div class="toast" *ngIf="cartService.toast()">
-  {{ cartService.toast() }}
+<div class="toast" *ngIf="carrinhoService.toast()">
+  {{ carrinhoService.toast() }}
 </div>

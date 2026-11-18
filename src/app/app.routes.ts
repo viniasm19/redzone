@@ -1,36 +1,36 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { UsuariosComponent } from './pages/usuarios/usuarios.component';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { CartComponent } from './pages/cart/cart.component';
-import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
-import { OrderConfirmComponent } from './pages/order-confirm/order-confirm.component';
-import { OrderSuccessComponent } from './pages/order-success/order-success.component';
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
-import { AreaUsuarioComponent } from './pages/area-usuario/area-usuario.component';
-import { EstoqueComponent } from './pages/estoque/estoque.component';
-import { authGuard } from './guards/auth.guard';
-import { adminGuard } from './guards/admin.guard';
+import { InicioComponent } from './paginas/inicio/inicio.component';
+import { LoginComponent } from './paginas/login/login.component';
+import { CadastroComponent } from './paginas/cadastro/cadastro.component';
+import { UsuariosComponent } from './paginas/usuarios/usuarios.component';
+import { ListaProdutosComponent } from './componentes/lista-produtos/lista-produtos.component';
+import { CarrinhoComponent } from './paginas/carrinho/carrinho.component';
+import { DetalheProdutoComponent } from './paginas/detalhe-produto/detalhe-produto.component';
+import { ConfirmarPedidoComponent } from './paginas/confirmar-pedido/confirmar-pedido.component';
+import { PedidoConfirmadoComponent } from './paginas/pedido-confirmado/pedido-confirmado.component';
+import { EsqueciSenhaComponent } from './paginas/esqueci-senha/esqueci-senha.component';
+import { AreaUsuarioComponent } from './paginas/area-usuario/area-usuario.component';
+import { EstoqueComponent } from './paginas/estoque/estoque.component';
+import { autenticacaoGuard } from './guardas/autenticacao.guard';
+import { adminGuard } from './guardas/admin.guard';
 
 // Mapa de telas: endereço -> componente.
 export const routes: Routes = [
   // Tela inicial.
-  { path: '', pathMatch: 'full', component: HomeComponent },
+  { path: '', pathMatch: 'full', component: InicioComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'cadastro', component: RegisterComponent },
+  { path: 'cadastro', component: CadastroComponent },
   // Usuários (só admin).
   { path: 'usuarios', component: UsuariosComponent, canActivate: [adminGuard] },
   // Estoque (só admin).
   { path: 'estoque', component: EstoqueComponent, canActivate: [adminGuard] },
-  { path: 'products', component: ProductListComponent },
+  { path: 'products', component: ListaProdutosComponent },
   // Carrinho.
-  { path: 'cart', component: CartComponent },
-  { path: 'product/:id', component: ProductDetailComponent },
+  { path: 'cart', component: CarrinhoComponent },
+  { path: 'product/:id', component: DetalheProdutoComponent },
   // Checkout (precisa estar logado).
-  { path: 'order-confirm', component: OrderConfirmComponent, canActivate: [authGuard] },
-  { path: 'order-success', component: OrderSuccessComponent, canActivate: [authGuard] },
-  { path: 'area-usuario', component: AreaUsuarioComponent, canActivate: [authGuard] },
-  { path: 'forgot-password', component: ForgotPasswordComponent }
+  { path: 'order-confirm', component: ConfirmarPedidoComponent, canActivate: [autenticacaoGuard] },
+  { path: 'order-success', component: PedidoConfirmadoComponent, canActivate: [autenticacaoGuard] },
+  { path: 'area-usuario', component: AreaUsuarioComponent, canActivate: [autenticacaoGuard] },
+  { path: 'forgot-password', component: EsqueciSenhaComponent }
 ];
