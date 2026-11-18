@@ -41,7 +41,7 @@ Mapa rápido: o que cada parte faz e onde ela está.
 3. **Carrinho** -> **Finalizar** (se não estiver logado, vai para o login e volta depois).
 4. **Checkout (passo 1)**: `POST /pedidos` cria o pedido como "Aguardando pagamento". O back calcula o total e dá baixa no estoque.
 5. **Checkout (passo 2)**: escolhe Pix ou cartão e envia `POST /pagamentos`.
-6. **Confirmação**: o pedido vira "Aprovado" e aparece em **Minha Área**.
+6. **Confirmação**: o pedido vira "Aprovado" e aparece a tela de pedido confirmado.
 
 ## Pontos importantes
 

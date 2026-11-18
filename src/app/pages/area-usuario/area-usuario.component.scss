@@ -12,7 +12,6 @@
   gap: var(--space-4);
   border-radius: var(--radius-xl);
 
-  .secao-titulo { margin: 0; }
 }
 
 .dado {
@@ -36,90 +35,4 @@
   flex-wrap: wrap;
   gap: var(--space-3);
   margin-top: var(--space-2);
-}
-
-.vazio {
-  margin: 0;
-  color: var(--color-text-muted);
-
-  &.erro { color: var(--color-danger); }
-}
-
-.pedido {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  transition: border-color var(--transition);
-
-  &:hover { border-color: var(--color-border-strong); }
-}
-
-.pedido-topo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-
-  strong {
-    color: var(--color-text-strong);
-    font-weight: 600;
-  }
-
-  .data {
-    margin-left: var(--space-3);
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-  }
-}
-
-.status {
-  padding: 2px var(--space-3);
-  border-radius: var(--radius-pill);
-  background: var(--color-surface-2);
-  color: var(--color-text);
-  font-size: 12px;
-  font-weight: 600;
-}
-.status-AGUARDANDO_PAGAMENTO { background: var(--color-warning-soft); color: var(--color-warning); }
-.status-APROVADO { background: var(--color-success-soft); color: var(--color-success); }
-
-.itens {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-
-  li {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-3);
-    font-size: var(--font-size-sm);
-  }
-}
-
-.total {
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-
-  .forma {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-  }
-
-  .valor { margin-left: auto; }
-
-  strong {
-    color: var(--color-text-strong);
-    font-weight: 600;
-  }
 }

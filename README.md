@@ -53,7 +53,7 @@ O projeto foi pensado a partir de cinco personas:
 - Checkout protegido: quem não está logado é levado ao login e volta ao checkout depois de entrar
 - **Pagamento fictício** no checkout: Pix (código e QR code de mentira) ou cartão (só validação de formato de número, validade e CVV). Os dados do cartão **nunca saem do navegador**: a API recebe só o id do pedido e a forma de pagamento
 - Tela de pedido confirmado, com atalhos para a Home e para a Área do Usuário
-- Área do Usuário com o **histórico de pedidos**: data, itens, total e status (Aguardando pagamento, Aprovado, Em separação, Enviado, Entregue). Pedidos antigos, sem status, aparecem como Aprovado
+- Área do Usuário: mostra nome e e-mail e tem botões para continuar comprando e sair
 - Área administrativa: o administrador cadastra, edita e exclui produtos
 - **Sistema de estoque**: cada produto tem uma quantidade em estoque
   - A vitrine mostra "Em estoque", "Últimas X unidades" ou "Esgotado" (e bloqueia a compra quando zera)
@@ -169,7 +169,7 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 | PUT | `/usuarios/{id}` | Atualizar usuário, incluindo a nova senha |
 | DELETE | `/usuarios/{id}` | Excluir usuário |
 | POST | `/pedidos` | Salvar o pedido (envia `usuarioId` e itens com `produtoId` e `quantidade`) |
-| GET | `/pedidos/usuario/{usuarioId}` | Listar os pedidos de um usuário |
+| GET | `/pedidos/usuario/{usuarioId}` | Listar os pedidos de um usuário (o front não usa mais) |
 | POST | `/pagamentos` | Pagamento fictício: envia só `pedidoId` e `formaPagamento` (`CARTAO` ou `PIX`); sempre aprova e o pedido vira `APROVADO` |
 | POST | `/estoque/{produtoId}/entrada` | Somar unidades ao estoque (`quantidade`, `observacao`) |
 | POST | `/estoque/{produtoId}/saida` | Tirar unidades (perda/ajuste); `409` se não houver o suficiente |
