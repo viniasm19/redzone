@@ -152,7 +152,7 @@ mvn spring-boot:run
 
 Ou, pela IDE, abra a pasta `backend-spring` e execute a classe `RedzoneApplication`.
 
-> O banco H2 é gravado em arquivo (`backend-spring/data/`): usuários e pedidos continuam existindo depois de reiniciar a API. Os dados de exemplo (`data.sql`) são carregados só na primeira execução. Para voltar ao estado inicial, pare a API e apague a pasta `data`. Mais detalhes em `backend-spring/README.md`.
+> O banco H2 é gravado em arquivo (`backend-spring/data/`): usuários e pedidos continuam existindo depois de reiniciar a API. Os dados de exemplo (`data.sql`) são carregados só na primeira execução. Para voltar ao estado inicial, pare a API e apague a pasta `data`.
 
 A URL da API fica em um só lugar: `src/app/configuracao/api.ts` (`http://localhost:8080`).
 
