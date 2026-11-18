@@ -30,7 +30,7 @@
 
       <div class="confirm-actions">
         <button class="btn-voltar btn-secundario" (click)="voltar()">← Voltar</button>
-        <button class="btn-confirmar btn-principal" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : 'Confirmar Pedido' }}</button>
+        <button class="btn-principal" (click)="confirmar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : 'Confirmar Pedido' }}</button>
       </div>
     </ng-container>
 
@@ -99,7 +99,7 @@
       <p class="erro-pedido" *ngIf="erro">{{ erro }}</p>
 
       <div class="confirm-actions">
-        <button class="btn-confirmar btn-principal" (click)="pagar()" [disabled]="enviando">
+        <button class="btn-principal" (click)="pagar()" [disabled]="enviando">
           {{ enviando ? 'Processando...' : (formaPagamento === 'PIX' ? 'Já paguei com Pix' : 'Pagar com cartão') }}
         </button>
       </div>

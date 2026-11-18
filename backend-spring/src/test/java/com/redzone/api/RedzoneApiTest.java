@@ -66,7 +66,7 @@ class RedzoneApiTest {
 
     @Test
     void pedidoUsaPrecoDoBancoETotalCalculadoNoBackend() throws Exception {
-        Usuario u = usuarios.findByEmail("lucas@email.com").orElseThrow();
+        Usuario u = usuarios.findByEmailIgnoreCase("lucas@email.com").orElseThrow();
         Produto p = produtos.findAll().get(0);
         double esperado = Math.round(p.getPreco() * 2 * 100.0) / 100.0;
 

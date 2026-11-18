@@ -67,10 +67,6 @@ public class Pedido {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Usuario getUsuario() {
         return usuario;
     }
@@ -89,10 +85,6 @@ public class Pedido {
 
     public Double getTotal() {
         return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
     }
 
     // Pedido antigo sem status aparece como APROVADO.
@@ -116,7 +108,4 @@ public class Pedido {
         return itens;
     }
 
-    public void setItens(List<ItemPedido> itens) {
-        this.itens = itens;
-    }
 }

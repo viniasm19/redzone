@@ -16,7 +16,7 @@
     <nav id="menu-principal" class="menu" [class.aberto]="menuAberto()">
             <div class="menu-grupo">
         <!-- Link do carrinho com o contador. -->
-        <a routerLink="/cart" routerLinkActive="active" class="cart-btn" (click)="fecharMenu()">
+        <a routerLink="/cart" routerLinkActive="active" (click)="fecharMenu()">
                     <svg class="icone" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
             <path d="M6 7h12l-1 13H7L6 7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
             <path d="M9 7a3 3 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
@@ -38,8 +38,8 @@
         <!-- Quem está logado: nome, Minha Área e Sair. -->
         <ng-container *ngIf="isLogado()">
           <span class="ola">Olá, {{ usuario()?.nome }}</span>
-          <a class="profile" routerLink="/area-usuario" routerLinkActive="active" (click)="fecharMenu()">Minha Área</a>
-          <a class="profile" href="#" (click)="sair(); $event.preventDefault()">Sair</a>
+          <a routerLink="/area-usuario" routerLinkActive="active" (click)="fecharMenu()">Minha Área</a>
+          <a href="#" (click)="sair(); $event.preventDefault()">Sair</a>
         </ng-container>
       </div>
     </nav>

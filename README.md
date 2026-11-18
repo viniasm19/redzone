@@ -169,12 +169,10 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 | PUT | `/usuarios/{id}` | Atualizar usuário, incluindo a nova senha |
 | DELETE | `/usuarios/{id}` | Excluir usuário |
 | POST | `/pedidos` | Salvar o pedido (envia `usuarioId` e itens com `produtoId` e `quantidade`) |
-| GET | `/pedidos/usuario/{usuarioId}` | Listar os pedidos de um usuário (o front não usa mais) |
 | POST | `/pagamentos` | Pagamento fictício: envia só `pedidoId` e `formaPagamento` (`CARTAO` ou `PIX`); sempre aprova e o pedido vira `APROVADO` |
 | POST | `/estoque/{produtoId}/entrada` | Somar unidades ao estoque (`quantidade`, `observacao`) |
 | POST | `/estoque/{produtoId}/saida` | Tirar unidades (perda/ajuste); `409` se não houver o suficiente |
 | GET | `/estoque/movimentacoes?produtoId=` | Histórico de movimentações (de todos ou de um produto) |
-| GET | `/estoque/baixo` | Produtos com estoque baixo ou zerado |
 
 Requisitos no back-end Spring Boot:
 

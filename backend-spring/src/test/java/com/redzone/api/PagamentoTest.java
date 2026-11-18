@@ -1,7 +1,11 @@
 package com.redzone.api;
 
 import com.jayway.jsonpath.JsonPath;
+import com.redzone.api.model.FormaPagamento;
+import com.redzone.api.model.Pedido;
 import com.redzone.api.model.Produto;
+import com.redzone.api.model.StatusPedido;
+import com.redzone.api.repository.PedidoRepository;
 import com.redzone.api.repository.ProdutoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,9 @@ class PagamentoTest {
     ProdutoRepository produtoRepository;
 
     @Autowired
+    PedidoRepository pedidoRepository;
+
+    @Autowired
     JdbcTemplate jdbc;
 
     private Long criarPedido() throws Exception {
@@ -58,6 +65,11 @@ class PagamentoTest {
         return Long.valueOf(JsonPath.read(resposta, "$.id").toString());
     }
 
+    // Busca o pedido direto no banco, para conferir o que ficou gravado.
+    private Pedido pedido(Long id) {
+        return pedidoRepository.findById(id).orElseThrow();
+    }
+
     private String pagamento(Long pedidoId, String forma) {
         return "{\"pedidoId\": " + pedidoId + ", \"formaPagamento\": \"" + forma + "\"}";
     }
@@ -71,12 +83,8 @@ class PagamentoTest {
                 .andExpect(jsonPath("$.status").value("APROVADO"))
                 .andExpect(jsonPath("$.formaPagamento").value("PIX"));
 
-        mvc.perform(get("/pedidos/" + id))
-                .andExpect(jsonPath("$.status").value("APROVADO"))
-                .andExpect(jsonPath("$.formaPagamento").value("PIX"));
-
-        mvc.perform(get("/pedidos/usuario/2"))
-                .andExpect(jsonPath("$[0].status").value("APROVADO"));
+        assertThat(pedido(id).getStatus()).isEqualTo(StatusPedido.APROVADO);
+        assertThat(pedido(id).getFormaPagamento()).isEqualTo(FormaPagamento.PIX);
     }
 
     @Test
@@ -110,7 +118,7 @@ class PagamentoTest {
         mvc.perform(post("/pagamentos").contentType(MediaType.APPLICATION_JSON).content(pagamento(id, "CARTAO")))
                 .andExpect(status().isConflict());
 
-        mvc.perform(get("/pedidos/" + id)).andExpect(jsonPath("$.formaPagamento").value("PIX"));
+        assertThat(pedido(id).getFormaPagamento()).isEqualTo(FormaPagamento.PIX);
     }
 
     @Test
@@ -129,6 +137,6 @@ class PagamentoTest {
         mvc.perform(post("/pagamentos").contentType(MediaType.APPLICATION_JSON).content(pagamento(id, "BOLETO")))
                 .andExpect(status().isBadRequest());
 
-        mvc.perform(get("/pedidos/" + id)).andExpect(jsonPath("$.status").value("AGUARDANDO_PAGAMENTO"));
+        assertThat(pedido(id).getStatus()).isEqualTo(StatusPedido.AGUARDANDO_PAGAMENTO);
     }
 }

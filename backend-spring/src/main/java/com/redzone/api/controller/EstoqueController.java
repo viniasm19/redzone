@@ -22,9 +22,6 @@ import java.util.Optional;
 @RequestMapping("/estoque")
 public class EstoqueController {
 
-    // Abaixo disso o produto é 'estoque baixo'.
-    public static final int ESTOQUE_MINIMO = 5;
-
     private final ProdutoRepository produtoRepository;
     private final MovimentacaoEstoqueRepository movimentacaoRepository;
     private final EstoqueService estoqueService;
@@ -35,12 +32,6 @@ public class EstoqueController {
         this.produtoRepository = produtoRepository;
         this.movimentacaoRepository = movimentacaoRepository;
         this.estoqueService = estoqueService;
-    }
-
-    // Produtos com estoque baixo ou zerado.
-    @GetMapping("/baixo")
-    public List<Produto> estoqueBaixo() {
-        return produtoRepository.findByEstoqueLessThanEqualOrderByEstoqueAsc(ESTOQUE_MINIMO);
     }
 
     // Histórico de entradas, saídas e vendas.
