@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
 
 const FORM_VAZIO: Omit<Produto, 'id'> = {
   nome: '', preco: 0, imagem: '', categoria: '', estoque: 0,
-  marca: null, garantia: null, especificacoes: null, precoPromocional: null
+  precoPromocional: null
 };
 
 @Component({
@@ -88,13 +88,7 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    const dados: Omit<Produto, 'id'> = {
-      ...p,
-      marca: this.textoOuNull(p.marca),
-      garantia: this.textoOuNull(p.garantia),
-      especificacoes: this.textoOuNull(p.especificacoes),
-      precoPromocional: promocional
-    };
+    const dados: Omit<Produto, 'id'> = { ...p, precoPromocional: promocional };
 
     const requisicao = this.editandoId
       ? this.productService.updateProduto({ ...dados, id: this.editandoId })
@@ -107,11 +101,6 @@ export class ProductListComponent implements OnInit {
       },
       error: () => (this.erro = 'Não foi possível salvar o produto. Confira os dados e tente de novo.')
     });
-  }
-
-  private textoOuNull(texto?: string | null): string | null {
-    const limpo = (texto ?? '').trim();
-    return limpo ? limpo : null;
   }
 
   deleteProduto(id: number) {

@@ -8,9 +8,6 @@ export interface Produto {
   descricao?: string;
   estoque: number;
 
-  marca?: string | null;
-  garantia?: string | null;
-  especificacoes?: string | null;
   precoPromocional?: number | null;
 }
 

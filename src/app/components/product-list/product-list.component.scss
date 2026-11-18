@@ -35,8 +35,7 @@
 }
 
 .form-container input,
-.form-container select,
-.form-container textarea {
+.form-container select {
   min-height: 42px;
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-border-strong);
@@ -49,7 +48,6 @@
   &::placeholder { color: var(--color-text-muted); }
 }
 
-.form-container textarea { resize: vertical; }
 
 .form-container button {
   min-height: 44px;

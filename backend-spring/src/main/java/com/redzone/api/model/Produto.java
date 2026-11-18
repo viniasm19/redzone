@@ -13,7 +13,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 
 // Tabela produtos: itens da loja.
 @Entity
@@ -49,19 +48,6 @@ public class Produto {
     @Column(nullable = false)
     private Integer estoque = 0;
 
-
-    // Campos opcionais (podem ser nulos).
-    @Size(max = 100, message = "A marca pode ter no máximo 100 caracteres.")
-    @Column(length = 100)
-    private String marca;
-
-    @Size(max = 100, message = "A garantia pode ter no máximo 100 caracteres.")
-    @Column(length = 100)
-    private String garantia;
-
-    @Size(max = 2000, message = "As especificações podem ter no máximo 2000 caracteres.")
-    @Column(length = 2000)
-    private String especificacoes;
 
     // Preço promocional: nulo = sem promoção.
     @Positive(message = "O preço promocional deve ser maior que zero.")
@@ -139,30 +125,6 @@ public class Produto {
 
     public void setEstoque(Integer estoque) {
         this.estoque = estoque;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public String getGarantia() {
-        return garantia;
-    }
-
-    public void setGarantia(String garantia) {
-        this.garantia = garantia;
-    }
-
-    public String getEspecificacoes() {
-        return especificacoes;
-    }
-
-    public void setEspecificacoes(String especificacoes) {
-        this.especificacoes = especificacoes;
     }
 
     public Double getPrecoPromocional() {

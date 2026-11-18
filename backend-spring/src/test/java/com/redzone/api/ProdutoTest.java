@@ -11,7 +11,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -43,51 +42,32 @@ class ProdutoTest {
 
 
     @Test
-    void produtoComDetalhesDevolveOsCamposNovos() throws Exception {
-        Produto placa = produto("Placa de Vídeo RTX 4060 8GB");
-
-        mvc.perform(get("/produtos/" + placa.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.marca").value("NVIDIA"))
-                .andExpect(jsonPath("$.garantia").value("36 meses"))
-                .andExpect(jsonPath("$.especificacoes").value(containsString("Memória: 8 GB GDDR6")));
-    }
-
-    @Test
-    void produtoSemDetalhesContinuaFuncionando() throws Exception {
+    void produtoSemPromocaoContinuaFuncionando() throws Exception {
         Produto headset = produto("Headset Gamer");
 
         mvc.perform(get("/produtos/" + headset.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("Headset Gamer"))
-                .andExpect(jsonPath("$.marca").value(nullValue()))
-                .andExpect(jsonPath("$.garantia").value(nullValue()))
-                .andExpect(jsonPath("$.especificacoes").value(nullValue()))
                 .andExpect(jsonPath("$.precoPromocional").value(nullValue()));
     }
 
     @Test
-    void cadastroAceitaOsCamposNovos() throws Exception {
+    void cadastroAceitaPrecoPromocional() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nome\": \"Webcam Full HD\", \"preco\": 199.9, \"categoria\": \"Acessórios\","
-                                + " \"marca\": \"VisionCam\", \"garantia\": \"6 meses\","
-                                + " \"especificacoes\": \"Resolução: 1080p\", \"precoPromocional\": 149.9}"))
+                                + " \"precoPromocional\": 149.9}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.marca").value("VisionCam"))
-                .andExpect(jsonPath("$.garantia").value("6 meses"))
-                .andExpect(jsonPath("$.especificacoes").value("Resolução: 1080p"))
                 .andExpect(jsonPath("$.precoPromocional").value(149.9))
                 .andExpect(jsonPath("$.precoPromocionalValido").doesNotExist());
     }
 
     @Test
-    void cadastroSemOsCamposNovosContinuaFuncionando() throws Exception {
+    void cadastroSimplesContinuaFuncionando() throws Exception {
         mvc.perform(post("/produtos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nome\": \"Cabo HDMI\", \"preco\": 29.9, \"categoria\": \"Acessórios\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.marca").value(nullValue()))
                 .andExpect(jsonPath("$.precoPromocional").value(nullValue()));
     }
 
