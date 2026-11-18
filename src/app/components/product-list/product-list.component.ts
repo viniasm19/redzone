@@ -9,8 +9,7 @@ import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 
 const FORM_VAZIO: Omit<Produto, 'id'> = {
-  nome: '', preco: 0, imagem: '', categoria: '', estoque: 0,
-  precoPromocional: null
+  nome: '', preco: 0, imagem: '', categoria: '', estoque: 0
 };
 
 @Component({
@@ -79,20 +78,9 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    const promocional = p.precoPromocional === null || p.precoPromocional === undefined || String(p.precoPromocional) === ''
-      ? null
-      : Number(p.precoPromocional);
-
-    if (promocional !== null && !(promocional > 0 && promocional < p.preco)) {
-      this.erro = 'O preço promocional deve ser maior que zero e menor que o preço normal (ou deixe vazio).';
-      return;
-    }
-
-    const dados: Omit<Produto, 'id'> = { ...p, precoPromocional: promocional };
-
     const requisicao = this.editandoId
-      ? this.productService.updateProduto({ ...dados, id: this.editandoId })
-      : this.productService.addProduto(dados);
+      ? this.productService.updateProduto({ ...p, id: this.editandoId })
+      : this.productService.addProduto(p);
 
     requisicao.subscribe({
       next: () => {

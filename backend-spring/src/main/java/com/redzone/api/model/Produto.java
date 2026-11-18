@@ -6,9 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -49,25 +47,7 @@ public class Produto {
     private Integer estoque = 0;
 
 
-    // Preço promocional: nulo = sem promoção.
-    @Positive(message = "O preço promocional deve ser maior que zero.")
-    @Column(name = "preco_promocional")
-    private Double precoPromocional;
-
     public Produto() {
-    }
-
-    @JsonIgnore
-    @AssertTrue(message = "O preço promocional deve ser menor que o preço normal.")
-    // Promoção tem que ser menor que o preço normal.
-    public boolean isPrecoPromocionalValido() {
-        return precoPromocional == null || preco == null || precoPromocional < preco;
-    }
-
-    @JsonIgnore
-    // Preço que vale agora (promocional ou normal).
-    public Double getPrecoAtual() {
-        return precoPromocional != null ? precoPromocional : preco;
     }
 
 
@@ -127,11 +107,4 @@ public class Produto {
         this.estoque = estoque;
     }
 
-    public Double getPrecoPromocional() {
-        return precoPromocional;
-    }
-
-    public void setPrecoPromocional(Double precoPromocional) {
-        this.precoPromocional = precoPromocional;
-    }
 }

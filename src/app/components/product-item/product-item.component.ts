@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Produto, emPromocao } from '../../models/produto.model';
+import { Produto } from '../../models/produto.model';
 import { ESTOQUE_MINIMO } from '../../services/stock.service';
 
 @Component({
@@ -18,9 +18,6 @@ export class ProductItemComponent {
   @Output() addToCart = new EventEmitter<Produto>();
   estoqueMinimo = ESTOQUE_MINIMO;
 
-  get emPromocao() {
-    return emPromocao(this.produto);
-  }
 
   adicionar() {
     this.addToCart.emit(this.produto);

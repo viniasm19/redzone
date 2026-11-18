@@ -7,7 +7,6 @@ import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
 import { PaymentService } from '../../services/payment.service';
-import { precoAtual } from '../../models/produto.model';
 import { FormaPagamento, Pedido } from '../../models/pedido.model';
 
 type Etapa = 'revisao' | 'pagamento' | 'aprovado';
@@ -29,8 +28,6 @@ export class OrderConfirmComponent implements OnInit, OnDestroy {
 
   itens = this.cartService.itens();
   total = this.cartService.total();
-
-  precoAtual = precoAtual;
 
   etapa: Etapa = 'revisao';
   pedido: Pedido | null = null;

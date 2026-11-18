@@ -60,7 +60,6 @@ O projeto foi pensado a partir de cinco personas:
   - O carrinho não deixa colocar mais unidades do que existem
   - Ao finalizar o pedido, o back-end confere o estoque de novo e dá baixa. Se faltar algum item, nada é salvo e a API responde `409`
   - Tela **📦 Estoque** (só administrador): resumo, alerta de estoque baixo (≤ 5), entrada/saída manual com observação e histórico de movimentações
-- **Promoções** (`/promocoes`, sem link no menu): produtos com preço promocional, com o preço antigo riscado. O pedido cobra o preço promocional (lido do banco)
 - **Rodapé** em todas as telas com o nome da loja, endereço, telefone e e-mail. Os dados ficam em `src/app/config/loja.ts` e são **fictícios** (marcados com "TROCAR PELOS DADOS REAIS")
 - Interface responsiva e componentes reutilizáveis
 
@@ -82,7 +81,7 @@ redzone/
 │   └── app/
 │       ├── components/   (header, footer, product-item, product-list)
 │       ├── pages/        (home, login, register, forgot-password, product-detail,
-│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart, promocoes)
+│       │                  order-confirm, order-success, area-usuario, usuarios, estoque, cart)
 │       ├── services/     (auth, cart, product, order, payment, stock)
 │       ├── guards/       (auth.guard)
 │       ├── models/
@@ -162,7 +161,6 @@ A URL da API fica em um só lugar: `src/app/config/api.ts` (`http://localhost:80
 | Método | Rota | Uso |
 |---|---|---|
 | GET | `/produtos` | Listar produtos |
-| GET | `/produtos?promocao=true` | Só os produtos em promoção (com `precoPromocional`) |
 | POST / PUT / DELETE | `/produtos` e `/produtos/{id}` | Cadastrar, editar e excluir (administrador) |
 | POST | `/login` | Login: o back-end confere e-mail e senha (200 com id, nome e e-mail; 401 se inválidos) |
 | GET | `/usuarios` | Listar usuários (tela de administração) |
@@ -195,7 +193,7 @@ O `data.sql` carrega ainda os usuários mariana, rafael, sofia e tiago (`@email.
 
 Apenas o administrador vê os botões de **Editar**, **Excluir**, o formulário de **Cadastrar Produto** e o botão **Estoque** (na Minha Área), que leva à tela de estoque.
 
-> Quem já tinha a pasta `backend-spring/data/` de antes: as colunas novas (`preco_promocional`, e nos pedidos `status` e `forma_pagamento`) são criadas sozinhas e ficam vazias nos registros antigos, sem apagar nada. Os exemplos do `data.sql` só aparecem num banco novo.
+> Quem já tinha a pasta `backend-spring/data/` de antes: as colunas novas (nos pedidos `status` e `forma_pagamento`) são criadas sozinhas e ficam vazias nos registros antigos, sem apagar nada. Os exemplos do `data.sql` só aparecem num banco novo.
 
 > A coluna `estoque` é criada sozinha, mas com **0** em todos os produtos (o `data.sql` não roda de novo). Dê entrada pela tela de Estoque, ou apague a pasta `data` para recarregar os dados de exemplo.
 

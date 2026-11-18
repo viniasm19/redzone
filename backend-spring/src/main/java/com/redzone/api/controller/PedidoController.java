@@ -66,7 +66,7 @@ public class PedidoController {
             ItemPedido item = new ItemPedido();
             item.setProduto(produto.get());
             item.setQuantidade(itemRequest.quantidade());
-            item.setPrecoUnitario(produto.get().getPrecoAtual());
+            item.setPrecoUnitario(produto.get().getPreco());
             pedido.adicionarItem(item);
 
             estoqueService.saida(produto.get(), itemRequest.quantidade(), TipoMovimentacao.VENDA,

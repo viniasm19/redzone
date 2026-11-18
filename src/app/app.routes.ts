@@ -11,7 +11,6 @@ import { OrderSuccessComponent } from './pages/order-success/order-success.compo
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { AreaUsuarioComponent } from './pages/area-usuario/area-usuario.component';
 import { EstoqueComponent } from './pages/estoque/estoque.component';
-import { PromocoesComponent } from './pages/promocoes/promocoes.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 
@@ -26,7 +25,6 @@ export const routes: Routes = [
   // Estoque (só admin).
   { path: 'estoque', component: EstoqueComponent, canActivate: [adminGuard] },
   { path: 'products', component: ProductListComponent },
-  { path: 'promocoes', component: PromocoesComponent },
   // Carrinho.
   { path: 'cart', component: CartComponent },
   { path: 'product/:id', component: ProductDetailComponent },

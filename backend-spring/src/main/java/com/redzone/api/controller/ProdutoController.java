@@ -27,11 +27,8 @@ public class ProdutoController {
     }
 
     @GetMapping
-    // Lista produtos. Com ?promocao=true, só os em promoção.
-    public List<Produto> listar(@RequestParam(required = false) Boolean promocao) {
-        if (Boolean.TRUE.equals(promocao)) {
-            return repository.findByPrecoPromocionalIsNotNull();
-        }
+    // Lista todos os produtos.
+    public List<Produto> listar() {
         return repository.findAll();
     }
 

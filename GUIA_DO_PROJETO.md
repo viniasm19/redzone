@@ -29,7 +29,7 @@ Mapa rápido: o que cada parte faz e onde ela está.
 |---|---|---|
 | `/login` | AuthController | Confere e-mail e senha |
 | `/usuarios` | UsuarioController | Cadastro, edição, exclusão e busca |
-| `/produtos` | ProdutoController | Lista, cadastro e edição de produtos (`?promocao=true`) |
+| `/produtos` | ProdutoController | Lista, cadastro e edição de produtos |
 | `/pedidos` | PedidoController | Cria pedido e lista pedidos do usuário |
 | `/pagamentos` | PagamentoController | Aprova o pedido (pagamento fictício) |
 | `/estoque` | EstoqueController | Entrada, saída e histórico do estoque |

@@ -1,5 +1,5 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
-import { Produto, precoAtual } from '../models/produto.model';
+import { Produto } from '../models/produto.model';
 
 export interface CartItem {
   produto: Produto;
@@ -37,7 +37,7 @@ export class CartService {
 
   // Total de unidades (contador do menu).
   quantidadeTotal = computed(() => this.lista().reduce((soma, i) => soma + i.quantidade, 0));
-  total = computed(() => this.lista().reduce((soma, i) => soma + precoAtual(i.produto) * i.quantidade, 0));
+  total = computed(() => this.lista().reduce((soma, i) => soma + i.produto.preco * i.quantidade, 0));
 
   private _toast = signal<string | null>(null);
   toast = this._toast.asReadonly();

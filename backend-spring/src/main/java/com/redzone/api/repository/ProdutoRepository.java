@@ -9,6 +9,4 @@ import java.util.List;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     List<Produto> findByEstoqueLessThanEqualOrderByEstoqueAsc(Integer limite);
-
-    List<Produto> findByPrecoPromocionalIsNotNull();
 }

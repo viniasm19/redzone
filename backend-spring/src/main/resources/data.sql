@@ -22,9 +22,3 @@ INSERT INTO produtos (nome, preco, imagem, categoria, descricao, estoque) VALUES
 INSERT INTO produtos (nome, preco, imagem, categoria, descricao, estoque) VALUES ('Mouse Gamer RGB', 129.9, '/img/produtos/mouse-gamer.jpg', 'Acessórios', 'Mouse com sensor de alta precisão e DPI ajustável.', 30);
 INSERT INTO produtos (nome, preco, imagem, categoria, descricao, estoque) VALUES ('Teclado Mecânico RGB', 349.9, '/img/produtos/teclado.jpg', 'Acessórios', 'Teclado mecânico com switches responsivos e iluminação por tecla.', 18);
 INSERT INTO produtos (nome, preco, imagem, categoria, descricao, estoque) VALUES ('Mousepad Speed Grande', 79.9, '/img/produtos/mousepad.jpg', 'Acessórios', 'Mousepad extra grande com base antiderrapante e superfície speed.', 40);
-
--- Promoções: só quem tem preco_promocional preenchido aparece em /promocoes (GET /produtos?promocao=true)
-UPDATE produtos SET preco_promocional = 219.9 WHERE nome = 'Microfone Condensador USB';
-UPDATE produtos SET preco_promocional = 999.9 WHERE nome = 'Cadeira Gamer Ergonômica';
-UPDATE produtos SET preco_promocional = 329.9 WHERE nome = 'SSD NVMe 1TB';
-UPDATE produtos SET preco_promocional = 279.9 WHERE nome = 'Teclado Mecânico RGB';
