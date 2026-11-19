@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -56,19 +58,28 @@ public class PedidoControlador {
         pedido.setData(LocalDateTime.now());
         pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
 
+        // 1º confere se todos os produtos existem, antes de mexer no estoque.
+        List<Produto> produtos = new ArrayList<>();
         for (PedidoRequisicao.ItemRequisicao itemRequest : request.itens()) {
             Optional<Produto> produto = produtoRepositorio.findById(itemRequest.produtoId());
             if (produto.isEmpty()) {
                 return naoEncontrado("Produto " + itemRequest.produtoId() + " não encontrado.");
             }
+            produtos.add(produto.get());
+        }
+
+        // 2º monta os itens e dá baixa (se faltar estoque, a exceção desfaz tudo).
+        for (int i = 0; i < produtos.size(); i++) {
+            Produto produto = produtos.get(i);
+            int quantidade = request.itens().get(i).quantidade();
 
             ItemPedido item = new ItemPedido();
-            item.setProduto(produto.get());
-            item.setQuantidade(itemRequest.quantidade());
-            item.setPrecoUnitario(produto.get().getPreco());
+            item.setProduto(produto);
+            item.setQuantidade(quantidade);
+            item.setPrecoUnitario(produto.getPreco());
             pedido.adicionarItem(item);
 
-            estoqueServico.saida(produto.get(), itemRequest.quantidade(), TipoMovimentacao.VENDA,
+            estoqueServico.saida(produto, quantidade, TipoMovimentacao.VENDA,
                     "Venda para " + usuario.get().getNome());
         }
 
