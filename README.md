@@ -165,7 +165,7 @@ A URL da API fica em um só lugar: `src/app/configuracao/api.ts` (`http://localh
 | POST | `/login` | Login: o back-end confere e-mail e senha (200 com id, nome e e-mail; 401 se inválidos) |
 | GET | `/usuarios` | Listar usuários (tela de administração) |
 | POST | `/usuarios` | Cadastrar usuário |
-| GET | `/usuarios/email/{email}` | Buscar usuário por e-mail (`findByEmail`) — redefinir senha |
+| GET | `/usuarios/email/{email}` | Buscar usuário por e-mail (`findByEmailIgnoreCase`) — redefinir senha |
 | PUT | `/usuarios/{id}` | Atualizar usuário, incluindo a nova senha |
 | DELETE | `/usuarios/{id}` | Excluir usuário |
 | POST | `/pedidos` | Salvar o pedido (envia `usuarioId` e itens com `produtoId` e `quantidade`) |
