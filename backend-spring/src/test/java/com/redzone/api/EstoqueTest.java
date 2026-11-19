@@ -101,6 +101,20 @@ class EstoqueTest {
     }
 
     @Test
+    void pedidoComProdutoInexistenteNaoDaBaixaEResponde404() throws Exception {
+        Produto headset = produto("Headset Gamer");
+
+        mvc.perform(post("/pedidos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"usuarioId\": 2, \"itens\": ["
+                                + "{\"produtoId\": " + headset.getId() + ", \"quantidade\": 1},"
+                                + "{\"produtoId\": 999999, \"quantidade\": 1}]}"))
+                .andExpect(status().isNotFound());
+
+        assertThat(produto("Headset Gamer").getEstoque()).isEqualTo(15);
+    }
+
+    @Test
     void editarProdutoNaoMexeNoEstoque() throws Exception {
         Produto headset = produto("Headset Gamer");
 
